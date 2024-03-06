@@ -72,7 +72,7 @@ def create_graph(graph):
             xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
             yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
         )
-    return fig
+    return fig,node_text
 
 
 def fetch_ucr_dataset_online(dataset):
