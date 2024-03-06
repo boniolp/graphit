@@ -14,10 +14,19 @@
 
 import inspect
 import textwrap
-
+import pickle
 import streamlit as st
 
 List_datasets = ['CBF','Trace','TwoLeadECG','DodgerLoopWeekend']
+
+def read_dataset(dataset):
+    with open('{}.pickle','rb') as handle:
+        graph = pickle.load(handle)
+    X, y = fetch_ucr_dataset_online(dataset)
+    return graph,X,y
+
+def create_graph(graph):
+    return None
 
 
 def fetch_ucr_dataset_online(dataset):
