@@ -26,8 +26,6 @@ def run():
 
     st.write("# Welcome to Streamlit! 👋")
 
-    st.sidebar.success("Select a demo above.")
-
     st.markdown(
         """
         Streamlit is an open-source app framework built specifically for
