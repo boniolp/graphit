@@ -23,6 +23,7 @@ import networkx as nx
 
 List_datasets = ['CBF','Trace','TwoLeadECG','DodgerLoopWeekend']
 
+@st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
 def read_dataset(dataset):
     with open('data/graphs/{}.pickle'.format(dataset),'rb') as handle:
         graph = pickle.load(handle)
