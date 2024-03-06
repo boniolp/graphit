@@ -38,7 +38,7 @@ def create_graph(graph):
     list_edge_trace = []
     for i,edge in enumerate(G_nx.edges()):
         edge_trace = go.Scatter(
-            x=[pos[edge[0]][0],pos[edge[0]][1]], y=[pos[edge[1]][0],pos[edge[1]][1]],
+            x=[pos[edge[0]][0],pos[edge[1]][0]], y=[pos[edge[0]][1],pos[edge[1]][1]],
             line=dict(width=edge_size_0[i], color='#888'),
             hoverinfo='none',
             mode='lines')
@@ -104,7 +104,7 @@ def format_graph_viz(G,list_edge,node_weight):
         if node != "NULL_NODE":
            dict_node.append(max(10,node_weight[node]*0.01))
         else:
-           dict_node.append(100)
+           dict_node.append(10)
     
     return G,dict_node,edge_size
 
