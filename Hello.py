@@ -35,7 +35,11 @@ def run():
     selected_node = plotly_events(fig_graph,override_height=800)
 
     if len(selected_node)>0:
-        st.markdown("Selected node is {}".format(node_label[selected_node[0]['pointIndex']]))
+        node_label = node_label[selected_node[0]['pointIndex']]
+        st.markdown("Selected node is {}".format())
+        fig_ts = get_node_ts(graph,X,node_label,length)
+        st.plotly_chart(fig_ts, use_container_width=True)
+        
 
 
 if __name__ == "__main__":
