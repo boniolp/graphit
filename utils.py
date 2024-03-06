@@ -19,6 +19,7 @@ import streamlit as st
 import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
+import networkx as nx
 
 List_datasets = ['CBF','Trace','TwoLeadECG','DodgerLoopWeekend']
 
