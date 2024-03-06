@@ -151,7 +151,7 @@ def get_node_ts(graph,X,node,length):
     
     fig = go.Figure(data=[mean_trace,lowerbound_trace,upperbound_trace],
         layout=go.Layout(
-            height=100,
+            height=300,
             showlegend=False,
             hovermode='closest',
             margin=dict(b=20,l=5,r=5,t=40),
