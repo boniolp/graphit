@@ -102,9 +102,9 @@ def format_graph_viz(G,list_edge,node_weight):
     dict_node = []
     for node in G.nodes():
         if node != "NULL_NODE":
-           dict_node.append(max(10,node_weight[node]*0.01))
+           dict_node.append(max(5,node_weight[node]*0.01))
         else:
-           dict_node.append(10)
+           dict_node.append(5)
     
     return G,dict_node,edge_size
 
