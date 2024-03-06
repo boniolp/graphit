@@ -17,12 +17,12 @@ import textwrap
 
 import streamlit as st
 
+List_datasets = ['CBF','Trace','TwoLeadECG','DodgerLoopWeekend']
 
-def show_code(demo):
-    """Showing the code of the demo."""
-    show_code = st.sidebar.checkbox("Show code", True)
-    if show_code:
-        # Showing the code of the demo.
-        st.markdown("## Code")
-        sourcelines, _ = inspect.getsourcelines(demo)
-        st.code(textwrap.dedent("".join(sourcelines[1:])))
+
+def fetch_ucr_dataset_online(dataset):
+    from aeon.datasets import load_classification
+    dataCof = load_classification("Trace")
+    X = np.squeeze(dataCof[0], axis=1)
+    y = dataCof[1].astype(int)
+    return X, y
