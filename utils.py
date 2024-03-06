@@ -16,6 +16,7 @@ import inspect
 import textwrap
 import pickle
 import streamlit as st
+import plotly.graph_objects as go
 
 List_datasets = ['CBF','Trace','TwoLeadECG','DodgerLoopWeekend']
 
@@ -26,7 +27,48 @@ def read_dataset(dataset):
     return graph,X,y
 
 def create_graph(graph):
-    return None
+    G = graph['graph']
+    G_nx = nx.DiGraph(graphs['graph']['list_edge'])
+    pos = nx.nx_agraph.graphviz_layout(G_nx,prog="fdp")
+    G_label_0,dict_node_0,edge_size_0 = self.__format_graph_viz(G_nx,G['list_edge'],G['dict_node'])
+
+    list_edge_trace = []
+    for i,edge in enumerate(G_nx.edges()):
+        edge_trace = go.Scatter(
+            x=[pos[edge[0][0]],pos[edge[0][1]]], y=[pos[edge[1][0]],pos[edge[1][1]]],
+            line=dict(width=edge_size_0[i], color='#888'),
+            hoverinfo='none',
+            mode='lines')
+        list_edge_trace.append(edge_trace)
+
+    node_x = []
+    node_y = []
+    node_text = []
+    for node in G_nx.nodes():
+        x, y = pos[node]
+        node_x.append(x)
+        node_y.append(y)
+        node_text.append(node)
+
+    node_trace = go.Scatter(
+        x=node_x, y=node_y,
+        mode='markers',
+        hoverinfo='text',
+        text=node_text,
+        marker=dict(
+            size=dict_node_0,
+            line_width=1))
+    fig = go.Figure(data=edge_trace + [node_trace],
+        layout=go.Layout(
+            title='<br>Network graph made with Python',
+            titlefont_size=16,
+            showlegend=False,
+            hovermode='closest',
+            margin=dict(b=20,l=5,r=5,t=40),
+            xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+            yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
+        )
+    return fig
 
 
 def fetch_ucr_dataset_online(dataset):
@@ -35,3 +77,19 @@ def fetch_ucr_dataset_online(dataset):
     X = np.squeeze(dataCof[0], axis=1)
     y = dataCof[1].astype(int)
     return X, y
+
+def __format_graph_viz(self,G,list_edge,node_weight):
+    edge_size = [] 
+    for edge in G.edges():
+        edge_size.append(list_edge.count([edge[0],edge[1]]))
+    edge_size_b = [float(1+(e - min(edge_size)))/float(1+max(edge_size) - min(edge_size)) for e in edge_size]
+    edge_size = [min(e*10,5) for e in edge_size_b]
+    dict_node = []
+    for node in G.nodes():
+        if node != "NULL_NODE":
+           dict_node.append(max(100,node_weight[node]))
+        else:
+           dict_node.append(100)
+    
+    return G,dict_node,edge_size
+
