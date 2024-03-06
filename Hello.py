@@ -14,6 +14,7 @@
 
 import streamlit as st
 from streamlit.logger import get_logger
+from utils import *
 
 LOGGER = get_logger(__name__)
 
@@ -24,6 +25,9 @@ def run():
         page_icon="👋",
     )
 
+    with st.sidebar:
+        dataset = st.selectbox('Pick a dataset', list_datasets)
+    
     st.write("# Welcome to Streamlit! 👋")
 
     st.markdown(
