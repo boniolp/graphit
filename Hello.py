@@ -29,7 +29,7 @@ def run():
     with st.sidebar:
         dataset = st.selectbox('Pick a dataset', List_datasets)
     
-    graph,X,y = read_dataset(dataset)
+    graph,X,y,length = read_dataset(dataset)
     fig_graph,node_label = create_graph(graph)
     #st.plotly_chart(fig_graph, use_container_width=True,height=800)
     selected_node = plotly_events(fig_graph,override_height=800)
