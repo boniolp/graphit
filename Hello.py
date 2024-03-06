@@ -32,6 +32,17 @@ def run():
     st.title("kGraph on {}".format(dataset))
     
     graph,X,y,length = read_dataset(dataset)
+
+    with st.sidebar:
+        st.markdown("Advanced settings")
+        lambda_val = st.slider('Lambda', 0, 1, 0.5)
+        gamma_val = st.slider('Gamma', 0, 1, 0.5)
+        options = st.multiselect(
+            'Show graphoids for',
+            ['Cluster {}'.format(i) for i in set(y)],
+            ['Cluster {}'.format(i) for i in set(y)])
+        
+    
     fig_graph,node_label = create_graph(graph)
     #st.plotly_chart(fig_graph, use_container_width=True,height=800)
     selected_node = plotly_events(fig_graph,override_height=800)
@@ -41,7 +52,8 @@ def run():
         st.markdown("Selected node is {}".format(node_label))
         fig_ts = get_node_ts(graph,X,node_label,length)
         st.plotly_chart(fig_ts, use_container_width=True)
-        
+
+    
 
 
 if __name__ == "__main__":
