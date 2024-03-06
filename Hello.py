@@ -28,6 +28,8 @@ def run():
 
     with st.sidebar:
         dataset = st.selectbox('Pick a dataset', List_datasets)
+
+    st.title("kGraph on {}".format(dataset))
     
     graph,X,y,length = read_dataset(dataset)
     fig_graph,node_label = create_graph(graph)
@@ -36,7 +38,7 @@ def run():
 
     if len(selected_node)>0:
         node_label = node_label[selected_node[0]['pointIndex']]
-        st.markdown("Selected node is {}".format())
+        st.markdown("Selected node is {}".format(node_label))
         fig_ts = get_node_ts(graph,X,node_label,length)
         st.plotly_chart(fig_ts, use_container_width=True)
         
