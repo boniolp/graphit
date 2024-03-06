@@ -26,6 +26,17 @@ def run():
         page_icon="👋",
     )
 
+    st.markdown(
+        """
+        <style>
+        [data-testid="stForm"]{
+        border: 2px solid black;
+        border-radius: 10px;
+        }
+        </style>
+        """, unsafe_allow_html=True
+    )
+    
     with st.sidebar:
         dataset = st.selectbox('Pick a dataset', List_datasets)
 
@@ -48,10 +59,11 @@ def run():
     selected_node = plotly_events(fig_graph,override_height=800)
 
     if len(selected_node)>0:
-        node_label = node_label[selected_node[0]['pointIndex']]
-        st.markdown("Selected node is {}".format(node_label))
-        fig_ts = get_node_ts(graph,X,node_label,length)
-        st.plotly_chart(fig_ts, use_container_width=True)
+        with st.form("my_form"):
+            node_label = node_label[selected_node[0]['pointIndex']]
+            st.markdown("Selected node is {}".format(node_label))
+            fig_ts = get_node_ts(graph,X,node_label,length)
+            st.plotly_chart(fig_ts, use_container_width=True)
 
     
 
