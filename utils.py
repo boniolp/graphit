@@ -31,7 +31,7 @@ def read_dataset(dataset):
 
 def create_graph(graph):
     G = graph['graph']
-    G_nx = nx.DiGraph(graphs['graph']['list_edge'])
+    G_nx = nx.DiGraph(graph['graph']['list_edge'])
     pos = nx.nx_agraph.graphviz_layout(G_nx,prog="fdp")
     G_label_0,dict_node_0,edge_size_0 = self.__format_graph_viz(G_nx,G['list_edge'],G['dict_node'])
 
