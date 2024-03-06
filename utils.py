@@ -30,6 +30,7 @@ def read_dataset(dataset):
     X, y = fetch_ucr_dataset_online(dataset)
     return graph,X,y
 
+@st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
 def create_graph(graph):
     G = graph['graph']
     G_nx = nx.DiGraph(graph['graph']['list_edge'])
