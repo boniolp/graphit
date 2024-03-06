@@ -68,6 +68,8 @@ def create_graph(graph):
     fig = go.Figure(data=list_edge_trace + [node_trace],
         layout=go.Layout(
             height=800,
+            plot_bgcolor='rgba(0, 0, 0, 0)',
+            paper_bgcolor='rgba(0, 0, 0, 0)',
             showlegend=False,
             hovermode='closest',
             margin=dict(b=20,l=5,r=5,t=40),
