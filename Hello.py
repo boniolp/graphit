@@ -30,7 +30,7 @@ def run():
     
     graph,X,y = read_dataset(dataset)
     fig_graph = create_graph(graph)
-    st.plotly_chart(fig_graph, use_container_width=True,height=800)
+    st.plotly_chart(fig_graph, use_container_width=True,height=1000)
 
 
 if __name__ == "__main__":
