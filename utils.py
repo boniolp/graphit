@@ -21,7 +21,7 @@ import plotly.graph_objects as go
 List_datasets = ['CBF','Trace','TwoLeadECG','DodgerLoopWeekend']
 
 def read_dataset(dataset):
-    with open('data/{}.pickle'.format(dataset),'rb') as handle:
+    with open('data/graphs/{}.pickle'.format(dataset),'rb') as handle:
         graph = pickle.load(handle)
     X, y = fetch_ucr_dataset_online(dataset)
     return graph,X,y
