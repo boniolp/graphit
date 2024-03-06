@@ -34,7 +34,7 @@ def run():
     #st.plotly_chart(fig_graph, use_container_width=True,height=800)
     selected_node = plotly_events(fig_graph,override_height=800)
 
-    if selected_node is not None:
+    if len(selected_node)>0:
         st.markdown("Selected node is {}".format(node_label[selected_node[0]['pointIndex']]))
 
 
