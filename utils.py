@@ -161,5 +161,5 @@ def get_node_ts(graph,X,node,length):
             yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
         )
     
-    return fig
+    return fig,len(result)
 
