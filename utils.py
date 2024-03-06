@@ -22,13 +22,15 @@ import numpy as np
 import networkx as nx
 
 List_datasets = ['CBF','Trace','TwoLeadECG','DodgerLoopWeekend']
+List_datasets_length = {'CBF':31,'Trace':27,'TwoLeadECG':14,'DodgerLoopWeekend':77}
 
 @st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
 def read_dataset(dataset):
     with open('data/graphs/{}.pickle'.format(dataset),'rb') as handle:
         graph = pickle.load(handle)
     X, y = fetch_ucr_dataset_online(dataset)
-    return graph,X,y
+    length = List_datasets_length[dataset]
+    return graph,X,y,length
 
 @st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
 def create_graph(graph):
@@ -108,4 +110,54 @@ def format_graph_viz(G,list_edge,node_weight):
            dict_node.append(5)
     
     return G,dict_node,edge_size
+
+def get_node_ts(graph,X,node,length):
+    result = []
+    current_pos = 0
+    
+    edge_in_time = graph['graph']['edge_in_time']
+    for i,edge in enumerate(graph['graph']['list_edge']):
+        if node == edge[0]:
+            relative_pos = i-graph['graph']['list_edge_pos'][current_pos]
+            pos_in_time = min(
+                range(len(edge_in_time[current_pos])), 
+                key=lambda j: abs(edge_in_time[current_pos][j]-relative_pos))
+            ts = X[int(current_pos),int(pos_in_time):int(pos_in_time+length)]
+            ts = ts - np.mean(ts)
+            result.append(ts)
+        
+        if i >= graph['graph']['list_edge_pos'][current_pos+1]:
+            current_pos += 1
+
+    mean = np.mean(result,axis=0)
+    dev = np.std(result,axis=0)
+
+    mean_trace = go.Scatter(
+            x=list(range(length)), y=mean,
+            line=dict(width=1, color='#888'),
+            hoverinfo='none',
+            mode='lines')
+    lowerbound_trace = go.Scatter(
+            x=list(range(length)), y=mean-dev,
+            line=dict(width=1, color='#888'),
+            hoverinfo='none',
+            mode='lines')
+    upperbound_trace = go.Scatter(
+            x=list(range(length)), y=mean+dev,
+            line=dict(width=1, color='#888'),
+            hoverinfo='none',
+            fill='tonexty',
+            mode='lines')
+    
+    fig = go.Figure(data=[mean_trace,lowerbound_trace,upperbound_trace],
+        layout=go.Layout(
+            height=100,
+            showlegend=False,
+            hovermode='closest',
+            margin=dict(b=20,l=5,r=5,t=40),
+            xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+            yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
+        )
+    
+    return fig
 
