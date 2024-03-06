@@ -1,9 +1,9 @@
-aeon==0.6.0
-networkx==3.2.1
-numpy==1.24.3
-pandas==2.0.3
-scikit_learn==1.3.0
-scipy==1.11.4
+aeon
+networkx
+numpy
+pandas
+scikit_learn
+scipy
 plotly
 streamlit_tags
 streamlit_agraph
