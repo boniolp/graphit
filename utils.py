@@ -72,11 +72,23 @@ def create_graph(graph):
 
 
 def fetch_ucr_dataset_online(dataset):
-    from aeon.datasets import load_classification
-    dataCof = load_classification("Trace")
-    X = np.squeeze(dataCof[0], axis=1)
-    y = dataCof[1].astype(int)
-    return X, y
+    path = 'data/timeseries/{}/'.format(dataset)
+    train_data = pd.read_csv(path + "{}_TRAIN.tsv".format(dataset),sep='\t',header=None)
+    target_train = np.array(train_data[0].values)
+    train_data = train_data.drop(0,axis=1)
+    train_data = train_data.fillna(0)
+    data_train = np.array(train_data.values)
+    data_train = (data_train - np.mean(data_train,axis=1,keepdims=True))/(np.std(data_train,axis=1,keepdims=True))
+
+    test_data = pd.read_csv(path + "{}_TEST.tsv".format(dataset),sep='\t',header=None)
+    target_test = np.array(test_data[0].values)
+    test_data = test_data.drop(0,axis=1)
+    test_data = test_data.fillna(0)
+    data_test = np.array(test_data.values)
+    data_test = (data_test - np.mean(data_test,axis=1,keepdims=True))/(np.std(data_test,axis=1,keepdims=True))
+    X = np.concatenate([data_train,data_test],axis=0)
+    y = np.concatenate([target_train,target_test],axis=0)
+    return X,y
 
 def __format_graph_viz(self,G,list_edge,node_weight):
     edge_size = [] 
