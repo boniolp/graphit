@@ -33,7 +33,7 @@ def create_graph(graph):
     G = graph['graph']
     G_nx = nx.DiGraph(graph['graph']['list_edge'])
     pos = nx.nx_agraph.graphviz_layout(G_nx,prog="fdp")
-    G_label_0,dict_node_0,edge_size_0 = self.__format_graph_viz(G_nx,G['list_edge'],G['dict_node'])
+    G_label_0,dict_node_0,edge_size_0 = format_graph_viz(G_nx,G['list_edge'],G['dict_node'])
 
     list_edge_trace = []
     for i,edge in enumerate(G_nx.edges()):
@@ -93,7 +93,7 @@ def fetch_ucr_dataset_online(dataset):
     y = np.concatenate([target_train,target_test],axis=0)
     return X,y
 
-def __format_graph_viz(self,G,list_edge,node_weight):
+def format_graph_viz(G,list_edge,node_weight):
     edge_size = [] 
     for edge in G.edges():
         edge_size.append(list_edge.count([edge[0],edge[1]]))
