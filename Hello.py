@@ -32,7 +32,7 @@ def run():
     graph,X,y = read_dataset(dataset)
     fig_graph = create_graph(graph)
     #st.plotly_chart(fig_graph, use_container_width=True,height=800)
-    selected_node = plotly_events(fig_graph)
+    selected_node = plotly_events(fig_graph,override_height=800)
 
     st.markdown("Selected node is {}".format(selected_node))
 
