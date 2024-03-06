@@ -26,7 +26,7 @@ def run():
     )
 
     with st.sidebar:
-        dataset = st.selectbox('Pick a dataset', list_datasets)
+        dataset = st.selectbox('Pick a dataset', List_datasets)
     
     st.write("# Welcome to Streamlit! 👋")
 
