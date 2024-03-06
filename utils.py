@@ -61,7 +61,7 @@ def create_graph(graph):
         marker=dict(
             size=dict_node_0,
             line_width=1))
-    fig = go.Figure(data=edge_trace + [node_trace],
+    fig = go.Figure(data=list_edge_trace + [node_trace],
         layout=go.Layout(
             title='<br>Network graph made with Python',
             titlefont_size=16,
