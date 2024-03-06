@@ -52,8 +52,8 @@ def run():
     if len(selected_node)>0:
         with st.container(border=True):
             node_label = node_label[selected_node[0]['pointIndex']]
-            st.markdown("Selected node is {}".format(node_label))
-            fig_ts = get_node_ts(graph,X,node_label,length)
+            fig_ts,nb_subseq = get_node_ts(graph,X,node_label,length)
+            st.markdown("Selected node is {} ({} subsequences)".format(node_label,nb_subseq))
             st.plotly_chart(fig_ts, use_container_width=True)
 
     
