@@ -15,6 +15,7 @@
 import streamlit as st
 from streamlit.logger import get_logger
 from utils import *
+from streamlit_plotly_events import plotly_events
 
 LOGGER = get_logger(__name__)
 
@@ -31,6 +32,9 @@ def run():
     graph,X,y = read_dataset(dataset)
     fig_graph = create_graph(graph)
     st.plotly_chart(fig_graph, use_container_width=True,height=800)
+    selected_node = plotly_events(fig_graph)
+
+    st.markdown("Selected node is {}".format(selected_node))
 
 
 if __name__ == "__main__":
