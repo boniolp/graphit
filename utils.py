@@ -23,7 +23,7 @@ import numpy as np
 import networkx as nx
 from plotly.subplots import make_subplots
 from sklearn.metrics import adjusted_rand_score
-
+import plotly.express as px
 
 List_datasets = ['CBF','Trace','TwoLeadECG','DodgerLoopWeekend']
 
