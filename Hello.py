@@ -63,9 +63,14 @@ def run():
         if len(selected_node)>0:
             with st.container(border=True):
                 node_label = node_label[selected_node[0]['pointIndex']]
-                fig_ts,nb_subseq = get_node_ts(graph,X,node_label,length)
-                st.markdown("Selected node is {} ({} subsequences)".format(node_label,nb_subseq))
-                st.plotly_chart(fig_ts, use_container_width=True)
+                fig_ts,fig_hist,nb_subseq = get_node_ts(graph,X,node_label,length)
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.markdown("Selected node is {} ({} subsequences)".format(node_label,nb_subseq))
+                    st.plotly_chart(fig_ts, use_container_width=True)
+                with col2:
+                    st.markdown("Clusters proportion within node {}".format(node_label))
+                    st.plotly_chart(fig_hist, use_container_width=True)
 
     with tab_detail:
         st.markdown("$k$-Graph is computing $M$ different graphs for $M$ different subsequence lengths. To maximize user interaction and interpretability, only one graph is selected (the one you can see in the graph tab).")
