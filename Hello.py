@@ -49,8 +49,10 @@ def run():
 
     with tab_ts:
         fig_ts,fig_pred = show_ts(X,y,graph)
+        st.header("Time series dataset (true labels)")
         st.markdown("Time series grouped based on the true labels (see [UCR-Archive](https://www.cs.ucr.edu/%7Eeamonn/time_series_data_2018/) for more details. Only 50 first time series are displayed.)")
         st.plotly_chart(fig_ts, use_container_width=True,height=800)
+        st.header("Time series dataset (predicted labels of $k$-Graph)")
         st.markdown("Time series grouped based on the clustering labels of $k$-Graph. You can check the graph on the graph tab for more details. Only 50 first time series are displayed.")
         st.plotly_chart(fig_pred, use_container_width=True,height=800)
     
