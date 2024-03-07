@@ -85,7 +85,7 @@ def run():
         st.header("How the graph is used to cluster time series?")
         
         st.markdown("To cluster the time series using the graph, we are extracting features. The features corresponds to the number of time a node and an edge have been crossed by one time series")
-        st.markdown("The heatmap below show the feature matrix (one time series per row, and one node or edge per column) for {}".format(dataset))
+        st.markdown("The heatmap below show the feature matrix (one time series per row, and one node or edge per column) for {} with the optimal subsequence length {}".format(dataset,length))
 
         st.plotly_chart(fig_feat, use_container_width=True,height=800)
         
