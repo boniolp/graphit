@@ -45,18 +45,26 @@ def run():
                 ['Cluster {}'.format(i) for i in set(y)])
         
     
-    fig_graph,node_label = create_graph(graph)
-    #st.plotly_chart(fig_graph, use_container_width=True,height=800)
-    selected_node = plotly_events(fig_graph,override_height=800)
+    tab_ts,tab_graph,tab_detail = st.tabs(["Time series", "Graph", "Under the hood"])
 
-    if len(selected_node)>0:
-        with st.container(border=True):
-            node_label = node_label[selected_node[0]['pointIndex']]
-            fig_ts,nb_subseq = get_node_ts(graph,X,node_label,length)
-            st.markdown("Selected node is {} ({} subsequences)".format(node_label,nb_subseq))
-            st.plotly_chart(fig_ts, use_container_width=True)
-
+    with tab_ts:
+        st.markdown("show ts")
     
+    with tab_graph:
+        fig_graph,node_label = create_graph(graph)
+        #st.plotly_chart(fig_graph, use_container_width=True,height=800)
+        selected_node = plotly_events(fig_graph,override_height=800)
+    
+        if len(selected_node)>0:
+            with st.container(border=True):
+                node_label = node_label[selected_node[0]['pointIndex']]
+                fig_ts,nb_subseq = get_node_ts(graph,X,node_label,length)
+                st.markdown("Selected node is {} ({} subsequences)".format(node_label,nb_subseq))
+                st.plotly_chart(fig_ts, use_container_width=True)
+
+    with tab_detail:
+        st.markdown("show detail")
+        
 
 
 if __name__ == "__main__":
