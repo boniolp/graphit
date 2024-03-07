@@ -105,18 +105,18 @@ def fetch_ucr_dataset_online(dataset):
 @st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
 def format_graph_viz(_G,list_edge,node_weight):
     edge_size = [] 
-    for edge in G.edges():
+    for edge in _G.edges():
         edge_size.append(list_edge.count([edge[0],edge[1]]))
     edge_size_b = [float(1+(e - min(edge_size)))/float(1+max(edge_size) - min(edge_size)) for e in edge_size]
     edge_size = [min(e*10,5) for e in edge_size_b]
     dict_node = []
-    for node in G.nodes():
+    for node in _G.nodes():
         if node != "NULL_NODE":
            dict_node.append(max(5,node_weight[node]*0.01))
         else:
            dict_node.append(5)
     
-    return G,dict_node,edge_size
+    return _G,dict_node,edge_size
 
 @st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
 def show_length_plot(graph):
