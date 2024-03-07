@@ -154,7 +154,7 @@ def run():
             In total, we have one clustering partition per graph ($M$ in total). We compute a consensus from all
             these partitions. In practice, we build a consensus matrix, which we employ to measure how many times 
             two time series have been grouped in the same cluster for two graphs built with two different lengths.
-            Below is the consensus matrix $M_C \in \mathbb{R}^{(|\mathcal{D}|,|\mathcal{D}|)}$ (only for the first 100 time series) for {}.""".format(dataset))
+            Below is the consensus matrix $M_C$ (only for the first 100 time series) for {}.""".format(dataset))
 
             fig_cons = compute_consensus(graph['all_runs'])
             st.plotly_chart(fig_cons, use_container_width=True,height=800)
