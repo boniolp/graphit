@@ -26,7 +26,6 @@ from sklearn.metrics import adjusted_rand_score
 
 
 List_datasets = ['CBF','Trace','TwoLeadECG','DodgerLoopWeekend']
-List_datasets_length = {'CBF':31,'Trace':27,'TwoLeadECG':14,'DodgerLoopWeekend':77}
 
 cols = plotly.colors.DEFAULT_PLOTLY_COLORS
 
@@ -35,7 +34,7 @@ def read_dataset(dataset):
     with open('data/graphs/{}.pickle'.format(dataset),'rb') as handle:
         graph = pickle.load(handle)
     X, y = fetch_ucr_dataset_online(dataset)
-    length = List_datasets_length[dataset]
+    length = graph['length']
     return graph,X,y,length
 
 @st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
@@ -170,7 +169,7 @@ def show_ts(X,y,graph):
             go.Scatter(x=x_list, y=x, mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
             row=1, col=labels_pred[pred]
         )
-    fig_pred.update_layout(height=300,title="ARI: {}".format(adjusted_rand_score(graph['prediction'],y)))
+    fig_pred.update_layout(height=300,title="ARI: {}".format(adjusted_rand_score(graph['kgraph_labels'],y)))
     return fig,fig_pred
 
 
