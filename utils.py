@@ -118,7 +118,7 @@ def show_ts(X,y):
     trace_ts = []
     fig = make_subplots(rows=1, cols=len(set(y)))
     x_list = list(range(len(X[0])))
-    labels = {lab:i for i,lab in enumerate(set(y))}
+    labels = {lab:i+1 for i,lab in enumerate(set(y))}
     for x,lab in zip(X[:50],y[:50]):
         fig.add_trace(
             go.Scatter(x=x_list, y=x),
