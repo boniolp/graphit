@@ -16,6 +16,7 @@ import streamlit as st
 from streamlit.logger import get_logger
 from utils import *
 from streamlit_plotly_events import plotly_events
+from PIL import Image
 
 LOGGER = get_logger(__name__)
 
