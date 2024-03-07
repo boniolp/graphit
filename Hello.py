@@ -146,6 +146,10 @@ def run():
             nodes: each transition corresponds to a pair of subsequences, where one occurs immediately after the other 
             in a time series $T$ of the dataset $\mathcal{D}$. We represent transitions with an edge between the 
             corresponding nodes.""")
+
+            image = Image.open('datsa/figures/pipeline.png')
+	        st.image(image, caption='Overview of kgraph pipeline')
+            
             st.markdown("""
             You may find more details in our [paper]().
             """)
