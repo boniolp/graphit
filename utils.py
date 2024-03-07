@@ -123,7 +123,7 @@ def show_ts(X,y):
     labels = {lab:i+1 for i,lab in enumerate(set(y))}
     for x,lab in zip(X[:50],y[:50]):
         fig.add_trace(
-            go.Scatter(x=x_list, y=x, mode='lines', line_color=col[labels[lab]]),
+            go.Scatter(x=x_list, y=x, mode='lines', line_color=cols[labels[lab]]),
             row=1, col=labels[lab]
         )
     fig.update_layout(height=500)
