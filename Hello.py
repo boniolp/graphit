@@ -77,9 +77,14 @@ def run():
         st.markdown("We select the graph using two criteria, the consistency (ARI score for the labels obtained from each graph compared to the final labels of $k$-Graph), and the interpretability factor.")
         st.markdown("The length relevance (first plot below) is the product of the two, and the graph computed with the length maximizing this product is selected.")
 
-        fig_length = show_length_plot(graph)
+        fig_length,fig_feat = show_length_plot(graph)
         st.plotly_chart(fig_length, use_container_width=True,height=800)
         st.markdown("for {}, the optimal length selected is {}".format(dataset,length))
+
+        st.markdown("To cluster the time series using the graph, we are extracting features. The features corresponds to the number of time a node and an edge have been crossed by one time series")
+        st.markdown("The heatmap below show the feature matrix (one time series per row, and one node or edge per column) for {}".format(dataset))
+
+        st.plotly_chart(fig_feat, use_container_width=True,height=800)
         
         
 
