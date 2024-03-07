@@ -242,7 +242,6 @@ def get_node_ts(graph,X,node,length):
             xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
             yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
         )
-    st.markdown(ts_found)
     fig_hist = go.Figure(layout=go.Layout(height=300))
     fig_hist.add_trace(go.Bar(name='Exclusivity',x=["Cluster {}".format(i) for i in set(graph['kgraph_labels'])], y=[labels_node.count("Cluster {}".format(i))/len(labels_node) for i in set(graph['kgraph_labels'])]))
     fig_hist.add_trace(go.Bar(name='Representativity',x=["Cluster {}".format(i) for i in set(graph['kgraph_labels'])], y=[ts_found["Cluster {}".format(i)]/list(graph['kgraph_labels']).count(i) for i in set(graph['kgraph_labels'])]))
