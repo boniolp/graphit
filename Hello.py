@@ -31,7 +31,7 @@ def run():
     with st.sidebar:
         dataset = st.selectbox('Pick a dataset', List_datasets)
 
-    st.title("kGraph on {}".format(dataset))
+    st.title("$k$-Graph on {}".format(dataset))
     
     graph,X,y,length = read_dataset(dataset)
 
