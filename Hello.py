@@ -47,13 +47,8 @@ def run():
              st.markdown("""
              Time series clustering poses a significant challenge with diverse applications across domains. 
              A prominent drawback of existing solutions lies in their limited interpretability, often confined 
-             to presenting users with centroids. In addressing this gap, our work presents $k$-Graph, an 
-             unsupervised method explicitly crafted to augment interpretability in time series clustering. 
-             Leveraging a graph representation of time series subsequences, $k$-Graph constructs multiple 
-             graph representations based on different subsequence lengths. This feature accommodates variable-length 
-             time series without requiring users to predetermine subsequence lengths. Our experimental results 
-             reveal that $k$-Graph outperforms current state-of-the-art time series clustering algorithms in accuracy, 
-             while providing users with meaningful explanations and interpretations of the clustering outcomes.
+             to presenting users with centroids. In addressing this gap, our work presents in this demo $k$-Graph, an 
+             unsupervised method explicitly crafted to augment interpretability in time series clustering.
              """)
 
         with st.expander("Contributors"):
