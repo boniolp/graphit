@@ -48,8 +48,9 @@ def run():
     tab_ts,tab_graph,tab_detail = st.tabs(["Time series", "Graph", "Under the hood"])
 
     with tab_ts:
-        fig_ts = show_ts(X,y)
+        fig_ts,fig_pred = show_ts(X,y,graph)
         st.plotly_chart(fig_ts, use_container_width=True,height=800)
+        st.plotly_chart(fig_pred, use_container_width=True,height=800)
     
     with tab_graph:
         fig_graph,node_label = create_graph(graph)
