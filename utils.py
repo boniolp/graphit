@@ -20,6 +20,7 @@ import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
 import networkx as nx
+from plotly.subplots import make_subplots
 
 List_datasets = ['CBF','Trace','TwoLeadECG','DodgerLoopWeekend']
 List_datasets_length = {'CBF':31,'Trace':27,'TwoLeadECG':14,'DodgerLoopWeekend':77}
@@ -112,6 +113,20 @@ def format_graph_viz(G,list_edge,node_weight):
            dict_node.append(5)
     
     return G,dict_node,edge_size
+
+def show_ts(X,y):
+    trace_ts = []
+    fig = make_subplots(rows=1, cols=len(set(y)))
+    x_list = list(range(len(X[0])))
+    labels = {lab:i for i,lab in set(y)}
+    for x,lab in zip(X,labels):
+        fig.add_trace(
+            go.Scatter(x=x_list, y=x),
+            row=1, col=lab
+        )
+    fig.update_layout(height=500)
+    return fig
+
 
 def get_node_ts(graph,X,node,length):
     result = []
