@@ -73,6 +73,7 @@ def run():
 
         fig_length = show_length_plot(graph)
         st.plotly_chart(fig_length, use_container_width=True,height=800)
+        st.markdown("for {}, the optimal length selected is {}".format(dataset,length))
         
         
 
