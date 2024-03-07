@@ -75,22 +75,26 @@ def run():
                     st.plotly_chart(fig_hist, use_container_width=True)
 
     with tab_detail:
-        st.header("Which subsequence length is used for the graph?")
-        st.markdown("$k$-Graph is computing $M$ different graphs for $M$ different subsequence lengths. To maximize user interaction and interpretability, only one graph is selected (the one you can see in the graph tab).")
-        st.markdown("We select the graph using two criteria, the consistency (ARI score for the labels obtained from each graph compared to the final labels of $k$-Graph), and the interpretability factor.")
-        st.markdown("The length relevance (first plot below) is the product of the two, and the graph computed with the length maximizing this product is selected.")
+        with st.expander("## Which subsequence length is used for the graph?"):
+            st.markdown("$k$-Graph is computing $M$ different graphs for $M$ different subsequence lengths. To maximize user interaction and interpretability, only one graph is selected (the one you can see in the graph tab).")
+            st.markdown("We select the graph using two criteria, the consistency (ARI score for the labels obtained from each graph compared to the final labels of $k$-Graph), and the interpretability factor.")
+            st.markdown("The length relevance (first plot below) is the product of the two, and the graph computed with the length maximizing this product is selected.")
+    
+            fig_length,fig_feat = show_length_plot(graph)
+            st.plotly_chart(fig_length, use_container_width=True,height=800)
+            st.markdown("for {}, the optimal length selected is {}".format(dataset,length))
 
-        fig_length,fig_feat = show_length_plot(graph)
-        st.plotly_chart(fig_length, use_container_width=True,height=800)
-        st.markdown("for {}, the optimal length selected is {}".format(dataset,length))
+        with st.expander("## How the graph is used to cluster time series?"):
+            st.markdown("To cluster the time series using the graph, we are extracting features. The features corresponds to the number of time a node and an edge have been crossed by one time series. We then use $k$-mean to cluster the time series using the aforementioned extracted features.")
+            st.markdown("The heatmap below show the feature matrix (one time series per row, and one node or edge per column) for {} with the optimal subsequence length {}.".format(dataset,length))
+    
+            st.plotly_chart(fig_feat, use_container_width=True,height=800)
+        with st.expander("## Is only one graph used to cluster time series?"):
+            st.markdown("No, we actually use all the graph to generate the final label fo $k$-Graph.")
 
-        st.header("How the graph is used to cluster time series?")
-        
-        st.markdown("To cluster the time series using the graph, we are extracting features. The features corresponds to the number of time a node and an edge have been crossed by one time series. We then use $k$-mean to cluster the time series using the aforementioned extracted features.")
-        st.markdown("The heatmap below show the feature matrix (one time series per row, and one node or edge per column) for {} with the optimal subsequence length {}.".format(dataset,length))
-
-        st.plotly_chart(fig_feat, use_container_width=True,height=800)
-        
+        with st.expander("## Is one graph enough to interpret the clustering?"):
+            st.markdown("Yes and no, It depends on the how precise or simple the interpretation needs to be.")
+            
         
 
 
