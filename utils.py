@@ -192,8 +192,8 @@ def get_node_ts(graph,X,node,length):
     labels_node = []
     ts_found = {"Cluster {}".format(j):0 for j in set(graph['kgraph_labels'])}
     edge_in_time = graph['graph']['edge_in_time']
+    ts_found_tmp = {"Cluster {}".format(j):False for j in set(graph['kgraph_labels'])}
     for i,edge in enumerate(graph['graph']['list_edge']):
-        ts_found_tmp = {"Cluster {}".format(j):False for j in set(graph['kgraph_labels'])}
         if node == edge[0]:
             relative_pos = i-graph['graph']['list_edge_pos'][current_pos]
             pos_in_time = min(
@@ -210,6 +210,7 @@ def get_node_ts(graph,X,node,length):
             for key in ts_found_tmp.keys():
                 if ts_found_tmp[key]:
                     ts_found[key] += 1
+            ts_found_tmp = {"Cluster {}".format(j):False for j in set(graph['kgraph_labels'])}
                     
 
     mean = np.mean(result,axis=0)
