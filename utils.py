@@ -170,7 +170,7 @@ def show_ts(X,y,graph):
     fig_pred.update_layout(height=400,title="ARI: {}".format(adjusted_rand_score(graph['kgraph_labels'],y)))
     return fig,fig_pred
 
-
+@st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
 def compute_consensus(all_runs):
     all_mat = sum([create_membership_matrix(run) for run in all_runs])
     fig_feat = px.imshow(all_mat/all_mat.diagonal(), color_continuous_scale='RdBu_r', origin='lower')
@@ -185,6 +185,7 @@ def create_membership_matrix(run):
                 mat[j][i] = 1
     return mat
 
+@st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
 def get_node_ts(graph,X,node,length):
     result = []
     current_pos = 0
