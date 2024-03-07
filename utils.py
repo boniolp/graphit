@@ -119,6 +119,7 @@ def format_graph_viz(G,list_edge,node_weight):
 
 def show_ts(X,y,graph):
     st.markdown("Time series grouped based on the true labels (see [UCR-Archive](https://www.cs.ucr.edu/%7Eeamonn/time_series_data_2018/) for more details. Only 50 first time series are displayed.)")
+    st.markdown(graph['prediction'])
     trace_ts = []
     fig = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Class {}".format(i) for i in set(y)])
     x_list = list(range(len(X[0])))
