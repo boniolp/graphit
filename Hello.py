@@ -31,19 +31,6 @@ def run():
     
     with st.sidebar:
         dataset = st.selectbox('Pick a dataset', List_datasets)
-
-    st.title("$k$-Graph on {}".format(dataset))
-    
-    graph,X,y,length = read_dataset(dataset)
-
-    with st.sidebar:
-        with st.expander("Advanced settings"):
-            lambda_val = st.slider('Lambda', 0.0, 1.0, 0.5)
-            gamma_val = st.slider('Gamma', 0.0, 1.0, 0.5)
-            options = st.multiselect(
-                'Show graphoids for',
-                ['Cluster {}'.format(i) for i in set(y)],
-                ['Cluster {}'.format(i) for i in set(y)])
         with st.expander("About"):
              st.markdown("""
              Time series clustering poses a significant challenge with diverse applications across domains. 
@@ -59,8 +46,11 @@ def run():
             - [Angela Bonifati](https://perso.liris.cnrs.fr/angela.bonifati/), Lyon 1 University, IUF, Liris CNRS
             - [Themis Palpanas](https://helios2.mi.parisdescartes.fr/~themisp/). Université Paris Cité, IUF
             """)
-        
+
+    st.title("$k$-Graph on {}".format(dataset))
     
+    graph,X,y,length = read_dataset(dataset)
+        
     tab_ts,tab_graph,tab_detail = st.tabs(["Time series", "Graph", "Under the hood"])
 
     with tab_ts:
@@ -80,6 +70,13 @@ def run():
         st.plotly_chart(fig_pred, use_container_width=True,height=800)
     
     with tab_graph:
+        with st.expander("Advanced settings"):
+            lambda_val = st.slider('Lambda', 0.0, 1.0, 0.5)
+            gamma_val = st.slider('Gamma', 0.0, 1.0, 0.5)
+            options = st.multiselect(
+                'Show graphoids for',
+                ['Cluster {}'.format(i) for i in set(y)],
+                ['Cluster {}'.format(i) for i in set(y)])
         fig_graph,node_label = create_graph(graph['graph'])
         #st.plotly_chart(fig_graph, use_container_width=True,height=800)
         selected_node = plotly_events(fig_graph,override_height=800)
