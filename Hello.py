@@ -50,10 +50,17 @@ def run():
     with tab_ts:
         fig_ts,fig_pred = show_ts(X,y,graph)
         st.header("Time series dataset (true labels)")
-        st.markdown("Time series grouped based on the true labels (see [UCR-Archive](https://www.cs.ucr.edu/%7Eeamonn/time_series_data_2018/) for more details. Only 50 first time series are displayed.)")
+        
+        st.markdown("""Time series grouped based on the true labels 
+        (see [UCR-Archive](https://www.cs.ucr.edu/%7Eeamonn/time_series_data_2018/) for more details. 
+        Only 50 first time series are displayed.)""")
+        
         st.plotly_chart(fig_ts, use_container_width=True,height=800)
         st.header("Time series dataset (predicted labels of $k$-Graph)")
-        st.markdown("Time series grouped based on the clustering labels of $k$-Graph. You can check the graph on the graph tab for more details. Only 50 first time series are displayed.")
+        
+        st.markdown("""Time series grouped based on the clustering labels of $k$-Graph. You can check 
+        the graph on the graph tab for more details. Only 50 first time series are displayed.""")
+        
         st.plotly_chart(fig_pred, use_container_width=True,height=800)
     
     with tab_graph:
@@ -75,22 +82,83 @@ def run():
                     st.plotly_chart(fig_hist, use_container_width=True)
 
     with tab_detail:
+        with st.expander("""## How the graph is built?"""):
+            st.markdown("""The graph corresponds to a summary of all the subsequences present in the datasets. 
+            In theory, the objective is to transform a time series 
+            dataset into a sequence of abstract states corresponding to different subsequences 
+            within the dataset. These states are represented as nodes, denoted by $\mathcal{N}$, 
+            in a directed graph, $\mathcal{G}=(\mathcal{N},\mathcal{E})$. The edges, $\mathcal{E}$, 
+            encode the frequency with which one state occurs after another.
+
+            In practice, we build the graph as follows:
+
+            1. **Subsequence Embedding**: For each time series $T \in \mathcal{D}$, we collect all the subsequences 
+            of a given length $\ell$ into an array called $Proj(T,\lambda)$. We then concatenate all the computed 
+            $Proj(T,\lambda)$ into $Proj$ for all the time series in the dataset.
+            We then sample $Proj$ (user-defined parameter $smpl$) and keep only a limited number of subsequences 
+            stored in $Proj_{smpl}$. We use the latter to train a Principal Component Analysis (PCA). 
+            We then use the trained PCA and a rotation step to project all the subsequences into a two-dimensional 
+            space that only preserves the shapes of the subsequences. The result is denoted as $SProj$. 
+            We denote the PCA and rotation steps $Reduce(Proj,pca)$, where $pca$ is the trained PCA.
+
+            2. **Node Creation**: Create a node for each of the densest parts of the above two-dimensional space. 
+            In practice, we perform a radial scan of $SProj_{smpl}$.  %(using a fixed number of radius). 
+            For each radius, we collect the intersection with the trajectories of $SProj_{smpl}$, and we apply kernel 
+            density estimation on the intersected points: each local maximum of the density estimation curve is 
+            assigned to a node. These nodes can be seen as a summarization of all the major patterns of length 
+            $\ell$ that occurred in $\mathcal{D}$. For this step, we only consider the sampled collection of 
+            subsequences $SProj_{smpl}$.
+
+            3. **Edge Creation**: Retrieve all transitions between pairs of subsequences represented by two different 
+            nodes: each transition corresponds to a pair of subsequences, where one occurs immediately after the other 
+            in a time series $T$ of the dataset $\mathcal{D}$. We represent transitions with an edge between the 
+            corresponding nodes.
+
+            You may find more details in our [paper]().
+            """)
+        
         with st.expander("""## Which subsequence length is used for the graph?"""):
-            st.markdown("$k$-Graph is computing $M$ different graphs for $M$ different subsequence lengths. To maximize user interaction and interpretability, only one graph is selected (the one you can see in the graph tab).")
-            st.markdown("We select the graph using two criteria, the consistency (ARI score for the labels obtained from each graph compared to the final labels of $k$-Graph), and the interpretability factor.")
-            st.markdown("The length relevance (first plot below) is the product of the two, and the graph computed with the length maximizing this product is selected.")
+            
+            st.markdown("""$k$-Graph is computing $M$ different graphs for $M$ different 
+            subsequence lengths. To maximize user interaction and interpretability, only 
+            one graph is selected (the one you can see in the graph tab).""")
+            
+            st.markdown("""We select the graph using two criteria, the consistency 
+            (ARI score for the labels obtained from each graph compared to the final labels 
+            of $k$-Graph), and the interpretability factor.""")
+            
+            st.markdown("""The length relevance (first plot below) is the product of the two, 
+            and the graph computed with the length maximizing this product is selected.""")
     
             fig_length,fig_feat = show_length_plot(graph)
             st.plotly_chart(fig_length, use_container_width=True,height=800)
             st.markdown("for {}, the optimal length selected is {}".format(dataset,length))
 
         with st.expander("""## How the graph is used to cluster time series?"""):
-            st.markdown("To cluster the time series using the graph, we are extracting features. The features corresponds to the number of time a node and an edge have been crossed by one time series. We then use $k$-mean to cluster the time series using the aforementioned extracted features.")
-            st.markdown("The heatmap below show the feature matrix (one time series per row, and one node or edge per column) for {} with the optimal subsequence length {}.".format(dataset,length))
+            
+            st.markdown("""
+            To cluster the time series using the graph, we are extracting features. 
+            The features corresponds to the number of time a node and an edge have 
+            been crossed by one time series. We then use $k$-mean to cluster the 
+            time series using the aforementioned extracted features.""")
+            
+            st.markdown("""
+            The heatmap below show the feature matrix (one time series per row, 
+            and one node or edge per column) for {} with the optimal subsequence length {}.
+            """.format(dataset,length))
     
             st.plotly_chart(fig_feat, use_container_width=True,height=800)
         with st.expander("""## Is only one graph used to cluster time series?"""):
-            st.markdown("No, we actually use all the graph to generate the final label fo $k$-Graph.")
+            st.markdown("""No, we actually use all the graph to generate the final label fo $k$-Graph.
+            In total, we have one clustering partition per graph ($M$ in total). We compute a consensus from all
+            these partitions. In practice, we build a consensus matrix, which we employ to measure how many times 
+            two time series have been grouped in the same cluster for two graphs built with two different lengths.
+            Below is the consensus matrix for {}
+            """.format(dataset))
+
+            fig_cons = compute_consensus(graph['all_runs'])
+            st.plotly_chart(fig_cons, use_container_width=True,height=800)
+        
             #TODO
         with st.expander("""## Is one graph enough to interpret the clustering?"""):
             st.markdown("Yes and no, It depends on the how precise or simple the interpretation needs to be.")
