@@ -140,8 +140,10 @@ def show_length_plot(graph):
         row=1, col=3
     )
     fig.update_layout(height=500,showlegend=False)
+
+    fig_feat = px.imshow(graph['feature'], color_continuous_scale='RdBu_r', origin='lower')
     
-    return fig
+    return fig,fig_feat
 
 @st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
 def show_ts(X,y,graph):
