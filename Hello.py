@@ -173,7 +173,15 @@ def run():
         
             #TODO
         with st.expander("""## Is one graph enough to interpret the clustering?"""):
-            st.markdown("Yes and no, It depends on the how precise or simple the interpretation needs to be.")
+            st.markdown("""
+            Yes and no. It depends on how precise or simple the interpretation needs to be.
+            The perfect case is when one graph is enough (i.e., strong consistency and high interpretability factor).
+            However, it might be a combination of graphs (i.e., subsequence lengths) that contribute the most to the final $k$-Graph
+            labels. In this case, we have two options: (i) we can return multiple graphs such that the consistency reaches a decent level, 
+            (ii) or returning only one graph even though the returned graph alone might not be enough to distinguish clusters easily.
+            The first option favors accuracy over user interaction, while the second option favors user interaction over accuracy.
+            In this app, we chose the second option. Nevertheless, there are no best options, and it is an interesting research direction. 
+            """)
             #TODO
 
         with st.expander("""## How can I use $k$-Graph?"""):
