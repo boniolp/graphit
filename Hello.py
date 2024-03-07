@@ -43,6 +43,26 @@ def run():
                 'Show graphoids for',
                 ['Cluster {}'.format(i) for i in set(y)],
                 ['Cluster {}'.format(i) for i in set(y)])
+        with st.expander("About"):
+             st.markdown("""
+             Time series clustering poses a significant challenge with diverse applications across domains. 
+             A prominent drawback of existing solutions lies in their limited interpretability, often confined 
+             to presenting users with centroids. In addressing this gap, our work presents $k$-Graph, an 
+             unsupervised method explicitly crafted to augment interpretability in time series clustering. 
+             Leveraging a graph representation of time series subsequences, $k$-Graph constructs multiple 
+             graph representations based on different subsequence lengths. This feature accommodates variable-length 
+             time series without requiring users to predetermine subsequence lengths. Our experimental results 
+             reveal that $k$-Graph outperforms current state-of-the-art time series clustering algorithms in accuracy, 
+             while providing users with meaningful explanations and interpretations of the clustering outcomes.
+             """)
+
+        with st.expander("Contributors"):
+            st.markdown("""
+            - [Paul Boniol](https://boniolp.github.io/), Inria, DI ENS, ENS, PSL University, CNRS
+            - [Donato Tiano](https://it.linkedin.com/in/donatotiano/en), Università degli Studi di Modena e Reggio Emilia
+            - [Angela Bonifati](https://perso.liris.cnrs.fr/angela.bonifati/), Lyon 1 University, IUF, Liris CNRS
+            - [Themis Palpanas](https://helios2.mi.parisdescartes.fr/~themisp/). Université Paris Cité, IUF
+            """)
         
     
     tab_ts,tab_graph,tab_detail = st.tabs(["Time series", "Graph", "Under the hood"])
