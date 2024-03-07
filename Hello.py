@@ -154,11 +154,23 @@ def run():
             In total, we have one clustering partition per graph ($M$ in total). We compute a consensus from all
             these partitions. In practice, we build a consensus matrix, which we employ to measure how many times 
             two time series have been grouped in the same cluster for two graphs built with two different lengths.
-            Below is the consensus matrix for {}
+            Below is the consensus matrix $M_C \in \mathbb{R}^{(|\mathcal{D}|,|\mathcal{D}|)}$ (only for the first 100 time series) for {}.
             """.format(dataset))
 
             fig_cons = compute_consensus(graph['all_runs'])
             st.plotly_chart(fig_cons, use_container_width=True,height=800)
+
+            st.markdown("""$M_C$ can be seen as a similarity matrix about the clustering results obtained on each graph. 
+            More specifically, for two time series $T_i$ and $T_j$, if $M_C[i,j]$ is high, they have been associated in 
+            the same cluster for several subsequence lengths and can be grouped in the same cluster. 
+            On the contrary, if $M_C[i,j]$ is low, the two time series were usually grouped in different clusters regardless 
+            of the subsequence length. Therefore, the $M_C$ matrix can be seen as the adjacency matrix of a graph. 
+            In this graph, nodes are the time series of the dataset and an edge exists if two time series have been clustered together 
+            in a same cluster (the weights of these edges are the number of time these two time series have been clustered together). 
+            As the objective is to find communities of highly connected nodes (i.e., time series that were grouped multiple times in 
+            the same cluster), we use spectral clustering (with $M_C$ used as a pre-computed similarity matrix). 
+            The output of the spectral clustering is the final labels $\mathcal{L}$ of $k$-Graph.
+            """.format(dataset))
         
             #TODO
         with st.expander("""## Is one graph enough to interpret the clustering?"""):
