@@ -174,7 +174,7 @@ def show_ts(X,y,graph):
 def compute_consensus(all_runs):
     all_mat = sum([create_membership_matrix(run) for run in all_runs])
     fig_feat = px.imshow(all_mat/all_mat.diagonal(), color_continuous_scale='RdBu_r', origin='lower')
-	return fig_feat
+    return fig_feat
 
 def create_membership_matrix(run):
     mat = np.zeros((len(run),len(run)))
