@@ -133,7 +133,7 @@ def show_length_plot(graph):
     )
     fig.add_vline(x=graph['length'], line_dash="dot",line_color='red', row=1, col=1,
         annotation_text="optimal length", 
-        annotation_position="top right",
+        annotation_position="bottom left",
         annotation_textangle=90)
     fig.add_trace(
         go.Scatter(x=all_length, y=length_consistency),
