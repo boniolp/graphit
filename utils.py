@@ -244,7 +244,7 @@ def get_node_ts(graph,X,node,length):
 
     fig_hist = go.Figure(layout=go.Layout(height=300))
     fig_hist.add_trace(go.Bar(name='Exclusivity',x=["Cluster {}".format(i) for i in set(graph['kgraph_labels'])], y=[labels_node.count("Cluster {}".format(i))/len(labels_node) for i in set(graph['kgraph_labels'])]))
-    fig_hist.add_trace(go.Bar(name='Representativity',x=["Cluster {}".format(i) for i in set(graph['kgraph_labels'])], y=[ts_found["Cluster {}".format(i)]/graph['kgraph_labels'].count(i) for i in set(graph['kgraph_labels'])]))
+    fig_hist.add_trace(go.Bar(name='Representativity',x=["Cluster {}".format(i) for i in set(graph['kgraph_labels'])], y=[ts_found["Cluster {}".format(i)]/list(graph['kgraph_labels']).count(i) for i in set(graph['kgraph_labels'])]))
     fig_hist.update_layout(barmode='group')
     #fig_hist.add_trace(go.Histogram(x=labels_node, name="number of subsequences", histnorm='percent', texttemplate="%{y}%", textfont_size=10))
     
