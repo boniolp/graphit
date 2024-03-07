@@ -82,6 +82,23 @@ def run():
                     st.plotly_chart(fig_hist, use_container_width=True)
 
     with tab_detail:
+        with st.expander("""## In short, how $k$-graph is working?"""):
+            st.markdown("""
+            $k$-Graph is a method for time series clustering. For a given time series dataset $\mathcal{D}$, 
+            the overall $k$-Graph process is divided into three main steps as follows:
+            1. **Graph Embedding**: for $M$ different subsequence lengths, we compute $M$ graphs.
+            For a given subsequence length $\ell$, The set of nodes represent groups of similar subsequences 
+            of length $\ell$ within the dataset $\mathcal{D}$. The edges have weights corresponding to the number of 
+            times one subsequence of a given node has been followed by a subsequence of the other node.
+            2. **Graph Clustering**: For each graph, we extract a set of features for all time series of the dataset $\mathcal{D}$. 
+            These features correspond to the nodes and edges that the time series crossed. Then, we use these features to cluster 
+            the time series using the $k$-Mean algorithm for scalability reasons.
+            3. **Consensus Clustering**: At this point we have $M$ clustering partitions (i.e., one per graph). We build a consensus matrix $M_C$. 
+            We then cluster this matrix using spectral clustering in the objective of grouping time series that are highly connected 
+            (i.e., grouped in the same cluster in most of the $M$ partitions). The output of this clustering step is the labels provided by $k$-Graph.
+            4. **Interpretability Computation**: after obtaining the clustering partition, we select the most relevant graph (among the $M$ graphs), 
+            and we compute the interpretable graphoids. This is what you can see in the graph tab. You may find more details in our [paper]().
+            """)
         with st.expander("""## How the graph is built?"""):
             st.markdown("""The graph corresponds to a summary of all the subsequences present in the datasets. 
             In theory, the objective is to transform a time series 
