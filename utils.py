@@ -121,7 +121,7 @@ def format_graph_viz(G,list_edge,node_weight):
 
 def show_length_plot(graph):
     
-    fig = make_subplots(rows=1, cols=2,subplot_titles=["Length relevance","Consistency", "Interpretability factor"])
+    fig = make_subplots(rows=1, cols=3,subplot_titles=["Length relevance","Consistency", "Interpretability factor"])
     all_length = graph['length_relevance'][:,0]
     length_relevance = graph['relevance'][:,1]
     length_consistency = graph['length_relevance'][:,1]
