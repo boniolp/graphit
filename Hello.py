@@ -170,7 +170,7 @@ def run():
             As the objective is to find communities of highly connected nodes (i.e., time series that were grouped multiple times in 
             the same cluster), we use spectral clustering (with $M_C$ used as a pre-computed similarity matrix). 
             The output of the spectral clustering is the final labels $\mathcal{L}$ of $k$-Graph.
-            """
+            """)
         
             #TODO
         with st.expander("""## Is one graph enough to interpret the clustering?"""):
