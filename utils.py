@@ -114,41 +114,6 @@ def create_graph(graph):
     return fig,node_text
 
 
-#def fetch_ucr_dataset_online(dataset):
-#    path = 'data/timeseries/{}/'.format(dataset)
-#    train_data = pd.read_csv(path + "{}_TRAIN.tsv".format(dataset),sep='\t',header=None)
-#    target_train = np.array(train_data[0].values)
-#    train_data = train_data.drop(0,axis=1)
-#    train_data = train_data.fillna(0)
-#    data_train = np.array(train_data.values)
-#    data_train = (data_train - np.mean(data_train,axis=1,keepdims=True))/(np.std(data_train,axis=1,keepdims=True))
-
-#    test_data = pd.read_csv(path + "{}_TEST.tsv".format(dataset),sep='\t',header=None)
-#    target_test = np.array(test_data[0].values)
-#    test_data = test_data.drop(0,axis=1)
-#    test_data = test_data.fillna(0)
-#    data_test = np.array(test_data.values)
-#    data_test = (data_test - np.mean(data_test,axis=1,keepdims=True))/(np.std(data_test,axis=1,keepdims=True))
-#    X = np.concatenate([data_train,data_test],axis=0)
-#    y = np.concatenate([target_train,target_test],axis=0)
-#    return X,y
-
-#@st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
-#def format_graph_viz(_G,list_edge,node_weight):
-#    edge_size = [] 
-#    for edge in _G.edges():
-#        edge_size.append(list_edge.count([edge[0],edge[1]]))
-#    edge_size_b = [float(1+(e - min(edge_size)))/float(1+max(edge_size) - min(edge_size)) for e in edge_size]
-#    edge_size = [min(e*10,5) for e in edge_size_b]
-#    dict_node = []
-#    for node in _G.nodes():
-#        if node != "NULL_NODE":
-#           dict_node.append(max(5,node_weight[node]*0.01))
-#        else:
-#           dict_node.append(5)
-    
-#    return _G,dict_node,edge_size
-
 @st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
 def show_length_plot(graph):
     
@@ -253,7 +218,7 @@ def get_node_ts(graph,X,node,length):
             yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
         )
 
-    fig_hist = go.Figure(layout=go.Layout(height=300)
+    fig_hist = go.Figure(layout=go.Layout(height=300))
     fig_hist.add_trace(go.Histogram(x=labels_node, name="number of subsequences", histnorm='percent'))
     
     return fig,fig_hist,len(result)
