@@ -112,7 +112,12 @@ def run():
             We then cluster this matrix using spectral clustering in the objective of grouping time series that are highly connected 
             (i.e., grouped in the same cluster in most of the $M$ partitions). The output of this clustering step is the labels provided by $k$-Graph.
             4. **Interpretability Computation**: after obtaining the clustering partition, we select the most relevant graph (among the $M$ graphs), 
-            and we compute the interpretable graphoids. This is what you can see in the graph tab. You may find more details in our [paper]().
+            and we compute the interpretable graphoids. This is what you can see in the graph tab.
+            """)
+            image = Image.open('data/figures/pipeline.png')
+            st.image(image, caption='Overview of kgraph pipeline')
+            st.markdown("""
+            You may find more details in our [paper]().
             """)
         with st.expander("""## How the graph is built?"""):
             st.markdown("""The graph corresponds to a summary of all the subsequences present in the datasets. 
@@ -146,9 +151,6 @@ def run():
             nodes: each transition corresponds to a pair of subsequences, where one occurs immediately after the other 
             in a time series $T$ of the dataset $\mathcal{D}$. We represent transitions with an edge between the 
             corresponding nodes.""")
-
-            image = Image.open('datsa/figures/pipeline.png')
-	        st.image(image, caption='Overview of kgraph pipeline')
             
             st.markdown("""
             You may find more details in our [paper]().
