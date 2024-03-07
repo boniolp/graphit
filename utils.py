@@ -33,7 +33,24 @@ cols = plotly.colors.DEFAULT_PLOTLY_COLORS
 def read_dataset(dataset):
     with open('data/graphs/{}.pickle'.format(dataset),'rb') as handle:
         graph = pickle.load(handle)
-    X, y = fetch_ucr_dataset_online(dataset)
+
+    path = 'data/timeseries/{}/'.format(dataset)
+    train_data = pd.read_csv(path + "{}_TRAIN.tsv".format(dataset),sep='\t',header=None)
+    target_train = np.array(train_data[0].values)
+    train_data = train_data.drop(0,axis=1)
+    train_data = train_data.fillna(0)
+    data_train = np.array(train_data.values)
+    data_train = (data_train - np.mean(data_train,axis=1,keepdims=True))/(np.std(data_train,axis=1,keepdims=True))
+
+    test_data = pd.read_csv(path + "{}_TEST.tsv".format(dataset),sep='\t',header=None)
+    target_test = np.array(test_data[0].values)
+    test_data = test_data.drop(0,axis=1)
+    test_data = test_data.fillna(0)
+    data_test = np.array(test_data.values)
+    data_test = (data_test - np.mean(data_test,axis=1,keepdims=True))/(np.std(data_test,axis=1,keepdims=True))
+    X = np.concatenate([data_train,data_test],axis=0)
+    y = np.concatenate([target_train,target_test],axis=0)
+    
     length = int(graph['length'])
     return graph,X,y,length
 
@@ -97,24 +114,24 @@ def create_graph(graph):
     return fig,node_text
 
 
-def fetch_ucr_dataset_online(dataset):
-    path = 'data/timeseries/{}/'.format(dataset)
-    train_data = pd.read_csv(path + "{}_TRAIN.tsv".format(dataset),sep='\t',header=None)
-    target_train = np.array(train_data[0].values)
-    train_data = train_data.drop(0,axis=1)
-    train_data = train_data.fillna(0)
-    data_train = np.array(train_data.values)
-    data_train = (data_train - np.mean(data_train,axis=1,keepdims=True))/(np.std(data_train,axis=1,keepdims=True))
+#def fetch_ucr_dataset_online(dataset):
+#    path = 'data/timeseries/{}/'.format(dataset)
+#    train_data = pd.read_csv(path + "{}_TRAIN.tsv".format(dataset),sep='\t',header=None)
+#    target_train = np.array(train_data[0].values)
+#    train_data = train_data.drop(0,axis=1)
+#    train_data = train_data.fillna(0)
+#    data_train = np.array(train_data.values)
+#    data_train = (data_train - np.mean(data_train,axis=1,keepdims=True))/(np.std(data_train,axis=1,keepdims=True))
 
-    test_data = pd.read_csv(path + "{}_TEST.tsv".format(dataset),sep='\t',header=None)
-    target_test = np.array(test_data[0].values)
-    test_data = test_data.drop(0,axis=1)
-    test_data = test_data.fillna(0)
-    data_test = np.array(test_data.values)
-    data_test = (data_test - np.mean(data_test,axis=1,keepdims=True))/(np.std(data_test,axis=1,keepdims=True))
-    X = np.concatenate([data_train,data_test],axis=0)
-    y = np.concatenate([target_train,target_test],axis=0)
-    return X,y
+#    test_data = pd.read_csv(path + "{}_TEST.tsv".format(dataset),sep='\t',header=None)
+#    target_test = np.array(test_data[0].values)
+#    test_data = test_data.drop(0,axis=1)
+#    test_data = test_data.fillna(0)
+#    data_test = np.array(test_data.values)
+#    data_test = (data_test - np.mean(data_test,axis=1,keepdims=True))/(np.std(data_test,axis=1,keepdims=True))
+#    X = np.concatenate([data_train,data_test],axis=0)
+#    y = np.concatenate([target_train,target_test],axis=0)
+#    return X,y
 
 #@st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
 #def format_graph_viz(_G,list_edge,node_weight):
