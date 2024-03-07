@@ -89,9 +89,9 @@ def run():
             within the dataset. These states are represented as nodes, denoted by $\mathcal{N}$, 
             in a directed graph, $\mathcal{G}=(\mathcal{N},\mathcal{E})$. The edges, $\mathcal{E}$, 
             encode the frequency with which one state occurs after another.
-
+            
             In practice, we build the graph as follows:
-
+            
             1. **Subsequence Embedding**: For each time series $T \in \mathcal{D}$, we collect all the subsequences 
             of a given length $\ell$ into an array called $Proj(T,\lambda)$. We then concatenate all the computed 
             $Proj(T,\lambda)$ into $Proj$ for all the time series in the dataset.
@@ -100,7 +100,7 @@ def run():
             We then use the trained PCA and a rotation step to project all the subsequences into a two-dimensional 
             space that only preserves the shapes of the subsequences. The result is denoted as $SProj$. 
             We denote the PCA and rotation steps $Reduce(Proj,pca)$, where $pca$ is the trained PCA.
-
+            
             2. **Node Creation**: Create a node for each of the densest parts of the above two-dimensional space. 
             In practice, we perform a radial scan of $SProj_{smpl}$.  %(using a fixed number of radius). 
             For each radius, we collect the intersection with the trajectories of $SProj_{smpl}$, and we apply kernel 
@@ -108,12 +108,12 @@ def run():
             assigned to a node. These nodes can be seen as a summarization of all the major patterns of length 
             $\ell$ that occurred in $\mathcal{D}$. For this step, we only consider the sampled collection of 
             subsequences $SProj_{smpl}$.
-
+            
             3. **Edge Creation**: Retrieve all transitions between pairs of subsequences represented by two different 
             nodes: each transition corresponds to a pair of subsequences, where one occurs immediately after the other 
             in a time series $T$ of the dataset $\mathcal{D}$. We represent transitions with an edge between the 
             corresponding nodes.
-
+            
             You may find more details in our [paper]().
             """)
         
