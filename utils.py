@@ -41,7 +41,21 @@ def read_dataset(dataset):
 def create_graph(graph):
     G_nx = nx.DiGraph(graph['list_edge'])
     pos = nx.nx_agraph.graphviz_layout(G_nx,prog="fdp")
-    G_label_0,dict_node_0,edge_size_0 = format_graph_viz(G_nx,graph['list_edge'],graph['dict_node'])
+
+    edge_size_0 = [] 
+    for edge in G_nx.edges():
+        edge_size_0.append(graph['list_edge'].count([edge[0],edge[1]]))
+    edge_size_b = [float(1+(e - min(edge_size_0)))/float(1+max(edge_size_0) - min(edge_size_0)) for e in edge_size_0]
+    edge_size_0 = [min(e*10,5) for e in edge_size_b]
+    dict_node_0 = []
+    for node in G_nx.nodes():
+        if node != "NULL_NODE":
+           dict_node_0.append(max(5,graph['dict_node'][node]*0.01))
+        else:
+           dict_node_0.append(5)
+   
+    
+    #G_label_0,dict_node_0,edge_size_0 = format_graph_viz(G_nx,graph['list_edge'],graph['dict_node'])
 
     list_edge_trace = []
     for i,edge in enumerate(G_nx.edges()):
@@ -102,21 +116,21 @@ def fetch_ucr_dataset_online(dataset):
     y = np.concatenate([target_train,target_test],axis=0)
     return X,y
 
-@st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
-def format_graph_viz(_G,list_edge,node_weight):
-    edge_size = [] 
-    for edge in _G.edges():
-        edge_size.append(list_edge.count([edge[0],edge[1]]))
-    edge_size_b = [float(1+(e - min(edge_size)))/float(1+max(edge_size) - min(edge_size)) for e in edge_size]
-    edge_size = [min(e*10,5) for e in edge_size_b]
-    dict_node = []
-    for node in _G.nodes():
-        if node != "NULL_NODE":
-           dict_node.append(max(5,node_weight[node]*0.01))
-        else:
-           dict_node.append(5)
+#@st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
+#def format_graph_viz(_G,list_edge,node_weight):
+#    edge_size = [] 
+#    for edge in _G.edges():
+#        edge_size.append(list_edge.count([edge[0],edge[1]]))
+#    edge_size_b = [float(1+(e - min(edge_size)))/float(1+max(edge_size) - min(edge_size)) for e in edge_size]
+#    edge_size = [min(e*10,5) for e in edge_size_b]
+#    dict_node = []
+#    for node in _G.nodes():
+#        if node != "NULL_NODE":
+#           dict_node.append(max(5,node_weight[node]*0.01))
+#        else:
+#           dict_node.append(5)
     
-    return _G,dict_node,edge_size
+#    return _G,dict_node,edge_size
 
 @st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
 def show_length_plot(graph):
