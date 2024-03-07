@@ -131,7 +131,6 @@ def show_length_plot(graph):
         go.Scatter(x=all_length, y=length_relevance),
         row=1, col=1
     )
-    textangle
     fig.add_vline(x=graph['length'], line_dash="dot",line_color='red', row=1, col=1,
         annotation_text="optimal length", 
         annotation_position="top right",
