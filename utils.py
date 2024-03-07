@@ -16,6 +16,7 @@ import inspect
 import textwrap
 import pickle
 import streamlit as st
+import plotly
 import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
