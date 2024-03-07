@@ -253,8 +253,8 @@ def get_node_ts(graph,X,node,length):
             yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
         )
 
-    fig_hist = go.Figure()
-    fig_hist.add_trace(go.Histogram(x=labels_node, name="number of subsequences", texttemplate="%{x/len(result)}", textfont_size=20))
+    fig_hist = go.Figure(layout=go.Layout(height=300)
+    fig_hist.add_trace(go.Histogram(x=labels_node, name="number of subsequences", histnorm='percent'))
     
     return fig,fig_hist,len(result)
 
