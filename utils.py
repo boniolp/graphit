@@ -120,7 +120,6 @@ def format_graph_viz(G,list_edge,node_weight):
     return G,dict_node,edge_size
 
 def show_ts(X,y,graph):
-    st.markdown("Time series grouped based on the true labels (see [UCR-Archive](https://www.cs.ucr.edu/%7Eeamonn/time_series_data_2018/) for more details. Only 50 first time series are displayed.)")
     trace_ts = []
     fig = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Class {}".format(i) for i in set(y)])
     x_list = list(range(len(X[0])))
@@ -130,7 +129,7 @@ def show_ts(X,y,graph):
             go.Scatter(x=x_list, y=x, mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
             row=1, col=labels[lab]
         )
-    fig.update_layout(height=500)
+    fig.update_layout(height=300)
 
     st.markdown("Time series grouped based on the clustering labels of $k$-Graph. You can check the graph on the graph tab for more details. Only 50 first time series are displayed.")
     
@@ -142,7 +141,7 @@ def show_ts(X,y,graph):
             go.Scatter(x=x_list, y=x, mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
             row=1, col=labels_pred[pred]
         )
-    fig_pred.update_layout(height=500,title="ARI: {}".format(adjusted_rand_score(graph['prediction'],y)))
+    fig_pred.update_layout(height=300,title="ARI: {}".format(adjusted_rand_score(graph['prediction'],y)))
     return fig,fig_pred
 
 
