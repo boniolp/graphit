@@ -63,11 +63,11 @@ def create_graph(graph):
     for edge in G_nx.edges():
         edge_size_0.append(graph['list_edge'].count([edge[0],edge[1]]))
     edge_size_b = [float(1+(e - min(edge_size_0)))/float(1+max(edge_size_0) - min(edge_size_0)) for e in edge_size_0]
-    edge_size_0 = [min(e*10,5) for e in edge_size_b]
+    edge_size_0 = [min(e*15,10) for e in edge_size_b]
     dict_node_0 = []
     for node in G_nx.nodes():
         if node != "NULL_NODE":
-           dict_node_0.append(max(5,graph['dict_node'][node]*0.01))
+           dict_node_0.append(max(5,graph['dict_node'][node]*0.02))
         else:
            dict_node_0.append(5)
    
