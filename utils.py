@@ -171,6 +171,20 @@ def show_ts(X,y,graph):
     return fig,fig_pred
 
 
+def compute_consensus(all_runs):
+    all_mat = sum([create_membership_matrix(run) for run in all_runs])
+    fig_feat = px.imshow(all_mat/all_mat.diagonal(), color_continuous_scale='RdBu_r', origin='lower')
+	return fig_feat
+
+def create_membership_matrix(run):
+    mat = np.zeros((len(run),len(run)))
+    for i,val_i in enumerate(run):
+        for j,val_j in enumerate(run):
+            if val_i == val_j:
+                mat[i][j] = 1
+                mat[j][i] = 1
+    return mat
+
 def get_node_ts(graph,X,node,length):
     result = []
     current_pos = 0
