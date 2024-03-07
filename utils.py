@@ -190,8 +190,10 @@ def get_node_ts(graph,X,node,length):
     result = []
     current_pos = 0
     labels_node = []
+    ts_found = {"Cluster {}".format(j):0 for j in set(graph['kgraph_labels'])}
     edge_in_time = graph['graph']['edge_in_time']
     for i,edge in enumerate(graph['graph']['list_edge']):
+        ts_found_tmp = {"Cluster {}".format(j):False for j in set(graph['kgraph_labels'])}
         if node == edge[0]:
             relative_pos = i-graph['graph']['list_edge_pos'][current_pos]
             pos_in_time = min(
@@ -199,11 +201,16 @@ def get_node_ts(graph,X,node,length):
                 key=lambda j: abs(edge_in_time[current_pos][j]-relative_pos))
             ts = X[int(current_pos),int(pos_in_time):int(pos_in_time+length)]
             labels_node.append("Cluster {}".format(graph['kgraph_labels'][int(current_pos)]))
+            ts_found_tmp[labels_node[-1]] = True
             ts = ts - np.mean(ts)
             result.append(ts)
         
         if i >= graph['graph']['list_edge_pos'][current_pos+1]:
             current_pos += 1
+            for key in ts_found_tmp.keys():
+                if ts_found_tmp[key]:
+                    ts_found[key] += 1
+                    
 
     mean = np.mean(result,axis=0)
     dev = np.std(result,axis=0)
@@ -236,7 +243,10 @@ def get_node_ts(graph,X,node,length):
         )
 
     fig_hist = go.Figure(layout=go.Layout(height=300))
-    fig_hist.add_trace(go.Histogram(x=labels_node, name="number of subsequences", histnorm='percent', texttemplate="%{y}%", textfont_size=10))
+    fig_hist.add_trace(go.Bar(name='Exclusivity',x=["Cluster {}".format(i) for i in set(graph['kgraph_labels'])], y=[labels_node.count("Cluster {}".format(i))/len(labels_node) for i in set(graph['kgraph_labels'])]))
+    fig_hist.add_trace(go.Bar(name='Representativity',x=["Cluster {}".format(i) for i in set(graph['kgraph_labels'])], y=[ts_found["Cluster {}".format(i)]/graph['kgraph_labels'].count(i) for i in set(graph['kgraph_labels'])]))
+    fig_hist.update_layout(barmode='group')
+    #fig_hist.add_trace(go.Histogram(x=labels_node, name="number of subsequences", histnorm='percent', texttemplate="%{y}%", textfont_size=10))
     
     return fig,fig_hist,len(result)
 
