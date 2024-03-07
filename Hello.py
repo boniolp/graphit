@@ -75,7 +75,7 @@ def run():
                     st.plotly_chart(fig_hist, use_container_width=True)
 
     with tab_detail:
-        with st.expander("## Which subsequence length is used for the graph?"):
+        with st.expander("""## Which subsequence length is used for the graph?"""):
             st.markdown("$k$-Graph is computing $M$ different graphs for $M$ different subsequence lengths. To maximize user interaction and interpretability, only one graph is selected (the one you can see in the graph tab).")
             st.markdown("We select the graph using two criteria, the consistency (ARI score for the labels obtained from each graph compared to the final labels of $k$-Graph), and the interpretability factor.")
             st.markdown("The length relevance (first plot below) is the product of the two, and the graph computed with the length maximizing this product is selected.")
@@ -84,16 +84,64 @@ def run():
             st.plotly_chart(fig_length, use_container_width=True,height=800)
             st.markdown("for {}, the optimal length selected is {}".format(dataset,length))
 
-        with st.expander("## How the graph is used to cluster time series?"):
+        with st.expander("""## How the graph is used to cluster time series?"""):
             st.markdown("To cluster the time series using the graph, we are extracting features. The features corresponds to the number of time a node and an edge have been crossed by one time series. We then use $k$-mean to cluster the time series using the aforementioned extracted features.")
             st.markdown("The heatmap below show the feature matrix (one time series per row, and one node or edge per column) for {} with the optimal subsequence length {}.".format(dataset,length))
     
             st.plotly_chart(fig_feat, use_container_width=True,height=800)
-        with st.expander("## Is only one graph used to cluster time series?"):
+        with st.expander("""## Is only one graph used to cluster time series?"""):
             st.markdown("No, we actually use all the graph to generate the final label fo $k$-Graph.")
-
-        with st.expander("## Is one graph enough to interpret the clustering?"):
+            #TODO
+        with st.expander("""## Is one graph enough to interpret the clustering?"""):
             st.markdown("Yes and no, It depends on the how precise or simple the interpretation needs to be.")
+            #TODO
+
+        with st.expander("""## How can I use $k$-Graph?"""):
+            st.markdown("""
+            Quite simple, you can install $k$-Graph with the following command:
+
+            ```(bash) 
+            pip install kgraph-ts
+            ```
+
+            You may find more details [here](https://github.com/boniolp/kGraph). Here is an example on how to use $k$-Graph:
+
+            ```python 
+            import sys
+            import pandas as pd
+            import numpy as np
+            import networkx as nx
+            import matplotlib.pyplot as plt
+            from sklearn.metrics import adjusted_rand_score
+            
+            sys.path.insert(1, './utils/')
+            from utils import fetch_ucr_dataset
+            
+            from kgraph import kGraph
+            
+            
+            path = "/Path/to/UCRArchive_2018/"
+            data = fetch_ucr_dataset('Trace',path)
+            X = np.concatenate([data['data_train'],data['data_test']],axis=0)
+            y = np.concatenate([data['target_train'],data['target_test']],axis=0)
+            
+            
+            # Executing kGraph
+            clf = kGraph(n_clusters=len(set(y)),n_lengths=10,n_jobs=4)
+            clf.fit(X)
+            
+            print("ARI score: ",adjusted_rand_score(clf.labels_,y))
+            ``` 
+            ```
+            Running kGraph for the following length: [36, 72, 10, 45, 81, 18, 54, 90, 27, 63] 
+            Graphs computation done! (36.71151804924011 s) 
+            Consensus done! (0.03878021240234375 s) 
+            Ensemble clustering done! (0.0060100555419921875 s) 
+            ARI score:  0.986598879940902
+            ```
+              
+            """)
+            #TODO
             
         
 
