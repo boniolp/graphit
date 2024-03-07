@@ -55,7 +55,7 @@ def run():
         st.plotly_chart(fig_pred, use_container_width=True,height=800)
     
     with tab_graph:
-        fig_graph,node_label = create_graph(graph)
+        fig_graph,node_label = create_graph(graph['graph'])
         #st.plotly_chart(fig_graph, use_container_width=True,height=800)
         selected_node = plotly_events(fig_graph,override_height=800)
         st.markdown(selected_node)
