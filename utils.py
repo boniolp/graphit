@@ -119,6 +119,7 @@ def format_graph_viz(G,list_edge,node_weight):
     
     return G,dict_node,edge_size
 
+@st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
 def show_length_plot(graph):
     
     fig = make_subplots(rows=1, cols=3,subplot_titles=["Length relevance","Consistency", "Interpretability factor"])
@@ -147,6 +148,7 @@ def show_length_plot(graph):
     
     return fig
 
+@st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
 def show_ts(X,y,graph):
     trace_ts = []
     fig = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Class {}".format(i) for i in set(y)])
