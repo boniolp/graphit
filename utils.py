@@ -119,7 +119,7 @@ def format_graph_viz(G,list_edge,node_weight):
 
 def show_ts(X,y):
     trace_ts = []
-    fig = make_subplots(rows=1, cols=len(set(y)))
+    fig = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Class {}".format(i) for i in set(y)])
     x_list = list(range(len(X[0])))
     labels = {lab:i+1 for i,lab in enumerate(set(y))}
     for x,lab in zip(X[:50],y[:50]):
