@@ -39,10 +39,9 @@ def read_dataset(dataset):
 
 @st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
 def create_graph(graph):
-    G = graph['graph']
-    G_nx = nx.DiGraph(graph['graph']['list_edge'])
+    G_nx = nx.DiGraph(graph['list_edge'])
     pos = nx.nx_agraph.graphviz_layout(G_nx,prog="fdp")
-    G_label_0,dict_node_0,edge_size_0 = format_graph_viz(G_nx,G['list_edge'],G['dict_node'])
+    G_label_0,dict_node_0,edge_size_0 = format_graph_viz(G_nx,graph['list_edge'],graph['dict_node'])
 
     list_edge_trace = []
     for i,edge in enumerate(G_nx.edges()):
