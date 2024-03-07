@@ -102,6 +102,7 @@ def fetch_ucr_dataset_online(dataset):
     y = np.concatenate([target_train,target_test],axis=0)
     return X,y
 
+@st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
 def format_graph_viz(G,list_edge,node_weight):
     edge_size = [] 
     for edge in G.edges():
