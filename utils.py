@@ -156,7 +156,7 @@ def show_ts(X,y,graph):
             go.Scatter(x=x_list, y=x, mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
             row=1, col=labels[lab]
         )
-    fig.update_layout(height=300)
+    fig.update_layout(height=400)
 
     
     fig_pred = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Cluster {}".format(i) for i in set(y)])
@@ -167,7 +167,7 @@ def show_ts(X,y,graph):
             go.Scatter(x=x_list, y=x, mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
             row=1, col=labels_pred[pred]
         )
-    fig_pred.update_layout(height=300,title="ARI: {}".format(adjusted_rand_score(graph['kgraph_labels'],y)))
+    fig_pred.update_layout(height=400,title="ARI: {}".format(adjusted_rand_score(graph['kgraph_labels'],y)))
     return fig,fig_pred
 
 
