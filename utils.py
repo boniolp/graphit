@@ -131,9 +131,9 @@ def show_length_plot(graph):
         go.Scatter(x=all_length, y=length_relevance),
         row=1, col=1
     )
-    fig.add_vline(x=graph['length'], line_dash="dot", row=1, col=1,
+    fig.add_vline(x=graph['length'], line_dash="dot",color='red', row=1, col=1,
               annotation_text="optimal length", 
-              annotation_position="bottom right")
+              annotation_position="top right")
     fig.add_trace(
         go.Scatter(x=all_length, y=length_consistency),
         row=1, col=2
@@ -142,7 +142,7 @@ def show_length_plot(graph):
         go.Scatter(x=all_length, y=length_IF),
         row=1, col=3
     )
-    fig.update_layout(height=300,showlegend=False)
+    fig.update_layout(height=500,showlegend=False)
     
     return fig
 
