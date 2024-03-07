@@ -131,7 +131,6 @@ def show_ts(X,y,graph):
         )
     fig.update_layout(height=300)
 
-    st.markdown("Time series grouped based on the clustering labels of $k$-Graph. You can check the graph on the graph tab for more details. Only 50 first time series are displayed.")
     
     fig_pred = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Cluster {}".format(i) for i in set(y)])
     x_list = list(range(len(X[0])))
