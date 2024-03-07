@@ -219,7 +219,7 @@ def get_node_ts(graph,X,node,length):
         )
 
     fig_hist = go.Figure(layout=go.Layout(height=300))
-    fig_hist.add_trace(go.Histogram(x=labels_node, name="number of subsequences", histnorm='percent', texttemplate="%{y}%", textfont_size=20))
+    fig_hist.add_trace(go.Histogram(x=labels_node, name="number of subsequences", histnorm='percent', texttemplate="%{y}%", textfont_size=10))
     
     return fig,fig_hist,len(result)
 
