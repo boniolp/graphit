@@ -103,7 +103,7 @@ def fetch_ucr_dataset_online(dataset):
     return X,y
 
 @st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
-def format_graph_viz(G,list_edge,node_weight):
+def format_graph_viz(_G,list_edge,node_weight):
     edge_size = [] 
     for edge in G.edges():
         edge_size.append(list_edge.count([edge[0],edge[1]]))
