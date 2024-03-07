@@ -136,13 +136,13 @@ def show_length_plot(graph):
               annotation_position="bottom right")
     fig.add_trace(
         go.Scatter(x=all_length, y=length_consistency),
-        row=1, col=1
+        row=1, col=2
     )
     fig.add_trace(
         go.Scatter(x=all_length, y=length_IF),
-        row=1, col=1
+        row=1, col=3
     )
-    fig.update_layout(height=300)
+    fig.update_layout(height=300,showlegend=False)
     
     return fig
 
