@@ -119,6 +119,33 @@ def format_graph_viz(G,list_edge,node_weight):
     
     return G,dict_node,edge_size
 
+def show_length_plot(graph):
+    
+    fig = make_subplots(rows=1, cols=2,subplot_titles=["Length relevance","Consistency", "Interpretability factor"])
+    all_length = graph['length_relevance'][:,0]
+    length_relevance = graph['relevance'][:,1]
+    length_consistency = graph['length_relevance'][:,1]
+    length_IF = graph['graph_relevance'][:,1]
+    
+    fig.add_trace(
+        go.Scatter(x=all_length, y=length_relevance),
+        row=1, col=1
+    )
+    fig.add_vline(x=graph['length'], line_dash="dot", row=1, col=1,
+              annotation_text="optimal length", 
+              annotation_position="bottom right")
+    fig.add_trace(
+        go.Scatter(x=all_length, y=length_consistency),
+        row=1, col=1
+    )
+    fig.add_trace(
+        go.Scatter(x=all_length, y=length_IF),
+        row=1, col=1
+    )
+    fig.update_layout(height=300)
+    
+    return fig
+
 def show_ts(X,y,graph):
     trace_ts = []
     fig = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Class {}".format(i) for i in set(y)])
