@@ -67,7 +67,13 @@ def run():
                 st.plotly_chart(fig_ts, use_container_width=True)
 
     with tab_detail:
-        st.markdown("show detail")
+        st.markdown("$k$-Graph is computing $M$ differnt graphs for $M$ different subsequence length. To maximize user interaction and interpretability, only one graph is selected (the one you can see in the graph tab).")
+        st.markdown("We select the graph using two criteria, the consistency (ARI score for the labels obtained from each graph compared to the final labels of $k$-Graph), and the interpretability factor.")
+        st.markdown("The length relevance is the product of the two, and the graph computed the length maximizing this product is selected.")
+
+        fig_length = show_length_plot(graph)
+        st.plotly_chart(fig_length, use_container_width=True,height=800)
+        
         
 
 
