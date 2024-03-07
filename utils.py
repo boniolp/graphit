@@ -34,7 +34,7 @@ def read_dataset(dataset):
     with open('data/graphs/{}.pickle'.format(dataset),'rb') as handle:
         graph = pickle.load(handle)
     X, y = fetch_ucr_dataset_online(dataset)
-    length = graph['length']
+    length = int(graph['length'])
     return graph,X,y,length
 
 @st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
