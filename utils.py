@@ -207,7 +207,7 @@ def show_ts(X,y,graph):
 def get_node_ts(graph,X,node,length):
     result = []
     current_pos = 0
-    
+    labels_node = []
     edge_in_time = graph['graph']['edge_in_time']
     for i,edge in enumerate(graph['graph']['list_edge']):
         if node == edge[0]:
@@ -216,6 +216,7 @@ def get_node_ts(graph,X,node,length):
                 range(len(edge_in_time[current_pos])), 
                 key=lambda j: abs(edge_in_time[current_pos][j]-relative_pos))
             ts = X[int(current_pos),int(pos_in_time):int(pos_in_time+length)]
+            labels_node.append("Cluster {}".format(graph['kgraph_labels'][int(current_pos)]))
             ts = ts - np.mean(ts)
             result.append(ts)
         
@@ -251,6 +252,9 @@ def get_node_ts(graph,X,node,length):
             xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
             yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
         )
+
+    fig_hist = go.Figure()
+    fig_hist.add_trace(go.Histogram(x=labels_node, name="number of subsequences", texttemplate="%{x/len(result)}", textfont_size=20))
     
-    return fig,len(result)
+    return fig,fig_hist,len(result)
 
