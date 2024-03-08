@@ -49,7 +49,7 @@ def run():
 
     st.title("$k$-Graph on {}".format(dataset))
     
-    graph,X,y,length = read_dataset(dataset)
+    graph,X,y,length,y_pred_kshape,y_pred_kmean = read_dataset(dataset)
         
     tab_ts,tab_graph,tab_detail = st.tabs(["Time series", "Graph", "Under the hood"])
 
