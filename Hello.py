@@ -55,19 +55,27 @@ def run():
 
     with tab_ts:
         fig_ts,fig_pred,fig_pred_kshape,fig_pred_kmean = show_ts(X,y,graph,y_pred_kshape,y_pred_kmean)
-        st.header("Time series dataset (true labels)")
+        #st.header("Time series dataset (true labels)")
         
-        st.markdown("""Time series grouped based on the true labels 
-        (see [UCR-Archive](https://www.cs.ucr.edu/%7Eeamonn/time_series_data_2018/) for more details. 
-        Only 50 first time series are displayed.)""")
+        with st.expender("Time series dataset (clustered by $k$-Graph)",expanded=True):
+            st.markdown("""Time series grouped based on the clustering labels of $k$-Graph. You can check 
+            the graph on the graph tab for more details. Only 50 first time series are displayed.""")
+            st.plotly_chart(fig_pred, use_container_width=True,height=800)
+
+        with st.expender("Time series dataset (clustered by $k$-Shape)"):
+            st.markdown("""Time series grouped based on the clustering labels of $k$-Shape. Only 50 first time series are displayed.""")
+            st.plotly_chart(fig_pred_kshape, use_container_width=True,height=800)
+
+        with st.expender("Time series dataset (clustered by $k$-Means)"):
+            st.markdown("""Time series grouped based on the clustering labels of $k$-Means. Only 50 first time series are displayed.""")
+            st.plotly_chart(fig_pred_kmean, use_container_width=True,height=800)
         
-        st.plotly_chart(fig_ts, use_container_width=True,height=800)
-        st.header("Time series dataset (predicted labels of $k$-Graph)")
+        with st.expender("Time series dataset (true labels)"):
+            st.markdown("""Time series grouped based on the true labels 
+            (see [UCR-Archive](https://www.cs.ucr.edu/%7Eeamonn/time_series_data_2018/) for more details. 
+            Only 50 first time series are displayed.)""")
         
-        st.markdown("""Time series grouped based on the clustering labels of $k$-Graph. You can check 
-        the graph on the graph tab for more details. Only 50 first time series are displayed.""")
-        
-        st.plotly_chart(fig_pred, use_container_width=True,height=800)
+            st.plotly_chart(fig_ts, use_container_width=True,height=800)
     
     with tab_graph:
         with st.expander("Advanced settings"):
