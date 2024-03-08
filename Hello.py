@@ -56,7 +56,8 @@ def run():
 
     with tab_ts:
         fig_ts,fig_pred,fig_pred_kshape,fig_pred_kmean = show_ts(X,y,graph,y_pred_kshape,y_pred_kmean)
-        #st.header("Time series dataset (true labels)")
+        st.markdown("""You can compare below the clustering performances (using the [Adjusted Rand Index]()) of our porposed approach 
+        $k$-Graph, with the state-of-the-art clustering algorithm $k$-Shape, and the usual baseline $k$-Means.""")
         
         with st.expander("Time series dataset (clustered by $k$-Graph, ARI: {})".format(adjusted_rand_score(y,graph['kgraph_labels'])),expanded=True):
             st.markdown("""Time series grouped based on the clustering labels of $k$-Graph. You can check 
@@ -70,6 +71,8 @@ def run():
         with st.expander("Time series dataset (clustered by $k$-Means, ARI: {})".format(adjusted_rand_score(y,y_pred_kmean))):
             st.markdown("""Time series grouped based on the clustering labels of $k$-Means. Only 50 first time series are displayed.""")
             st.plotly_chart(fig_pred_kmean, use_container_width=True,height=800)
+
+        st.markdown("""You can find below the time series grouped using the true labels.""")
         
         with st.expander("Time series dataset (true labels)"):
             st.markdown("""Time series grouped based on the true labels 
