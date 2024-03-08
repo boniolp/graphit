@@ -111,7 +111,7 @@ def run():
                     st.plotly_chart(fig_hist, use_container_width=True)
 
     with tab_detail:
-        with st.expander("""## In short, how $k$-graph is working?"""):
+        with st.expander("""## In short, how does $k$-graph work?"""):
             st.markdown("""
             $k$-Graph is a method for time series clustering. For a given time series dataset $\mathcal{D}$, 
             the overall $k$-Graph process is divided into three main steps as follows:
@@ -133,7 +133,7 @@ def run():
             st.markdown("""
             You may find more details in our [paper]().
             """)
-        with st.expander("""## How the graph is built?"""):
+        with st.expander("""## How is the graph built?"""):
             st.markdown("""The graph corresponds to a summary of all the subsequences present in the datasets. 
             In theory, the objective is to transform a time series 
             dataset into a sequence of abstract states corresponding to different subsequences 
@@ -187,7 +187,7 @@ def run():
             st.plotly_chart(fig_length, use_container_width=True,height=800)
             st.markdown("for {}, the optimal length selected is {}".format(dataset,length))
 
-        with st.expander("""## How the graph is used to cluster time series?"""):
+        with st.expander("""## How is the graph used to cluster time series?"""):
             
             st.markdown("""
             To cluster the time series using the graph, we are extracting features. 
