@@ -83,7 +83,7 @@ def run():
     
     with tab_graph:
 
-        col_graph,col_side = st.columns(2,spec=[0.7,0.3])
+        col_graph,col_side = st.columns([0.7,0.3])
 
         with col_side:
             with st.expander("Advanced settings"):
