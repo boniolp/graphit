@@ -64,11 +64,11 @@ def run():
             the graph on the graph tab for more details. Only 50 first time series are displayed.""")
             st.plotly_chart(fig_pred, use_container_width=True,height=800)
 
-        with st.expander("$k$-Shape, ARI: {:.3f}".format(adjusted_rand_score(y,y_pred_kshape))):
+        with st.expander("$k$-Shape, ARI: {:.3f}".format(adjusted_rand_score(y,y_pred_kshape)),expanded=True):
             st.markdown("""Time series grouped based on the clustering labels of $k$-Shape. Only 50 first time series are displayed.""")
             st.plotly_chart(fig_pred_kshape, use_container_width=True,height=800)
 
-        with st.expander("$k$-Means, ARI: {:.3f}".format(adjusted_rand_score(y,y_pred_kmean))):
+        with st.expander("$k$-Means, ARI: {:.3f}".format(adjusted_rand_score(y,y_pred_kmean)),expanded=True):
             st.markdown("""Time series grouped based on the clustering labels of $k$-Means. Only 50 first time series are displayed.""")
             st.plotly_chart(fig_pred_kmean, use_container_width=True,height=800)
 
