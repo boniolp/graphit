@@ -50,7 +50,7 @@ def run():
 
     st.title("$k$-Graph on {}".format(dataset))
     
-    graph,X,y,length,y_pred_kshape,y_pred_kmean = read_dataset(dataset)
+    graph,pos,X,y,length,y_pred_kshape,y_pred_kmean = read_dataset(dataset)
         
     tab_ts,tab_graph,tab_detail = st.tabs(["Time series", "Graph", "Under the hood"])
 
@@ -87,27 +87,40 @@ def run():
 
         with col_side:
             with st.expander("Advanced settings"):
-                lambda_val = st.slider('Lambda', 0.0, 1.0, 0.5)
-                gamma_val = st.slider('Gamma', 0.0, 1.0, 0.5)
+                lambda_val = st.slider('Lambda (Representativity)', 0.0, 1.0, 0.5)
+                gamma_val = st.slider('Gamma (Exclusivity)', 0.0, 1.0, 0.5)
                 options = st.multiselect(
                     'Show graphoids for',
-                    ['Cluster {}'.format(i) for i in set(y)],
-                    ['Cluster {}'.format(i) for i in set(y)])
+                    ['Cluster {}'.format(i) for i in set(graph['kgraph_labels'])],
+                    ['Cluster {}'.format(i) for i in set(graph['kgraph_labels'])])
             
         with col_graph:
-            fig_graph,node_label = create_graph(graph['graph'])
-            #st.plotly_chart(fig_graph, use_container_width=True,height=800)
-            selected_node = plotly_events(fig_graph,override_height=800,override_width="90%")
-            st.markdown("You can click on a node to see its content ({} node selected)".format(len(selected_node)))
+            fig_graph,node_label = create_graph(graph['graph'],pos,graph['kgraph_labels'],graph['feature'],lambda_val=lambda_val,gamma_val=gamma_val,list_clusters=[int(val.replace('Cluster ','')) for val in options])
+            fig_graph.update_layout(
+                height=800,
+                plot_bgcolor='rgba(0, 0, 0, 0)',
+                paper_bgcolor='rgba(0, 0, 0, 0)',
+                showlegend=False,
+                hovermode='closest',
+                #margin=dict(b=20,l=5,r=5,t=40),
+                xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+                yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
+            
+            st.plotly_chart(fig_graph, use_container_width=True,height=800)
+            #st.markdown("You can click on a node to see its content")
+            #with st.container(border=True):
+            #selected_node = plotly_events(fig_graph,click_event=True, override_height=800, override_width='100%')
+            #st.markdown("You can click on a node to see its content")
+            
 
         with col_side:
-            if len(selected_node)>0:
-                with st.container(border=True):
-                    node_label = node_label[selected_node[0]['pointIndex']]
-                    fig_ts,fig_hist,nb_subseq = get_node_ts(graph,X,node_label,length)
-                    st.markdown("Selected node is {} ({} subsequences)".format(node_label,nb_subseq))
+            with st.container(border=True):
+                selected_node = st.selectbox('Select a node',graph['graph']['dict_node'].keys())
+                if selected_node is not None:
+                    fig_ts,fig_hist,nb_subseq = get_node_ts(graph,X,selected_node,length)
+                    st.markdown("Selected node is {} ({} subsequences)".format(selected_node,nb_subseq))
                     st.plotly_chart(fig_ts, use_container_width=True)
-                    st.markdown("Clusters proportion within node {}".format(node_label))
+                    st.markdown("Clusters proportion within node {}".format(selected_node))
                     st.plotly_chart(fig_hist, use_container_width=True)
 
     with tab_detail:

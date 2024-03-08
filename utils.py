@@ -34,6 +34,9 @@ def read_dataset(dataset):
     with open('data/graphs/{}.pickle'.format(dataset),'rb') as handle:
         graph = pickle.load(handle)
 
+    G_nx = nx.DiGraph(graph['graph']['list_edge'])
+    pos = nx.nx_agraph.graphviz_layout(G_nx,prog="fdp")
+
     with open('data/baselines/{}_kshape.pickle'.format(dataset),'rb') as handle:
         y_pred_kshape = pickle.load(handle)
 
@@ -58,12 +61,26 @@ def read_dataset(dataset):
     y = np.concatenate([target_train,target_test],axis=0)
     
     length = int(graph['length'])
-    return graph,X,y,length,y_pred_kshape,y_pred_kmean
+    return graph,pos,X,y,length,y_pred_kshape,y_pred_kmean
 
 @st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
-def create_graph(graph):
+def create_graph(graph,pos,labels,features,lambda_val=0.5,gamma_val=0.5,list_clusters=[0,1,2,3,4]):
     G_nx = nx.DiGraph(graph['list_edge'])
-    pos = nx.nx_agraph.graphviz_layout(G_nx,prog="fdp")
+
+    
+    all_graphoid_ex,all_graphoid_rep = [],[]
+    for cluster in set(labels):
+        data = []
+        for i in range(len(labels)):
+            if cluster == labels[i]:
+                data.append(list(features.values[i]))
+        representative_graphoid = np.count_nonzero(data, axis=0)
+        all_graphoid_rep.append(representative_graphoid)
+        features_name = list(features.columns)
+
+    all_graphoid_ex = np.array(all_graphoid_rep)/np.sum(np.array(all_graphoid_rep),0)
+    all_graphoid_rep = (np.array(all_graphoid_rep).T/np.array([list(labels).count(i) for i in set(labels)])).T
+
 
     edge_size_0 = [] 
     for edge in G_nx.edges():
@@ -78,45 +95,57 @@ def create_graph(graph):
            dict_node_0.append(5)
    
     
-    #G_label_0,dict_node_0,edge_size_0 = format_graph_viz(G_nx,graph['list_edge'],graph['dict_node'])
 
     list_edge_trace = []
     for i,edge in enumerate(G_nx.edges()):
-        edge_trace = go.Scatter(
-            x=[pos[edge[0]][0],pos[edge[1]][0]], y=[pos[edge[0]][1],pos[edge[1]][1]],
-            line=dict(width=edge_size_0[i], color='#888'),
-            hoverinfo='none',
-            mode='lines')
-        list_edge_trace.append(edge_trace)
+        pos_in_feature = features_name.index("['{}', '{}']".format(edge[0],edge[1]))
+        cluster_max = np.argmax(all_graphoid_ex[:,pos_in_feature])
+        cluster_max_val = max(all_graphoid_ex[:,pos_in_feature])
+        cluster_max_rep = np.argmax(all_graphoid_rep[:,pos_in_feature])
+        cluster_max_val_rep = max(all_graphoid_rep[:,pos_in_feature])
+        if cluster_max in list_clusters:
+            if (cluster_max_val > gamma_val) and (cluster_max_val_rep > lambda_val):
+                color_edge = (cols[cluster_max+1][:-1]+",1)").replace('rgb','rgba')
+            else:
+                color_edge = 'rgba(211, 211, 211,0.5)'
+            edge_trace = go.Scatter(
+                x=[pos[edge[0]][0],pos[edge[1]][0]], y=[pos[edge[0]][1],pos[edge[1]][1]],
+                line=dict(width=edge_size_0[i], color=color_edge),
+                hoverinfo='none',
+                mode='lines')
+            list_edge_trace.append(edge_trace)
 
     node_x = []
     node_y = []
     node_text = []
-    for node in G_nx.nodes():
-        x, y = pos[node]
-        node_x.append(x)
-        node_y.append(y)
-        node_text.append(node)
-
+    color_node = []
+    for i,node in enumerate(G_nx.nodes()):
+        pos_in_feature = features_name.index(node)
+        cluster_max = np.argmax(all_graphoid_ex[:,pos_in_feature])
+        cluster_max_val = max(all_graphoid_ex[:,pos_in_feature])
+        cluster_max_rep = np.argmax(all_graphoid_rep[:,pos_in_feature])
+        cluster_max_val_rep = max(all_graphoid_rep[:,pos_in_feature])
+        if cluster_max in list_clusters:
+            if (cluster_max_val > gamma_val) and (cluster_max_val_rep > lambda_val):
+                color_node.append((cols[cluster_max+1][:-1]+",1)").replace('rgb','rgba'))
+                dict_node_0[i] = dict_node_0[i]*1.2
+            else:
+                color_node.append('rgba(211, 211, 211,0.2)')
+            x, y = pos[node]
+            node_x.append(x)
+            node_y.append(y)
+            node_text.append(node)
     node_trace = go.Scatter(
         x=node_x, y=node_y,
         mode='markers',
         hoverinfo='text',
         text=node_text,
         marker=dict(
+            color=color_node,
+            line_color=color_node,
             size=dict_node_0,
             line_width=1))
-    fig = go.Figure(data=list_edge_trace + [node_trace],
-        layout=go.Layout(
-            height=800,
-            plot_bgcolor='rgba(0, 0, 0, 0)',
-            paper_bgcolor='rgba(0, 0, 0, 0)',
-            showlegend=False,
-            hovermode='closest',
-            margin=dict(b=20,l=5,r=5,t=40),
-            xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-            yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
-        )
+    fig = go.Figure(data=list_edge_trace + [node_trace])
     return fig,node_text
 
 
@@ -261,7 +290,7 @@ def get_node_ts(graph,X,node,length):
     
     fig = go.Figure(data=[mean_trace,lowerbound_trace,upperbound_trace],
         layout=go.Layout(
-            height=300,
+            height=150,
             showlegend=False,
             hovermode='closest',
             margin=dict(b=20,l=5,r=5,t=40),
