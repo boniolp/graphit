@@ -17,6 +17,7 @@ from streamlit.logger import get_logger
 from utils import *
 from streamlit_plotly_events import plotly_events
 from PIL import Image
+from sklearn.metrics import adjusted_rand_score
 
 LOGGER = get_logger(__name__)
 
@@ -57,20 +58,20 @@ def run():
         fig_ts,fig_pred,fig_pred_kshape,fig_pred_kmean = show_ts(X,y,graph,y_pred_kshape,y_pred_kmean)
         #st.header("Time series dataset (true labels)")
         
-        with st.expender("Time series dataset (clustered by $k$-Graph)",expanded=True):
+        with st.expander("Time series dataset (clustered by $k$-Graph, ARI: {})".format(adjusted_rand_score(y,graph['kgraph_labels'])),expanded=True):
             st.markdown("""Time series grouped based on the clustering labels of $k$-Graph. You can check 
             the graph on the graph tab for more details. Only 50 first time series are displayed.""")
             st.plotly_chart(fig_pred, use_container_width=True,height=800)
 
-        with st.expender("Time series dataset (clustered by $k$-Shape)"):
+        with st.expander("Time series dataset (clustered by $k$-Shape, ARI: {})".format(adjusted_rand_score(y,y_pred_kshape)))):
             st.markdown("""Time series grouped based on the clustering labels of $k$-Shape. Only 50 first time series are displayed.""")
             st.plotly_chart(fig_pred_kshape, use_container_width=True,height=800)
 
-        with st.expender("Time series dataset (clustered by $k$-Means)"):
+        with st.expander("Time series dataset (clustered by $k$-Means, ARI: {})".format(adjusted_rand_score(y,y_pred_kmeans)):
             st.markdown("""Time series grouped based on the clustering labels of $k$-Means. Only 50 first time series are displayed.""")
             st.plotly_chart(fig_pred_kmean, use_container_width=True,height=800)
         
-        with st.expender("Time series dataset (true labels)"):
+        with st.expander("Time series dataset (true labels)"):
             st.markdown("""Time series grouped based on the true labels 
             (see [UCR-Archive](https://www.cs.ucr.edu/%7Eeamonn/time_series_data_2018/) for more details. 
             Only 50 first time series are displayed.)""")
