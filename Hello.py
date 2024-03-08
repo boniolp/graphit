@@ -67,7 +67,7 @@ def run():
             st.markdown("""Time series grouped based on the clustering labels of $k$-Shape. Only 50 first time series are displayed.""")
             st.plotly_chart(fig_pred_kshape, use_container_width=True,height=800)
 
-        with st.expander("Time series dataset (clustered by $k$-Means, ARI: {})".format(adjusted_rand_score(y,y_pred_kmeans))):
+        with st.expander("Time series dataset (clustered by $k$-Means, ARI: {})".format(adjusted_rand_score(y,y_pred_kmean))):
             st.markdown("""Time series grouped based on the clustering labels of $k$-Means. Only 50 first time series are displayed.""")
             st.plotly_chart(fig_pred_kmean, use_container_width=True,height=800)
         
