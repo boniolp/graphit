@@ -34,6 +34,12 @@ def read_dataset(dataset):
     with open('data/graphs/{}.pickle'.format(dataset),'rb') as handle:
         graph = pickle.load(handle)
 
+    with open('data/baselines/{}_kshape.pickle'.format(dataset),'rb') as handle:
+        y_pred_kshape = pickle.load(handle)
+
+    with open('data/baselines/{}_kmean.pickle'.format(dataset),'rb') as handle:
+        y_pred_kmean = pickle.load(handle)
+
     path = 'data/timeseries/{}/'.format(dataset)
     train_data = pd.read_csv(path + "{}_TRAIN.tsv".format(dataset),sep='\t',header=None)
     target_train = np.array(train_data[0].values)
@@ -52,7 +58,7 @@ def read_dataset(dataset):
     y = np.concatenate([target_train,target_test],axis=0)
     
     length = int(graph['length'])
-    return graph,X,y,length
+    return graph,X,y,length,y_pred_kshape,y_pred_kmean
 
 @st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
 def create_graph(graph):
