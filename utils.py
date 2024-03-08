@@ -147,7 +147,7 @@ def show_length_plot(graph):
     )
     fig.update_layout(height=500,showlegend=False)
 
-    fig_feat = px.imshow(graph['feature'], color_continuous_scale='RdBu_r', origin='lower')
+    fig_feat = px.imshow(graph['feature'][:200], color_continuous_scale='RdBu_r', origin='lower')
     
     return fig,fig_feat
 
