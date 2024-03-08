@@ -54,7 +54,7 @@ def run():
     tab_ts,tab_graph,tab_detail = st.tabs(["Time series", "Graph", "Under the hood"])
 
     with tab_ts:
-        fig_ts,fig_pred = show_ts(X,y,graph)
+        fig_ts,fig_pred,fig_pred_kshape,fig_pred_kmean = show_ts(X,y,graph,y_pred_kshape,y_pred_kmean)
         st.header("Time series dataset (true labels)")
         
         st.markdown("""Time series grouped based on the true labels 
