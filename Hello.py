@@ -97,7 +97,7 @@ def run():
         with col_graph:
             fig_graph,node_label = create_graph(graph['graph'])
             #st.plotly_chart(fig_graph, use_container_width=True,height=800)
-            selected_node = plotly_events(fig_graph,override_height=800,override_width="80%")
+            selected_node = plotly_events(fig_graph,override_height=800,override_width="90%")
             st.markdown("You can click on a node to see its content ({} node selected)".format(len(selected_node)))
 
         with col_side:
