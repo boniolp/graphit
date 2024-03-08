@@ -82,27 +82,31 @@ def run():
             st.plotly_chart(fig_ts, use_container_width=True,height=800)
     
     with tab_graph:
-        with st.expander("Advanced settings"):
-            lambda_val = st.slider('Lambda', 0.0, 1.0, 0.5)
-            gamma_val = st.slider('Gamma', 0.0, 1.0, 0.5)
-            options = st.multiselect(
-                'Show graphoids for',
-                ['Cluster {}'.format(i) for i in set(y)],
-                ['Cluster {}'.format(i) for i in set(y)])
-        fig_graph,node_label = create_graph(graph['graph'])
-        #st.plotly_chart(fig_graph, use_container_width=True,height=800)
-        selected_node = plotly_events(fig_graph,override_height=800)
-        st.markdown("You can click on a node to see its content ({} node selected)".format(len(selected_node)))
-    
-        if len(selected_node)>0:
-            with st.container(border=True):
-                node_label = node_label[selected_node[0]['pointIndex']]
-                fig_ts,fig_hist,nb_subseq = get_node_ts(graph,X,node_label,length)
-                col1, col2 = st.columns(2)
-                with col1:
+
+        col_graph,col_side = st.columns(2,spec=[0.7,0.3])
+
+        with col_side:
+            with st.expander("Advanced settings"):
+                lambda_val = st.slider('Lambda', 0.0, 1.0, 0.5)
+                gamma_val = st.slider('Gamma', 0.0, 1.0, 0.5)
+                options = st.multiselect(
+                    'Show graphoids for',
+                    ['Cluster {}'.format(i) for i in set(y)],
+                    ['Cluster {}'.format(i) for i in set(y)])
+            
+        with col_graph:
+            fig_graph,node_label = create_graph(graph['graph'])
+            #st.plotly_chart(fig_graph, use_container_width=True,height=800)
+            selected_node = plotly_events(fig_graph,override_height=800)
+            st.markdown("You can click on a node to see its content ({} node selected)".format(len(selected_node)))
+
+        with col_side:
+            if len(selected_node)>0:
+                with st.container(border=True):
+                    node_label = node_label[selected_node[0]['pointIndex']]
+                    fig_ts,fig_hist,nb_subseq = get_node_ts(graph,X,node_label,length)
                     st.markdown("Selected node is {} ({} subsequences)".format(node_label,nb_subseq))
                     st.plotly_chart(fig_ts, use_container_width=True)
-                with col2:
                     st.markdown("Clusters proportion within node {}".format(node_label))
                     st.plotly_chart(fig_hist, use_container_width=True)
 
