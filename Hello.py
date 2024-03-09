@@ -55,7 +55,7 @@ def run():
     tab_ts,tab_graph,tab_detail = st.tabs(["Time series", "Graph", "Under the hood"])
 
     with tab_ts:
-        fig_ts,fig_pred,fig_pred_kshape,fig_pred_kmean = show_ts(X,y,graph,y_pred_kshape,y_pred_kmean)
+        fig_ts,fig_pred,fig_pred_kshape,fig_pred_kmean = show_ts(X,y,graph['kgraph_labels'],y_pred_kshape,y_pred_kmean)
         st.markdown("""You can compare below the clustering performances (using the [Adjusted Rand Index]()) of our porposed approach 
         $k$-Graph, with the state-of-the-art clustering algorithm $k$-Shape, and the usual baseline $k$-Means.""")
         
