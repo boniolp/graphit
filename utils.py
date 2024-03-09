@@ -180,7 +180,7 @@ def show_length_plot(graph):
     return fig,fig_feat
 
 @st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
-def show_ts(X,y,graph,y_pred_kshape,y_pred_kmean):
+def show_ts(X,y,y_pred_kgraph,y_pred_kshape,y_pred_kmean):
     trace_ts = []
     fig = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Cluster {}".format(i) for i in set(y)])
     x_list = list(range(len(X[0])))
@@ -195,13 +195,13 @@ def show_ts(X,y,graph,y_pred_kshape,y_pred_kmean):
     
     fig_pred = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Cluster {}".format(i) for i in set(y)])
     x_list = list(range(len(X[0])))
-    labels_pred = {lab:i+1 for i,lab in enumerate(set(graph['prediction']))}
+    labels_pred = {lab:i+1 for i,lab in enumerate(set(y_pred_kgraph))}
     for x,lab,pred in zip(X[:50],y[:50],graph['prediction'][:50]):
         fig_pred.add_trace(
             go.Scattergl(x=x_list, y=x, mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
             row=1, col=labels_pred[pred]
         )
-    fig_pred.update_layout(height=400,title="ARI: {}".format(adjusted_rand_score(graph['kgraph_labels'],y)))
+    fig_pred.update_layout(height=400,title="ARI: {}".format(adjusted_rand_score(y_pred_kgraph,y)))
 
     fig_pred_kshape = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Cluster {}".format(i) for i in set(y)])
     x_list = list(range(len(X[0])))
