@@ -45,7 +45,6 @@ def read_dataset(dataset):
                 data.append(list(graph['feature'].values[i]))
         representative_graphoid = np.count_nonzero(data, axis=0)
         all_graphoid_rep.append(representative_graphoid)
-        features_name = list(graph['feature'].columns)
 
     all_graphoid_ex = np.array(all_graphoid_rep)/np.sum(np.array(all_graphoid_rep),0)
     all_graphoid_rep = (np.array(all_graphoid_rep).T/np.array([list(graph['kgraph_labels']).count(i) for i in set(graph['kgraph_labels'])])).T
@@ -80,7 +79,8 @@ def read_dataset(dataset):
 def create_graph(graph,pos,labels,features,all_graphoid_ex,all_graphoid_rep,lambda_val=0.5,gamma_val=0.5,list_clusters=[0,1,2,3,4]):
     G_nx = nx.DiGraph(graph['list_edge'])
 
-
+    features_name = list(graph['feature'].columns)
+    
     edge_size_0 = [] 
     for edge in G_nx.edges():
         edge_size_0.append(graph['list_edge'].count([edge[0],edge[1]]))
