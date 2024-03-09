@@ -79,7 +79,7 @@ def read_dataset(dataset):
 def create_graph(graph,pos,labels,features,all_graphoid_ex,all_graphoid_rep,lambda_val=0.5,gamma_val=0.5,list_clusters=[0,1,2,3,4]):
     G_nx = nx.DiGraph(graph['list_edge'])
 
-    features_name = list(graph['feature'].columns)
+    features_name = list(features.columns)
     
     edge_size_0 = [] 
     for edge in G_nx.edges():
