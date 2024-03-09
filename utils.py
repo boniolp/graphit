@@ -134,7 +134,7 @@ def create_graph(graph,pos,labels,features,all_graphoid_ex,all_graphoid_rep,lamb
             node_x.append(x)
             node_y.append(y)
             node_text.append(node)
-    node_trace = go.Scattergl(
+    node_trace = go.Scatter(
         x=node_x, y=node_y,
         mode='markers',
         hoverinfo='text',
