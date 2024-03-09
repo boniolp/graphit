@@ -37,6 +37,19 @@ def read_dataset(dataset):
     G_nx = nx.DiGraph(graph['graph']['list_edge'])
     pos = nx.nx_agraph.graphviz_layout(G_nx,prog="fdp")
 
+    all_graphoid_ex,all_graphoid_rep = [],[]
+    for cluster in set(graph['kgraph_labels']):
+        data = []
+        for i in range(len(graph['kgraph_labels'])):
+            if cluster == graph['kgraph_labels'][i]:
+                data.append(list(graph['feature'].values[i]))
+        representative_graphoid = np.count_nonzero(data, axis=0)
+        all_graphoid_rep.append(representative_graphoid)
+        features_name = list(graph['feature'].columns)
+
+    all_graphoid_ex = np.array(all_graphoid_rep)/np.sum(np.array(all_graphoid_rep),0)
+    all_graphoid_rep = (np.array(all_graphoid_rep).T/np.array([list(graph['kgraph_labels']).count(i) for i in set(graph['kgraph_labels'])])).T
+    
     with open('data/baselines/{}_kshape.pickle'.format(dataset),'rb') as handle:
         y_pred_kshape = pickle.load(handle)
 
@@ -61,25 +74,11 @@ def read_dataset(dataset):
     y = np.concatenate([target_train,target_test],axis=0)
     
     length = int(graph['length'])
-    return graph,pos,X,y,length,y_pred_kshape,y_pred_kmean
+    return graph,pos,X,y,length,y_pred_kshape,y_pred_kmean,all_graphoid_ex,all_graphoid_rep
 
 @st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
-def create_graph(graph,pos,labels,features,lambda_val=0.5,gamma_val=0.5,list_clusters=[0,1,2,3,4]):
+def create_graph(graph,pos,labels,features,all_graphoid_ex,all_graphoid_rep,lambda_val=0.5,gamma_val=0.5,list_clusters=[0,1,2,3,4]):
     G_nx = nx.DiGraph(graph['list_edge'])
-
-    
-    all_graphoid_ex,all_graphoid_rep = [],[]
-    for cluster in set(labels):
-        data = []
-        for i in range(len(labels)):
-            if cluster == labels[i]:
-                data.append(list(features.values[i]))
-        representative_graphoid = np.count_nonzero(data, axis=0)
-        all_graphoid_rep.append(representative_graphoid)
-        features_name = list(features.columns)
-
-    all_graphoid_ex = np.array(all_graphoid_rep)/np.sum(np.array(all_graphoid_rep),0)
-    all_graphoid_rep = (np.array(all_graphoid_rep).T/np.array([list(labels).count(i) for i in set(labels)])).T
 
 
     edge_size_0 = [] 
