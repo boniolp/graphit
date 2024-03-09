@@ -89,7 +89,7 @@ def run():
         with col_side:
             with st.expander("Advanced settings"):
                 lambda_val = st.slider('Lambda (Representativity)', 0.0, 1.0, 0.5)
-                gamma_val = st.slider('Gamma (Exclusivity)', 0.0, 1.0, 0.5)
+                gamma_val = st.slider('Gamma (Exclusivity)', 0.0, 1.0, 0.7)
                 options = st.multiselect(
                     'Show graphoids for',
                     ['Cluster {}'.format(i) for i in set(graph['kgraph_labels'])],
