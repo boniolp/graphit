@@ -47,7 +47,7 @@ def run():
             - [Angela Bonifati](https://perso.liris.cnrs.fr/angela.bonifati/), Lyon 1 University, IUF, Liris CNRS
             - [Themis Palpanas](https://helios2.mi.parisdescartes.fr/~themisp/). Université Paris Cité, IUF
             """)
-        st.warning("The graph rendering can be slow. We suggest to clone the [repo](https://github.com/boniolp/graphit) and run the app locally for faster interactions.", *, icon=None)
+        st.warning("The graph rendering can be slow. We suggest to clone the [repo](https://github.com/boniolp/graphit) and run the app locally for faster interactions.", icon=None)
 
     st.title("$k$-Graph on {}".format(dataset))
     
