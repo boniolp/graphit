@@ -108,7 +108,7 @@ def create_graph(graph,pos,labels,features,lambda_val=0.5,gamma_val=0.5,list_clu
                 color_edge = (cols[cluster_max+1][:-1]+",1)").replace('rgb','rgba')
             else:
                 color_edge = 'rgba(211, 211, 211,0.5)'
-            edge_trace = go.Scatter(
+            edge_trace = go.Scattergl(
                 x=[pos[edge[0]][0],pos[edge[1]][0]], y=[pos[edge[0]][1],pos[edge[1]][1]],
                 line=dict(width=edge_size_0[i], color=color_edge),
                 hoverinfo='none',
@@ -135,7 +135,7 @@ def create_graph(graph,pos,labels,features,lambda_val=0.5,gamma_val=0.5,list_clu
             node_x.append(x)
             node_y.append(y)
             node_text.append(node)
-    node_trace = go.Scatter(
+    node_trace = go.Scattergl(
         x=node_x, y=node_y,
         mode='markers',
         hoverinfo='text',
@@ -188,7 +188,7 @@ def show_ts(X,y,graph,y_pred_kshape,y_pred_kmean):
     labels = {lab:i+1 for i,lab in enumerate(set(y))}
     for x,lab in zip(X[:50],y[:50]):
         fig.add_trace(
-            go.Scatter(x=x_list, y=x, mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
+            go.Scattergl(x=x_list, y=x, mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
             row=1, col=labels[lab]
         )
     fig.update_layout(height=400)
@@ -199,7 +199,7 @@ def show_ts(X,y,graph,y_pred_kshape,y_pred_kmean):
     labels_pred = {lab:i+1 for i,lab in enumerate(set(graph['prediction']))}
     for x,lab,pred in zip(X[:50],y[:50],graph['prediction'][:50]):
         fig_pred.add_trace(
-            go.Scatter(x=x_list, y=x, mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
+            go.Scattergl(x=x_list, y=x, mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
             row=1, col=labels_pred[pred]
         )
     fig_pred.update_layout(height=400,title="ARI: {}".format(adjusted_rand_score(graph['kgraph_labels'],y)))
@@ -209,7 +209,7 @@ def show_ts(X,y,graph,y_pred_kshape,y_pred_kmean):
     labels_pred = {lab:i+1 for i,lab in enumerate(set(y_pred_kshape))}
     for x,lab,pred in zip(X[:50],y[:50],y_pred_kshape[:50]):
         fig_pred_kshape.add_trace(
-            go.Scatter(x=x_list, y=x, mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
+            go.Scattergl(x=x_list, y=x, mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
             row=1, col=labels_pred[pred]
         )
     fig_pred_kshape.update_layout(height=400,title="ARI: {}".format(adjusted_rand_score(y_pred_kshape,y)))
@@ -219,7 +219,7 @@ def show_ts(X,y,graph,y_pred_kshape,y_pred_kmean):
     labels_pred = {lab:i+1 for i,lab in enumerate(set(y_pred_kmean))}
     for x,lab,pred in zip(X[:50],y[:50],y_pred_kmean[:50]):
         fig_pred_kmean.add_trace(
-            go.Scatter(x=x_list, y=x, mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
+            go.Scattergl(x=x_list, y=x, mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
             row=1, col=labels_pred[pred]
         )
     fig_pred_kmean.update_layout(height=400,title="ARI: {}".format(adjusted_rand_score(y_pred_kmean,y)))
