@@ -50,7 +50,7 @@ def run():
 
     st.title("$k$-Graph on {}".format(dataset))
     
-    graph,pos,X,y,length,y_pred_kshape,y_pred_kmean = read_dataset(dataset)
+    graph,pos,all_graphoid_ex,all_graphoid_rep,X,y,length,y_pred_kshape,y_pred_kmean = read_dataset(dataset)
         
     tab_ts,tab_graph,tab_detail = st.tabs(["Time series", "Graph", "Under the hood"])
 
@@ -95,7 +95,7 @@ def run():
                     ['Cluster {}'.format(i) for i in set(graph['kgraph_labels'])])
             
         with col_graph:
-            fig_graph,node_label = create_graph(graph['graph'],pos,graph['kgraph_labels'],graph['feature'],lambda_val=lambda_val,gamma_val=gamma_val,list_clusters=[int(val.replace('Cluster ','')) for val in options])
+            fig_graph,node_label = create_graph(graph['graph'],pos,graph['kgraph_labels'],graph['feature'],all_graphoid_ex,all_graphoid_rep,lambda_val=lambda_val,gamma_val=gamma_val,list_clusters=[int(val.replace('Cluster ','')) for val in options])
             fig_graph.update_layout(
                 height=800,
                 plot_bgcolor='rgba(0, 0, 0, 0)',
