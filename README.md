@@ -13,7 +13,7 @@
 
 <p align="center"><a href="https://graphit.streamlit.app/">Try our demo</a></p>
 <p align="center">
-<img width="500" src="./figures/demo_graphit.gif"/>
+<img width="400" src="./figures/demo_graphit.gif"/>
 </p>
 
 Graphit is a Python-based web interactive tool to interpet and
