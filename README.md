@@ -45,7 +45,7 @@ cd dsymb-playground/
 **Step 2:** Create and activate a `conda` environment and install the dependencies.
 
 ```(bash)
-conda env create -n graphit python=3.9
+conda create -n graphit python=3.9
 conda activate graphit
 pip install -r requirements.txt
 ```
