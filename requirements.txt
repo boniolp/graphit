@@ -9,3 +9,4 @@ streamlit_tags
 streamlit_agraph
 pygraphviz 
 streamlit_plotly_events
+watchdog
