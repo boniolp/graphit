@@ -80,5 +80,5 @@ pip install pygraphviz
 - Run locally (preferable for faster interaction). To do so, run the following command:
 
 ```(bash)
-streamlit run app.py
+streamlit run Hello.py
 ```
