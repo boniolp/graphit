@@ -182,7 +182,7 @@ def show_length_plot(graph):
 @st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
 def show_ts(X,y,y_pred_kgraph,y_pred_kshape,y_pred_kmean):
     trace_ts = []
-    fig = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Cluster {}".format(i) for i in set(y)])
+    fig = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Cluster {}".format(i) for i in range(len(set(y)))])
     x_list = list(range(len(X[0])))
     labels = {lab:i for i,lab in enumerate(set(y))}
     for x,lab in zip(X[:50],y[:50]):
@@ -193,7 +193,7 @@ def show_ts(X,y,y_pred_kgraph,y_pred_kshape,y_pred_kmean):
     fig.update_layout(height=400)
 
     
-    fig_pred = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Cluster {}".format(i) for i in set(y)])
+    fig_pred = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Cluster {}".format(i) for i in range(len(set(y)))])
     x_list = list(range(len(X[0])))
     labels_pred = {lab:i for i,lab in enumerate(set(y_pred_kgraph))}
     for x,lab,pred in zip(X[:50],y[:50],y_pred_kgraph[:50]):
@@ -203,7 +203,7 @@ def show_ts(X,y,y_pred_kgraph,y_pred_kshape,y_pred_kmean):
         )
     fig_pred.update_layout(height=400,title="ARI: {}".format(adjusted_rand_score(y_pred_kgraph,y)))
 
-    fig_pred_kshape = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Cluster {}".format(i) for i in set(y)])
+    fig_pred_kshape = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Cluster {}".format(i) for i in range(len(set(y)))])
     x_list = list(range(len(X[0])))
     labels_pred = {lab:i for i,lab in enumerate(set(y_pred_kshape))}
     for x,lab,pred in zip(X[:50],y[:50],y_pred_kshape[:50]):
@@ -213,7 +213,7 @@ def show_ts(X,y,y_pred_kgraph,y_pred_kshape,y_pred_kmean):
         )
     fig_pred_kshape.update_layout(height=400,title="ARI: {}".format(adjusted_rand_score(y_pred_kshape,y)))
 
-    fig_pred_kmean = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Cluster {}".format(i) for i in set(y)])
+    fig_pred_kmean = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Cluster {}".format(i) for i in range(len(set(y)))])
     x_list = list(range(len(X[0])))
     labels_pred = {lab:i for i,lab in enumerate(set(y_pred_kmean))}
     for x,lab,pred in zip(X[:50],y[:50],y_pred_kmean[:50]):
