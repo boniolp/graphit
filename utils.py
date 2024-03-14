@@ -104,7 +104,7 @@ def create_graph(graph,pos,labels,features,all_graphoid_ex,all_graphoid_rep,lamb
         cluster_max_val_rep = max(all_graphoid_rep[:,pos_in_feature])
         if cluster_max in list_clusters:
             if (cluster_max_val > gamma_val) and (cluster_max_val_rep > lambda_val):
-                color_edge = (cols[cluster_max+1][:-1]+",1)").replace('rgb','rgba')
+                color_edge = (cols[cluster_max][:-1]+",1)").replace('rgb','rgba')
             else:
                 color_edge = 'rgba(211, 211, 211,0.5)'
             edge_trace = go.Scattergl(
@@ -126,7 +126,7 @@ def create_graph(graph,pos,labels,features,all_graphoid_ex,all_graphoid_rep,lamb
         cluster_max_val_rep = max(all_graphoid_rep[:,pos_in_feature])
         if cluster_max in list_clusters:
             if (cluster_max_val > gamma_val) and (cluster_max_val_rep > lambda_val):
-                color_node.append((cols[cluster_max+1][:-1]+",1)").replace('rgb','rgba'))
+                color_node.append((cols[cluster_max][:-1]+",1)").replace('rgb','rgba'))
                 dict_node_0[i] = dict_node_0[i]*1.2
             else:
                 color_node.append('rgba(211, 211, 211,0.2)')
@@ -184,7 +184,7 @@ def show_ts(X,y,y_pred_kgraph,y_pred_kshape,y_pred_kmean):
     trace_ts = []
     fig = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Cluster {}".format(i) for i in set(y)])
     x_list = list(range(len(X[0])))
-    labels = {lab:i+1 for i,lab in enumerate(set(y))}
+    labels = {lab:i for i,lab in enumerate(set(y))}
     for x,lab in zip(X[:50],y[:50]):
         fig.add_trace(
             go.Scattergl(x=x_list, y=x, mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
@@ -195,7 +195,7 @@ def show_ts(X,y,y_pred_kgraph,y_pred_kshape,y_pred_kmean):
     
     fig_pred = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Cluster {}".format(i) for i in set(y)])
     x_list = list(range(len(X[0])))
-    labels_pred = {lab:i+1 for i,lab in enumerate(set(y_pred_kgraph))}
+    labels_pred = {lab:i for i,lab in enumerate(set(y_pred_kgraph))}
     for x,lab,pred in zip(X[:50],y[:50],y_pred_kgraph[:50]):
         fig_pred.add_trace(
             go.Scattergl(x=x_list, y=x, mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
@@ -205,7 +205,7 @@ def show_ts(X,y,y_pred_kgraph,y_pred_kshape,y_pred_kmean):
 
     fig_pred_kshape = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Cluster {}".format(i) for i in set(y)])
     x_list = list(range(len(X[0])))
-    labels_pred = {lab:i+1 for i,lab in enumerate(set(y_pred_kshape))}
+    labels_pred = {lab:i for i,lab in enumerate(set(y_pred_kshape))}
     for x,lab,pred in zip(X[:50],y[:50],y_pred_kshape[:50]):
         fig_pred_kshape.add_trace(
             go.Scattergl(x=x_list, y=x, mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
@@ -215,7 +215,7 @@ def show_ts(X,y,y_pred_kgraph,y_pred_kshape,y_pred_kmean):
 
     fig_pred_kmean = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Cluster {}".format(i) for i in set(y)])
     x_list = list(range(len(X[0])))
-    labels_pred = {lab:i+1 for i,lab in enumerate(set(y_pred_kmean))}
+    labels_pred = {lab:i for i,lab in enumerate(set(y_pred_kmean))}
     for x,lab,pred in zip(X[:50],y[:50],y_pred_kmean[:50]):
         fig_pred_kmean.add_trace(
             go.Scattergl(x=x_list, y=x, mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
