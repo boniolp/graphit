@@ -195,11 +195,11 @@ def show_ts(X,y,y_pred_kgraph,y_pred_kshape,y_pred_kmean):
     
     fig_pred = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Cluster {}".format(i) for i in set(y)])
     x_list = list(range(len(X[0])))
-    labels_pred = {lab:i+1 for i,lab in enumerate(set(y_pred_kgraph))}
+    labels_pred = {lab:i for i,lab in enumerate(set(y_pred_kgraph))}
     for x,lab,pred in zip(X[:50],y[:50],y_pred_kgraph[:50]):
         fig_pred.add_trace(
             go.Scattergl(x=x_list, y=x, mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
-            row=1, col=labels_pred[pred]
+            row=1, col=labels_pred[pred]+1
         )
     fig_pred.update_layout(height=400,title="ARI: {}".format(adjusted_rand_score(y_pred_kgraph,y)))
 
@@ -208,7 +208,7 @@ def show_ts(X,y,y_pred_kgraph,y_pred_kshape,y_pred_kmean):
     labels_pred = {lab:i for i,lab in enumerate(set(y_pred_kshape))}
     for x,lab,pred in zip(X[:50],y[:50],y_pred_kshape[:50]):
         fig_pred_kshape.add_trace(
-            go.Scattergl(x=x_list, y=x, mode='lines', line_color=(cols[labels[pred]][:-1]+",0.5)").replace("rgb","rgba")),
+            go.Scattergl(x=x_list, y=x, mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
             row=1, col=labels_pred[pred]+1
         )
     fig_pred_kshape.update_layout(height=400,title="ARI: {}".format(adjusted_rand_score(y_pred_kshape,y)))
@@ -218,7 +218,7 @@ def show_ts(X,y,y_pred_kgraph,y_pred_kshape,y_pred_kmean):
     labels_pred = {lab:i for i,lab in enumerate(set(y_pred_kmean))}
     for x,lab,pred in zip(X[:50],y[:50],y_pred_kmean[:50]):
         fig_pred_kmean.add_trace(
-            go.Scattergl(x=x_list, y=x, mode='lines', line_color=(cols[labels[pred]][:-1]+",0.5)").replace("rgb","rgba")),
+            go.Scattergl(x=x_list, y=x, mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
             row=1, col=labels_pred[pred]+1
         )
     fig_pred_kmean.update_layout(height=400,title="ARI: {}".format(adjusted_rand_score(y_pred_kmean,y)))
