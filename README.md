@@ -2,7 +2,7 @@
 <img width="230" src="./figures/graphit_logo.png"/>
 </p>
 
-<h1 align="center">Graphint</h1>
+<h1 align="center">GrapHint</h1>
 <h2 align="center">Graph-based Time Series Clustering Visualisation Tools</h2>
 
 <div align="center">
@@ -16,7 +16,7 @@
 <img width="400" src="./figures/demo_graphit.gif"/>
 </p>
 
-Graphit is a Python-based web interactive tool to interpet and
+GrapHint is a Python-based web interactive tool to interpet and
 compare time series clustering on several datasets of the [UCR-Archive](https://www.cs.ucr.edu/%7Eeamonn/time_series_data_2018/).
 It is based on a novel graph-based time series clustering, called $k$-Graph.
 $k$-Graph is divided into three steps: (i) Graph embedding, (ii) Graph clustering, 
