@@ -2,7 +2,7 @@
 <img width="230" src="./figures/graphit_logo.png"/>
 </p>
 
-<h1 align="center">Graphit</h1>
+<h1 align="center">Graphint</h1>
 <h2 align="center">Graph-based Time Series Clustering Visualisation Tools</h2>
 
 <div align="center">
