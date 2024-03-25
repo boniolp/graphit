@@ -25,7 +25,7 @@ from plotly.subplots import make_subplots
 from sklearn.metrics import adjusted_rand_score
 import plotly.express as px
 
-List_datasets = ['TwoLeadECG','CBF','Trace','DodgerLoopWeekend'
+List_datasets = ['TwoLeadECG','CBF','Trace','DodgerLoopWeekend',
             'Haptics','SyntheticControl','Worms','Computers','HouseTwenty',
             'GestureMidAirD3', 'Chinatown', 'UWaveGestureLibraryAll', 'Strawberry', 
             'Car', 'GunPointAgeSpan', 'GestureMidAirD2', 'BeetleFly', 'Wafer',
