@@ -87,7 +87,7 @@ def run():
         st.header("Overall benchmark with 14 baselines")
         st.divider()
         st.markdown("""We conducted an experimental evaluation utilizing real datasets from the UCR-Archive to assess the clustering performance of various methods.""")
-        col_metric,col_type,col_param = st.columns([0.2,0.6,0.2])
+        col_metric,col_type,col_param = st.columns([0.15,0.5,0.35])
 
         with col_metric:
             metric_name = st.selectbox('Accuracy measure', ['ARI','RI','AMI','NMI'])
