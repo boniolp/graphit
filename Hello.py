@@ -119,7 +119,7 @@ def run():
             
             st.plotly_chart(fig_graph, use_container_width=True,height=800)
             if selected_node is not None:
-                fig_pred_node = show_ts_node(X,y,graph['kgraph_labels'])
+                fig_pred_node = show_ts_node(X,y,graph['kgraph_labels'],intervals)
                 st.markdown("""Node {} in the dataset""".format(selected_node))
                 st.plotly_chart(fig_pred_node, use_container_width=True,height=800)
             #st.markdown("You can click on a node to see its content")
