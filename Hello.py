@@ -87,13 +87,10 @@ def run():
         st.header("Overall benchmark with 14 baselines")
         st.divider()
         st.markdown("""We conducted an experimental evaluation utilizing real datasets from the UCR-Archive to assess the clustering performance of various methods.""")
-        col_metric,col_type = st.columns([0.3,0.7])
+        col_metric,col_type,col_param = st.columns([0.2,0.6,0.2])
 
         with col_metric:
             metric_name = st.selectbox('Accuracy measure', ['ARI','RI','AMI','NMI'])
-            ts_length = st.slider("Time series length", 15, 3000, (15, 3000))
-            nb_class = st.slider("Number of clusters", 2, 60, (2, 60))
-            nb_time_ts = st.slider("Numberd of time series", 40, 16637, (40, 16637))
         with col_type:
             type_dataset = st.multiselect(
                 "Dataset types",
@@ -104,6 +101,10 @@ def run():
                  'HEMODYNAMICS','IMAGE','MOTION','OTHER','SENSOR',
                  'SIMULATED','SOUND','SPECTRO','TRAFFIC'],
             )
+        with col_param:
+            ts_length = st.slider("Time series length", 15, 3000, (15, 3000))
+            nb_class = st.slider("Number of clusters", 2, 60, (2, 60))
+            nb_time_ts = st.slider("Numberd of time series", 40, 16637, (40, 16637))
             
             
     
