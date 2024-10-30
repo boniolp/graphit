@@ -192,7 +192,7 @@ def show_ts_node(X,y,y_pred_kgraph,intervals):
     labels_pred = {lab:i for i,lab in enumerate(set(y_pred_kgraph))}
     for x,lab,pred in zip(X[:50],y[:50],y_pred_kgraph[:50]):
         fig_pred.add_trace(
-            go.Scattergl(x=x_list, y=x, mode='lines', line_color="grey",opacity=0.2),
+            go.Scattergl(x=x_list, y=x, mode='lines', line_color="grey",opacity=0.1),
             row=1, col=labels_pred[pred]+1
         )
     for interval in intervals[:50]:
@@ -203,7 +203,7 @@ def show_ts_node(X,y,y_pred_kgraph,intervals):
             go.Scattergl(x=x_list[interval[1]:interval[2]], y=x[interval[1]:interval[2]], mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
             row=1, col=labels_pred[pred]+1
         )
-    fig_pred.update_layout(height=400,title="ARI: {}".format(adjusted_rand_score(y_pred_kgraph,y)))
+    fig_pred.update_layout(height=400,title="ARI: {}".format(adjusted_rand_score(y_pred_kgraph,y)),showlegend="false")
 
     
     return fig_pred
@@ -218,7 +218,7 @@ def show_ts(X,y,y_pred_kgraph,y_pred_kshape,y_pred_kmean):
     labels = {lab:i for i,lab in enumerate(set(y))}
     for x,lab in zip(X[:50],y[:50]):
         fig.add_trace(
-            go.Scattergl(x=x_list, y=x, mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
+            go.Scattergl(x=x_list, y=x, mode='lines', line_width=2, line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
             row=1, col=labels[lab]+1
         )
     fig.update_layout(height=400)
