@@ -94,6 +94,16 @@ def run():
                     'Show graphoids for',
                     ['Cluster {}'.format(i) for i in set(graph['kgraph_labels'])],
                     ['Cluster {}'.format(i) for i in set(graph['kgraph_labels'])])
+        
+        with col_side:
+            with st.container(border=True):
+                selected_node = st.selectbox('Select a node',graph['graph']['dict_node'].keys())
+                if selected_node is not None:
+                    fig_ts,fig_hist,nb_subseq,intervals = get_node_ts(graph,X,selected_node,length)
+                    st.markdown("Selected node is {} ({} subsequences)".format(selected_node,nb_subseq))
+                    st.plotly_chart(fig_ts, use_container_width=True)
+                    st.markdown("Clusters proportion within node {}".format(selected_node))
+                    st.plotly_chart(fig_hist, use_container_width=True)
             
         with col_graph:
             fig_graph,node_label = create_graph(graph['graph'],pos,graph['kgraph_labels'],graph['feature'],all_graphoid_ex,all_graphoid_rep,lambda_val=lambda_val,gamma_val=gamma_val,list_clusters=[int(val.replace('Cluster ','')) for val in options])
@@ -108,22 +118,15 @@ def run():
                 yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
             
             st.plotly_chart(fig_graph, use_container_width=True,height=800)
+            if selected_node is not None:
+                fig_pred_node = show_ts_node(X,y,graph['kgraph_labels'])
+                st.markdown("""Node {} in the dataset""".format(selected_node))
+                st.plotly_chart(fig_pred_node, use_container_width=True,height=800)
             #st.markdown("You can click on a node to see its content")
             #with st.container(border=True):
             #selected_node = plotly_events(fig_graph,click_event=True, override_height=800, override_width='100%')
             #st.markdown("You can click on a node to see its content")
             
-
-        with col_side:
-            with st.container(border=True):
-                selected_node = st.selectbox('Select a node',graph['graph']['dict_node'].keys())
-                if selected_node is not None:
-                    fig_ts,fig_hist,nb_subseq = get_node_ts(graph,X,selected_node,length)
-                    st.markdown("Selected node is {} ({} subsequences)".format(selected_node,nb_subseq))
-                    st.plotly_chart(fig_ts, use_container_width=True)
-                    st.markdown("Clusters proportion within node {}".format(selected_node))
-                    st.plotly_chart(fig_hist, use_container_width=True)
-
     with tab_detail:
         with st.expander("""## In short, how does $k$-graph work?"""):
             st.markdown("""
