@@ -188,6 +188,7 @@ def show_ts_node(X,y,y_pred_kgraph,intervals):
     
     fig_pred = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Cluster {}".format(i) for i in range(len(set(y)))])
     x_list = list(range(len(X[0])))
+    labels = {lab:i for i,lab in enumerate(set(y))}
     labels_pred = {lab:i for i,lab in enumerate(set(y_pred_kgraph))}
     for interval in intervals[:50]:
         x = X[interval[0]]
