@@ -127,7 +127,7 @@ def run():
 
         if on:
             fig = px.box(df_performance[method_names])
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True,boxmean=True)
         else:
             st.dataframe(df_performance[method_names].style.highlight_max(axis=1))
             
