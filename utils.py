@@ -184,6 +184,27 @@ def show_length_plot(graph):
     return fig,fig_feat
 
 @st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
+def show_ts_node(X,y,y_pred_kgraph,intervals):
+    
+    fig_pred = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Cluster {}".format(i) for i in range(len(set(y)))])
+    x_list = list(range(len(X[0])))
+    labels_pred = {lab:i for i,lab in enumerate(set(y_pred_kgraph))}
+    for interval in intervals[:50]:
+        x = X[interval[0]]
+        lab = y[interval[0]]
+        pred = y_pred_kgraph[interval[0]]
+        fig_pred.add_trace(
+            go.Scattergl(x=x_list[interval[1]:interval[2]], y=x[interval[1]:interval[2]], mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
+            row=1, col=labels_pred[pred]+1
+        )
+    fig_pred.update_layout(height=400,title="ARI: {}".format(adjusted_rand_score(y_pred_kgraph,y)))
+
+    
+    return fig_pred
+
+
+
+@st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
 def show_ts(X,y,y_pred_kgraph,y_pred_kshape,y_pred_kmean):
     trace_ts = []
     fig = make_subplots(rows=1, cols=len(set(y)),subplot_titles=["Cluster {}".format(i) for i in range(len(set(y)))])
@@ -260,7 +281,7 @@ def get_node_ts(graph,X,node,length):
                 range(len(edge_in_time[current_pos])), 
                 key=lambda j: abs(edge_in_time[current_pos][j]-relative_pos))
             ts = X[int(current_pos),int(pos_in_time):int(pos_in_time+length)]
-            intervals.append([int(current_pos),int(pos_in_time):int(pos_in_time+length)])
+            intervals.append([int(current_pos),int(pos_in_time),int(pos_in_time+length)])
             labels_node.append("Cluster {}".format(graph['kgraph_labels'][int(current_pos)]))
             ts_found_tmp[labels_node[-1]] = True
             ts = ts - np.mean(ts)
