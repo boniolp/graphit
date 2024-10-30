@@ -244,6 +244,25 @@ def create_membership_matrix(run):
     return mat
 
 @st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
+def get_node_intervals(graph,X,node,length):
+    result = []
+    current_pos = 0
+    labels_node = []
+    edge_in_time = graph['graph']['edge_in_time']
+    for i,edge in enumerate(graph['graph']['list_edge']):
+        if node == edge[0]:
+            relative_pos = i-graph['graph']['list_edge_pos'][current_pos]
+            pos_in_time = min(
+                range(len(edge_in_time[current_pos])), 
+                key=lambda j: abs(edge_in_time[current_pos][j]-relative_pos))
+            result.append([int(current_pos),int(pos_in_time):int(pos_in_time+length)])
+            labels_node.append("Cluster {}".format(graph['kgraph_labels'][int(current_pos)]))
+        
+        if i >= graph['graph']['list_edge_pos'][current_pos+1]:
+            current_pos += 1
+    return result,labels_node
+
+@st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
 def get_node_ts(graph,X,node,length):
     result = []
     current_pos = 0
