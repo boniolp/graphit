@@ -56,7 +56,7 @@ def run():
     tab_ts,tab_graph,tab_quiz,tab_detail = st.tabs(["Benchmarking", "k-Graph in action", "Quiz Time!", "Under the hood"])
 
     with tab_ts:
-        st.header("Compare $k$-Graph with $k$-Shape, and the usual baseline $k$-Means")
+        st.header("Compare $k$-Graph with $k$-Shape, and $k$-Means")
         st.divider()
         fig_ts,fig_pred,fig_pred_kshape,fig_pred_kmean = show_ts(X,y,graph['kgraph_labels'],y_pred_kshape,y_pred_kmean)
         st.markdown("""You can compare below the clustering performances (using the [Adjusted Rand Index]()) of our porposed approach 
