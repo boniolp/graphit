@@ -243,30 +243,13 @@ def create_membership_matrix(run):
                 mat[j][i] = 1
     return mat
 
-@st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
-def get_node_intervals(graph,X,node,length):
-    result = []
-    current_pos = 0
-    labels_node = []
-    edge_in_time = graph['graph']['edge_in_time']
-    for i,edge in enumerate(graph['graph']['list_edge']):
-        if node == edge[0]:
-            relative_pos = i-graph['graph']['list_edge_pos'][current_pos]
-            pos_in_time = min(
-                range(len(edge_in_time[current_pos])), 
-                key=lambda j: abs(edge_in_time[current_pos][j]-relative_pos))
-            result.append([int(current_pos),int(pos_in_time):int(pos_in_time+length)])
-            labels_node.append("Cluster {}".format(graph['kgraph_labels'][int(current_pos)]))
-        
-        if i >= graph['graph']['list_edge_pos'][current_pos+1]:
-            current_pos += 1
-    return result,labels_node
 
 @st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
 def get_node_ts(graph,X,node,length):
     result = []
     current_pos = 0
     labels_node = []
+    intervals = []
     ts_found = {"Cluster {}".format(j):0 for j in set(graph['kgraph_labels'])}
     edge_in_time = graph['graph']['edge_in_time']
     ts_found_tmp = {"Cluster {}".format(j):False for j in set(graph['kgraph_labels'])}
@@ -277,6 +260,7 @@ def get_node_ts(graph,X,node,length):
                 range(len(edge_in_time[current_pos])), 
                 key=lambda j: abs(edge_in_time[current_pos][j]-relative_pos))
             ts = X[int(current_pos),int(pos_in_time):int(pos_in_time+length)]
+            intervals.append([int(current_pos),int(pos_in_time):int(pos_in_time+length)])
             labels_node.append("Cluster {}".format(graph['kgraph_labels'][int(current_pos)]))
             ts_found_tmp[labels_node[-1]] = True
             ts = ts - np.mean(ts)
@@ -325,5 +309,5 @@ def get_node_ts(graph,X,node,length):
     fig_hist.update_layout(barmode='group',legend=dict(orientation='h', x=0.5, xanchor='center', y=-0.3))
     #fig_hist.add_trace(go.Histogram(x=labels_node, name="number of subsequences", histnorm='percent', texttemplate="%{y}%", textfont_size=10))
     
-    return fig,fig_hist,len(result)
+    return fig,fig_hist,len(result),intervals
 
