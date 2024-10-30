@@ -203,7 +203,7 @@ def show_ts_node(X,y,y_pred_kgraph,intervals):
             go.Scattergl(x=x_list[interval[1]:interval[2]], y=x[interval[1]:interval[2]], mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
             row=1, col=labels_pred[pred]+1
         )
-    fig_pred.update_layout(height=400,title="ARI: {}".format(adjusted_rand_score(y_pred_kgraph,y)),showlegend="false")
+    fig_pred.update_layout(height=400,title="ARI: {}".format(adjusted_rand_score(y_pred_kgraph,y)),showlegend=False)
 
     
     return fig_pred
