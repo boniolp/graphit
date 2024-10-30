@@ -57,7 +57,7 @@ def run():
 
     with tab_ts:
         st.header("Compare $k$-Graph with $k$-Shape, and the usual baseline $k$-Means")
-        with st.expander(expanded=True):
+        with st.expander("",expanded=True):
             fig_ts,fig_pred,fig_pred_kshape,fig_pred_kmean = show_ts(X,y,graph['kgraph_labels'],y_pred_kshape,y_pred_kmean)
             st.markdown("""You can compare below the clustering performances (using the [Adjusted Rand Index]()) of our porposed approach 
             $k$-Graph, with the state-of-the-art clustering algorithm $k$-Shape, and the usual baseline $k$-Means.""")
