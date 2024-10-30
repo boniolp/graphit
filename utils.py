@@ -190,6 +190,11 @@ def show_ts_node(X,y,y_pred_kgraph,intervals):
     x_list = list(range(len(X[0])))
     labels = {lab:i for i,lab in enumerate(set(y))}
     labels_pred = {lab:i for i,lab in enumerate(set(y_pred_kgraph))}
+    for x,lab,pred in zip(X[:50],y[:50],y_pred_kgraph[:50]):
+        fig_pred.add_trace(
+            go.Scattergl(x=x_list, y=x, mode='lines', line_color=(cols[labels[lab]][:-1]+",0.5)").replace("rgb","rgba")),
+            row=1, col=labels_pred[pred]+1
+        )
     for interval in intervals[:50]:
         x = X[interval[0]]
         lab = y[interval[0]]
