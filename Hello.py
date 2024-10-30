@@ -102,7 +102,7 @@ def run():
                  'SIMULATED','SOUND','SPECTRO','TRAFFIC'],
             )
         with col_param:
-            ts_length = st.slider("Time series length", 0.0, 100.0, (15, 3000))
+            ts_length = st.slider("Time series length", 15, 3000, (15, 3000))
             nb_class = st.slider("Number of clusters", 2, 60, (2, 60))
             nb_time_ts = st.slider("Numberd of time series", 40, 16637, (40, 16637))
             
