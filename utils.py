@@ -200,7 +200,7 @@ def show_ts_node(X,y,y_pred_kgraph,intervals):
         lab = y[interval[0]]
         pred = y_pred_kgraph[interval[0]]
         fig_pred.add_trace(
-            go.Scattergl(x=x_list[interval[1]:interval[2]], y=x[interval[1]:interval[2]], mode='lines', line_color="grey",
+            go.Scattergl(x=x_list[interval[1]:interval[2]], y=x[interval[1]:interval[2]], mode='lines', line_color="grey"),
             row=1, col=labels_pred[pred]+1
         )
     fig_pred.update_layout(height=400,title="ARI: {}".format(adjusted_rand_score(y_pred_kgraph,y)))
