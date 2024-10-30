@@ -53,7 +53,7 @@ def run():
     
     graph,pos,X,y,length,y_pred_kshape,y_pred_kmean,all_graphoid_ex,all_graphoid_rep = read_dataset(dataset)
         
-    tab_ts,tab_graph,tab_detail = st.tabs(["Time series", "Graph", "Under the hood"])
+    tab_ts,tab_graph,tab_quiz,tab_detail = st.tabs(["Benchmarking", "k-Graph in action", "Quiz Time!", "Under the hood"])
 
     with tab_ts:
         fig_ts,fig_pred,fig_pred_kshape,fig_pred_kmean = show_ts(X,y,graph['kgraph_labels'],y_pred_kshape,y_pred_kmean)
@@ -126,7 +126,10 @@ def run():
             #with st.container(border=True):
             #selected_node = plotly_events(fig_graph,click_event=True, override_height=800, override_width='100%')
             #st.markdown("You can click on a node to see its content")
-            
+
+    with tab_quiz:
+        st.markdown("""Will you be able to find the good cluster?""")
+    
     with tab_detail:
         with st.expander("""## In short, how does $k$-graph work?"""):
             st.markdown("""
