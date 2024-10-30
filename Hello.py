@@ -129,7 +129,7 @@ def run():
             fig = px.box(df_performance[method_names])
             st.plotly_chart(fig, use_container_width=True)
         else:
-            st.dataframe(df_performance[method_names].style.highlight_max(axis=0))
+            st.dataframe(df_performance[method_names].style.highlight_max(axis=1))
             
     with tab_graph:
 
