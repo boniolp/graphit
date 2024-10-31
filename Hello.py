@@ -179,7 +179,7 @@ def run():
             #st.markdown("You can click on a node to see its content")
 
     with tab_quiz:
-        st.header("""Will you be able to find the good cluster?""")
+        st.header("""Can you find the correct cluster?""")
         st.markdown("""Here are time series randomly selected from the dataset of your choice (tab on the left). Which cluster does these time series belong to?""")
         st.markdown("""The objective is to assess the interpretability of clustering methods.""")
         st.markdown("""Which cluster does the time series belong to?""")
