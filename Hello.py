@@ -180,11 +180,12 @@ def run():
 
     with tab_quiz:
         st.header("""Will you be able to find the good cluster?""")
-        st.markdown("""Here are time series rondomly selected from the dataset of your choice (tab on the left). Which cluster does these time series belong to?""")
+        st.markdown("""Here are time series randomly selected from the dataset of your choice (tab on the left). Which cluster does these time series belong to?""")
+        st.markdown("""The objective is to assess the interpretability of clustering methods.""")
         st.markdown("""Which cluster does the time series belong to?""")
 
         st.markdown("""You can choose one cluster method to help you. For each, you will be able to visualize their representation of each cluster. For $k$-Means and $k$-Graph, you can superpose the centroids, for $k$-Graph, you can use the graph.""")
-        method = st.selectbox('Accuracy measure', ['k-Means','k-Shapes','k-Graph'])
+        method = st.selectbox('Clustering method', ['k-Means','k-Shapes','k-Graph'])
         correspondance_dict = {'k-Means':'kmean','k-Shapes':'kshape','k-Graph':'kgraph'}
         if (correspondance_dict[method] == 'kmean') or (correspondance_dict[method] == 'kshape'):
             with open('data/graphs/{}_{}_centroid.pickle'.format(dataset,correspondance_dict[method]), 'rb') as handle:
@@ -264,20 +265,20 @@ def run():
                     # Add '1' to current_question tracking variable cause python starts counting from 0
                     current_question = i+1
                     # display question_number
-                    with st.expander(f"*Question {current_question}*"):
-                    #number_placeholder.write(f"*Question {current_question}*")
+                    #with st.expander(f"*Question {current_question}*"):
+                    number_placeholder.write(f"*Question {current_question}*")
                     # display question based on question_number
-                        with question_placeholder.container():
-                            fig = px.line(ss.current_quiz[i].get('ts'))
-                            if (correspondance_dict[method] == 'kmean') or (correspondance_dict[method] == 'kshape'):
-                                for centroid in centroids:
-                                    fig.add_scatter(x=[val for val in range(len(centroid))], y=centroid, mode='lines')
-                            st.plotly_chart(fig)
-                        # question_placeholder.write(f"**{ss.current_quiz[i].get('question')}**") 
-                        # list of options
-                        options = ss.current_quiz[i].get("options")
-                        # track the user selection
-                        options_placeholder.radio("", options, index=1, key=f"Q{current_question}")
+                    with question_placeholder.container():
+                        fig = px.line(ss.current_quiz[i].get('ts'))
+                        if (correspondance_dict[method] == 'kmean') or (correspondance_dict[method] == 'kshape'):
+                            for id_c,centroid in enumerate(centroids):
+                                fig.add_scatter(x=[val for val in range(len(centroid))], y=centroid, mode='lines', name="Centroid {}".format(id_c))
+                        st.plotly_chart(fig)
+                    # question_placeholder.write(f"**{ss.current_quiz[i].get('question')}**") 
+                    # list of options
+                    options = ss.current_quiz[i].get("options")
+                    # track the user selection
+                    options_placeholder.radio("", options, index=1, key=f"Q{current_question}")
                     #nl(1)
                     # Grade Answers and Return Corrections
                     if ss.stop:
