@@ -208,7 +208,7 @@ def run():
         if "button_label" not in ss:
             ss['button_label'] = ['START', 'SUBMIT', 'RELOAD']
         if 'current_quiz' not in ss:
-            ss['current_quiz'] = list_question
+            ss['current_quiz'] = []
         if 'user_answers' not in ss:
             ss['user_answers'] = []
         if 'grade' not in ss:
@@ -227,7 +227,7 @@ def run():
         def update_session_state():
             if ss.counter == 1:
                 ss['start'] = True
-                ss.current_quiz = random.sample(quiz.sport_questions, 10)
+                ss.current_quiz = list_question
             elif ss.counter == 2:
                 # Set start to False
                 ss['start'] = True 
