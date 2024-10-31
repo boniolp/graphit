@@ -180,6 +180,85 @@ def run():
         st.markdown("""Will you be able to find the good cluster?""")
         st.markdown("""Here is a time series rondomly selected from the dataset of your choice (tab on the left). Which cluster does the time series belong to?""")
         st.markdown("""Which cluster does the time series belong to?""")
+
+        scorecard_placeholder = st.empty()
+        list_question = []
+        for i in range(10):
+            rand_ts = random.randint(0, len(X)-1)
+            quiz_set = {
+                "question_number":i,
+                "ts": X[rand_ts],
+                "options": ["Cluster {}".format(j) for j in list(set(y))],
+                "correct_answer": "Cluster {}".format(y[rand_ts])
+            }
+            list_question.append(quiz_set)
+        
+        # Activate Session States
+        ss = st.session_state
+        # Initializing Session States
+        if 'counter' not in ss:
+            ss['counter'] = 0
+        if 'start' not in ss:
+            ss['start'] = False
+        if 'stop' not in ss:
+            ss['stop'] = False
+        if 'refresh' not in ss:
+            ss['refresh'] = False
+        if "button_label" not in ss:
+            ss['button_label'] = ['START', 'SUBMIT', 'RELOAD']
+        if 'current_quiz' not in ss:
+            ss['current_quiz'] = list_question
+        if 'user_answers' not in ss:
+            ss['user_answers'] = []
+        if 'grade' not in ss:
+            ss['grade'] = 0
+
+        st.button(label=ss.button_label[ss.counter], 
+            key='button_press', on_click= btn_click)
+        with st.container():
+            if (ss.start):
+                for i in range(len(ss.current_quiz)):
+                    number_placeholder = st.empty()
+                    question_placeholder = st.empty()
+                    options_placeholder = st.empty()
+                    results_placeholder = st.empty()
+                    expander_area = st.empty()                
+                    # Add '1' to current_question tracking variable cause python starts counting from 0
+                    current_question = i+1
+                    # display question_number
+                    number_placeholder.write(f"*Question {current_question}*")
+                    # display question based on question_number
+                    with question_placeholder.container():
+                        fig = px.line(ss.current_quiz[i].get('ts'))
+                        st.plotly_chart(fig)
+                    # question_placeholder.write(f"**{ss.current_quiz[i].get('question')}**") 
+                    # list of options
+                    options = ss.current_quiz[i].get("options")
+                    # track the user selection
+                    options_placeholder.radio("", options, index=1, key=f"Q{current_question}")
+                    nl(1)
+                    # Grade Answers and Return Corrections
+                    if ss.stop:
+                        # Track length of user_answers
+                        if len(ss.user_answers) < 10: 
+                            # comparing answers to track score
+                            if ss[f'Q{current_question}'] == ss.current_quiz[i].get("correct_answer"):
+                                ss.user_answers.append(True)
+                            else:
+                                ss.user_answers.append(False)
+                        else:
+                            pass
+                        # Results Feedback
+                        if ss.user_answers[i] == True:
+                            results_placeholder.success("CORRECT")
+                        else:
+                            results_placeholder.error("INCORRECT")
+    
+        # calculate score
+        if ss.stop:  
+            ss['grade'] = ss.user_answers.count(True)           
+            scorecard_placeholder.write(f"### **Your Final Score : {ss['grade']} / {len(ss.current_quiz)}**")        
+        
     
     with tab_detail:
         with st.expander("""## In short, how does $k$-graph work?"""):
@@ -355,7 +434,25 @@ def run():
             #TODO
             
         
+def btn_click():
+    ss.counter += 1
+    if ss.counter > 2: 
+        ss.counter = 0
+        ss.clear()
+    else:
+        update_session_state()
+        with st.spinner("*this may take a while*"):
+            time.sleep(2)
 
+def update_session_state():
+    if ss.counter == 1:
+        ss['start'] = True
+        ss.current_quiz = random.sample(quiz.sport_questions, 10)
+    elif ss.counter == 2:
+        # Set start to False
+        ss['start'] = True 
+        # Set stop to True
+        ss['stop'] = True
 
 if __name__ == "__main__":
     run()
