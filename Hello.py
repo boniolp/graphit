@@ -271,7 +271,7 @@ def run():
                         st.plotly_chart(fig)
                         if (correspondance_dict[method] == 'kmean') or (correspondance_dict[method] == 'kshape'):
                             for centroid in centroids:
-                                fig.add_scatter(x=[i for i in len(centroid)], y=centroid, mode='lines')
+                                fig.add_scatter(x=[val for val in range(len(centroid))], y=centroid, mode='lines')
                     # question_placeholder.write(f"**{ss.current_quiz[i].get('question')}**") 
                     # list of options
                     options = ss.current_quiz[i].get("options")
