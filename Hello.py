@@ -214,6 +214,26 @@ def run():
         if 'grade' not in ss:
             ss['grade'] = 0
 
+        def btn_click():
+            ss.counter += 1
+            if ss.counter > 2: 
+                ss.counter = 0
+                ss.clear()
+            else:
+                update_session_state()
+                with st.spinner("*this may take a while*"):
+                    time.sleep(2)
+        
+        def update_session_state():
+            if ss.counter == 1:
+                ss['start'] = True
+                ss.current_quiz = random.sample(quiz.sport_questions, 10)
+            elif ss.counter == 2:
+                # Set start to False
+                ss['start'] = True 
+                # Set stop to True
+                ss['stop'] = True
+        
         st.button(label=ss.button_label[ss.counter], 
             key='button_press', on_click= btn_click)
         with st.container():
@@ -435,25 +455,7 @@ def run():
             #TODO
             
         
-def btn_click():
-    ss.counter += 1
-    if ss.counter > 2: 
-        ss.counter = 0
-        ss.clear()
-    else:
-        update_session_state()
-        with st.spinner("*this may take a while*"):
-            time.sleep(2)
 
-def update_session_state():
-    if ss.counter == 1:
-        ss['start'] = True
-        ss.current_quiz = random.sample(quiz.sport_questions, 10)
-    elif ss.counter == 2:
-        # Set start to False
-        ss['start'] = True 
-        # Set stop to True
-        ss['stop'] = True
 
 if __name__ == "__main__":
     run()
