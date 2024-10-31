@@ -19,6 +19,7 @@ from streamlit_plotly_events import plotly_events
 from PIL import Image
 from sklearn.metrics import adjusted_rand_score
 import random
+import time
 
 LOGGER = get_logger(__name__)
 
