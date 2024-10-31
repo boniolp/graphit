@@ -187,7 +187,7 @@ def run():
         method = st.selectbox('Accuracy measure', ['k-Means','k-Shapes','k-Graph'])
         correspondance_dict = {'k-Means':'kmean','k-Shapes':'kshape','k-Graph':'kgraph'}
         if (correspondance_dict[method] == 'kmean') or (correspondance_dict[method] == 'kshape'):
-            with open('{}_kmean_centroid.pickle'.format(Dataset), 'rb') as handle:
+            with open('data/graphs/{}_kmean_centroid.pickle'.format(dataset), 'rb') as handle:
                 centroids = pickle.load(handle)
         scorecard_placeholder = st.empty()
         list_question = []
