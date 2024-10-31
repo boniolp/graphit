@@ -178,6 +178,8 @@ def run():
 
     with tab_quiz:
         st.markdown("""Will you be able to find the good cluster?""")
+        st.markdown("""Here is a time series rondomly selected from the dataset of your choice (tab on the left). Which cluster does the time series belong to?""")
+        st.markdown("""Which cluster does the time series belong to?""")
     
     with tab_detail:
         with st.expander("""## In short, how does $k$-graph work?"""):
