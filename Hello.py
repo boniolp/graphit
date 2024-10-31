@@ -272,7 +272,7 @@ def run():
                         fig = px.line(ss.current_quiz[i].get('ts'))
                         if (correspondance_dict[method] == 'kmean') or (correspondance_dict[method] == 'kshape'):
                             for id_c,centroid in enumerate(centroids):
-                                fig.add_scatter(x=[val for val in range(len(centroid))], y=centroid, mode='lines', name="Centroid {}".format(id_c+1))
+                                fig.add_scatter(x=[val for val in range(len(centroid))], y=centroid, mode='lines', name="Centroid {}".format(id_c+1), visible='legendonly')
                         st.plotly_chart(fig)
                     # question_placeholder.write(f"**{ss.current_quiz[i].get('question')}**") 
                     # list of options
