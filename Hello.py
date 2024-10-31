@@ -179,19 +179,31 @@ def run():
             #st.markdown("You can click on a node to see its content")
 
     with tab_quiz:
-        st.markdown("""Will you be able to find the good cluster?""")
-        st.markdown("""Here is a time series rondomly selected from the dataset of your choice (tab on the left). Which cluster does the time series belong to?""")
+        st.header("""Will you be able to find the good cluster?""")
+        st.markdown("""Here are time series rondomly selected from the dataset of your choice (tab on the left). Which cluster does these time series belong to?""")
         st.markdown("""Which cluster does the time series belong to?""")
 
+        st.markdown("""You can choose one cluster method to help you. For each, you will be able to visualize their representation of each cluster. For $k$-Means and $k$-Graph, you can superpose the centroids, for $k$-Graph, you can use the graph.""")
+        method = st.selectbox('Accuracy measure', ['k-Means','k-Shapes','k-Graph'])
+        correspondance_dict = {'k-Means':'kmean','k-Shapes':'kshape','k-Graph':'kgraph'}
+        if (correspondance_dict[method] == 'kmean') or (correspondance_dict[method] == 'kshape'):
+            with open('{}_kmean_centroid.pickle'.format(Dataset), 'rb') as handle:
+                centroids = pickle.load(handle)
         scorecard_placeholder = st.empty()
         list_question = []
         for i in range(10):
             rand_ts = random.randint(0, len(X)-1)
+            if correspondance_dict[method] == 'kmean':
+                y_temp = y_pred_kmean
+            elif correspondance_dict[method] == 'kshape':
+                y_temp = y_pred_kshape
+            else:
+                y_temp = graph['kgraph_labels']
             quiz_set = {
                 "question_number":i,
                 "ts": X[rand_ts],
                 "options": ["Cluster {}".format(j) for j in list(set(y))],
-                "correct_answer": "Cluster {}".format(y[rand_ts])
+                "correct_answer": "Cluster {}".format(y_temp[rand_ts])
             }
             list_question.append(quiz_set)
         
@@ -257,6 +269,9 @@ def run():
                     with question_placeholder.container():
                         fig = px.line(ss.current_quiz[i].get('ts'))
                         st.plotly_chart(fig)
+                        if (correspondance_dict[method] == 'kmean') or (correspondance_dict[method] == 'kshape'):
+                            for centroid in centroids:
+                                fig.add_scatter(x=len(centroid), y=centroid, mode='lines')
                     # question_placeholder.write(f"**{ss.current_quiz[i].get('question')}**") 
                     # list of options
                     options = ss.current_quiz[i].get("options")
