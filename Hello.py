@@ -214,6 +214,10 @@ def run():
         if 'grade' not in ss:
             ss['grade'] = 0
 
+        def nl(num_of_lines):
+            for i in range(num_of_lines):
+                st.write(" ")
+        
         def btn_click():
             ss.counter += 1
             if ss.counter > 2: 
