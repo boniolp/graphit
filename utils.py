@@ -161,7 +161,7 @@ def create_subgraph(sub_list_edge,graph,pos,labels,features,all_graphoid_ex,all_
     edge_size_total = []
     print("number of edge total",len(G_nx.edges()))
     for edge in G_nx.edges():
-        if edge in sub_list_edge:
+        if [edge[0],edge[1]] in sub_list_edge:
             edge_size_0.append(graph['list_edge'].count([edge[0],edge[1]]))
         edge_size_total.append(graph['list_edge'].count([edge[0],edge[1]]))
     edge_size_b = [float(1+(e - min(edge_size_total)))/float(1+max(edge_size_total) - min(edge_size_total)) for e in edge_size_0]
