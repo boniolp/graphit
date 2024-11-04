@@ -187,14 +187,14 @@ def create_subgraph(sub_list_edge,graph,pos,labels,features,all_graphoid_ex,all_
             if cluster_max in list_clusters:
                 if (cluster_max_val > gamma_val) and (cluster_max_val_rep > lambda_val):
                     color_edge = (cols[cluster_max][:-1]+",1)").replace('rgb','rgba')
-            else:
-                color_edge = 'rgba(211, 211, 211,0.5)'
-            edge_trace = go.Scattergl(
-                x=[pos[edge[0]][0],pos[edge[1]][0]], y=[pos[edge[0]][1],pos[edge[1]][1]],
-                line=dict(width=edge_size_0[i], color=color_edge),
-                hoverinfo='none',
-                mode='lines')
-            list_edge_trace.append(edge_trace)
+                else:
+                    color_edge = 'rgba(211, 211, 211,0.5)'
+                edge_trace = go.Scattergl(
+                    x=[pos[edge[0]][0],pos[edge[1]][0]], y=[pos[edge[0]][1],pos[edge[1]][1]],
+                    line=dict(width=edge_size_0[i], color=color_edge),
+                    hoverinfo='none',
+                    mode='lines')
+                list_edge_trace.append(edge_trace)
 
     node_x = []
     node_y = []
@@ -211,12 +211,12 @@ def create_subgraph(sub_list_edge,graph,pos,labels,features,all_graphoid_ex,all_
                 if (cluster_max_val > gamma_val) and (cluster_max_val_rep > lambda_val):
                     color_node.append((cols[cluster_max][:-1]+",1)").replace('rgb','rgba'))
                     #dict_node_0[i] = dict_node_0[i]*1.2
-            else:
-                color_node.append('rgba(211, 211, 211,0.2)')
-            x, y = pos[node]
-            node_x.append(x)
-            node_y.append(y)
-            node_text.append(node)
+                else:
+                    color_node.append('rgba(211, 211, 211,0.2)')
+                x, y = pos[node]
+                node_x.append(x)
+                node_y.append(y)
+                node_text.append(node)
     node_trace = go.Scatter(
         x=node_x, y=node_y,
         mode='markers',
