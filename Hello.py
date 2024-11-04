@@ -193,7 +193,7 @@ def run():
                 centroids = pickle.load(handle)
         scorecard_placeholder = st.empty()
         list_question = []
-        for i in range(10):
+        for i in range(5):
             rand_ts = random.randint(0, len(X)-1)
             if correspondance_dict[method] == 'kmean':
                 y_temp = y_pred_kmean
