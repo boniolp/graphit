@@ -204,7 +204,8 @@ def run():
                 "question_number":i,
                 "ts": X[rand_ts],
                 "options": ["Cluster {}".format(j) for j in list(set(y))],
-                "correct_answer": "Cluster {}".format(y_temp[rand_ts])
+                "correct_answer": "Cluster {}".format(y_temp[rand_ts]),
+                "id_ts": rand_ts,
             }
             list_question.append(quiz_set)
         
@@ -275,8 +276,8 @@ def run():
                             col_graph_quiz, col_ts_quiz = st.columns(2)
                             with col_graph_quiz:
                                 st.markdown('showgraph')
-                                start_edge_ts = graph['graph']['list_edge_pos'][current_pos]
-                                end_edge_ts = graph['graph']['list_edge_pos'][current_pos+1]
+                                start_edge_ts = graph['graph']['list_edge_pos'][ss.current_quiz[i].get('id_ts')]
+                                end_edge_ts = graph['graph']['list_edge_pos'][ss.current_quiz[i].get('id_ts')+1]
                                 list_edge_ts = graph['graph']['list_edge'][start_edge_ts:end_edge_ts]
                                 fig_graph,node_label = create_subgraph(list_edge_ts,graph['graph'],pos,graph['kgraph_labels'],graph['feature'],all_graphoid_ex,all_graphoid_rep,lambda_val=0.5,gamma_val=0.7,list_clusters=[int(val.replace('Cluster ','')) for val in set(graph['kgraph_labels'])])
                                 fig_graph.update_layout(
