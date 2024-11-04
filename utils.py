@@ -232,7 +232,7 @@ def create_subgraph(sub_list_edge,graph,pos,labels,features,all_graphoid_ex,all_
             size=dict_node_0,
             line_width=1))
     fig = go.Figure(data=list_edge_trace + [node_trace])
-    return fig,node_text
+    return fig
 
 
 @st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
