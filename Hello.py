@@ -283,7 +283,7 @@ def run():
                                 #st.markdown(list_edge_ts[0])
                                 #st.markdown(list_edge_ts[0][0])
                                 #st.markdown(list_edge_ts[0][1])
-                                fig_graph_quiz,node_label = create_subgraph(list_edge_ts,graph['graph'],pos,graph['kgraph_labels'],graph['feature'],all_graphoid_ex,all_graphoid_rep,lambda_val=0.5,gamma_val=0.7,list_clusters=[i in set(graph['kgraph_labels'])])
+                                fig_graph_quiz = create_subgraph(list_edge_ts,graph['graph'],pos,graph['kgraph_labels'],graph['feature'],all_graphoid_ex,all_graphoid_rep,lambda_val=0.5,gamma_val=0.7,list_clusters=[i in set(graph['kgraph_labels'])])
                                 fig_graph_quiz.update_layout(
                                     height=300,
                                     plot_bgcolor='rgba(0, 0, 0, 0)',
