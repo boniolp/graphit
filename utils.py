@@ -210,7 +210,7 @@ def create_subgraph(sub_list_edge,graph,pos,labels,features,all_graphoid_ex,all_
             if cluster_max in list_clusters:
                 if (cluster_max_val > gamma_val) and (cluster_max_val_rep > lambda_val):
                     color_node.append((cols[cluster_max][:-1]+",1)").replace('rgb','rgba'))
-                    dict_node_0[i] = dict_node_0[i]*1.2
+                    #dict_node_0[i] = dict_node_0[i]*1.2
                 else:
                     color_node.append('rgba(211, 211, 211,0.2)')
             x, y = pos[node]
