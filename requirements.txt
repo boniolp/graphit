@@ -10,4 +10,4 @@ streamlit_agraph
 pygraphviz 
 streamlit_plotly_events
 watchdog
-altair==4.0
+altair
