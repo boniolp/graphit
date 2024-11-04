@@ -5,6 +5,7 @@ pandas
 scikit_learn
 scipy
 plotly
+streamlit>=1.23.0
 streamlit_tags
 streamlit_agraph
 pygraphviz 
