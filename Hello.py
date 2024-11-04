@@ -290,7 +290,7 @@ def run():
                                     xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
                                     yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
             
-                                st.plotly_chart(fig_graph, use_container_width=True,height=300)
+                                st.plotly_chart(fig_graph, use_container_width=True,height=300,key="question_graph_{}".format(current_question))
                             with col_ts_quiz:
                                 st.plotly_chart(fig,height=300)
                             
