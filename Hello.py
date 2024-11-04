@@ -68,15 +68,15 @@ def run():
         with st.expander("$k$-Graph, ARI: {:.3f}".format(adjusted_rand_score(y,graph['kgraph_labels'])),expanded=True):
             st.markdown("""Time series grouped based on the clustering labels of $k$-Graph. You can check 
             the graph on the graph tab for more details. Only 50 first time series are displayed.""")
-            st.plotly_chart(fig_pred, use_container_width=True,height=800)
+            st.plotly_chart(fig_pred, use_container_width=True,height=800,key="kgraph-ARI")
 
         with st.expander("$k$-Shape, ARI: {:.3f}".format(adjusted_rand_score(y,y_pred_kshape)),expanded=True):
             st.markdown("""Time series grouped based on the clustering labels of $k$-Shape. Only 50 first time series are displayed.""")
-            st.plotly_chart(fig_pred_kshape, use_container_width=True,height=800)
+            st.plotly_chart(fig_pred_kshape, use_container_width=True,height=800,key="kshape-ARI")
 
         with st.expander("$k$-Means, ARI: {:.3f}".format(adjusted_rand_score(y,y_pred_kmean)),expanded=True):
             st.markdown("""Time series grouped based on the clustering labels of $k$-Means. Only 50 first time series are displayed.""")
-            st.plotly_chart(fig_pred_kmean, use_container_width=True,height=800)
+            st.plotly_chart(fig_pred_kmean, use_container_width=True,height=800,,key="kmean-ARI")
 
         st.markdown("""You can find below the time series grouped using the true labels.""")
         
@@ -85,7 +85,7 @@ def run():
             (see [UCR-Archive](https://www.cs.ucr.edu/%7Eeamonn/time_series_data_2018/) for more details. 
             Only 50 first time series are displayed.)""")
         
-            st.plotly_chart(fig_ts, use_container_width=True,height=800)
+            st.plotly_chart(fig_ts, use_container_width=True,height=800,key="true_label")
         
         st.header("Overall benchmark with 14 baselines")
         st.divider()
@@ -130,7 +130,7 @@ def run():
 
         if on:
             fig = px.box(df_performance[method_names])
-            st.plotly_chart(fig, use_container_width=True,boxmean=True)
+            st.plotly_chart(fig, use_container_width=True,boxmean=True,key="boxplot")
         else:
             st.dataframe(df_performance[method_names].style.highlight_max(axis=1))
             
@@ -173,7 +173,7 @@ def run():
             if selected_node is not None:
                 fig_pred_node = show_ts_node(X,y,graph['kgraph_labels'],intervals)
                 st.markdown("""Node {} in the dataset""".format(selected_node))
-                st.plotly_chart(fig_pred_node, use_container_width=True,height=800)
+                st.plotly_chart(fig_pred_node, use_container_width=True,height=800,,key="interactive-graph")
             #st.markdown("You can click on a node to see its content")
             #with st.container(border=True):
             #selected_node = plotly_events(fig_graph,click_event=True, override_height=800, override_width='100%')
@@ -296,7 +296,7 @@ def run():
             
                                 st.plotly_chart(fig_graph_quiz, use_container_width=True,height=300,key="question_graph_{}".format(current_question))
                             with col_ts_quiz:
-                                st.plotly_chart(fig,height=300)
+                                st.plotly_chart(fig,height=300,key="question_ts_{}".format(current_question))
                             
                             
                         elif (correspondance_dict[method] == 'kmean') or (correspondance_dict[method] == 'kshape'):
@@ -307,7 +307,7 @@ def run():
                     # list of options
                     options = ss.current_quiz[i].get("options")
                     # track the user selection
-                    options_placeholder.radio("", options, index=1, key=f"Q{current_question}",horizontal=True)
+                    options_placeholder.radio("Answer:", options, index=1, key=f"Q{current_question}",horizontal=True)
                     #nl(1)
                     # Grade Answers and Return Corrections
                     if ss.stop:
