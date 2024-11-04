@@ -261,7 +261,8 @@ def run():
                     question_placeholder = st.empty()
                     options_placeholder = st.empty()
                     results_placeholder = st.empty()
-                    expander_area = st.empty()                
+                    expander_area = st.empty()
+                    togglegraph_area = st.empty()
                     # Add '1' to current_question tracking variable cause python starts counting from 0
                     current_question = i+1
                     # display question_number
@@ -270,10 +271,20 @@ def run():
                     # display question based on question_number
                     with question_placeholder.container():
                         fig = px.line(ss.current_quiz[i].get('ts'))
-                        if (correspondance_dict[method] == 'kmean') or (correspondance_dict[method] == 'kshape'):
+                        if correspondance_dict[method] == 'kgraph':
+                            toggle_show_graph = togglegraph_area.toggle("Show Graph")
+                            if toggle_show_graph:
+                                col_graph_quiz, col_ts_quiz = st.columns(2)
+                                with col_graph_quiz:
+                                    st.markdown('showgraph')
+                                with col_ts_quiz:
+                                    st.plotly_chart(fig,height=300)
+                            else:
+                                st.plotly_chart(fig,height=300)
+                        elif (correspondance_dict[method] == 'kmean') or (correspondance_dict[method] == 'kshape'):
                             for id_c,centroid in enumerate(centroids):
                                 fig.add_scatter(x=[val for val in range(len(centroid))], y=centroid, mode='lines', name="Centroid {}".format(id_c+1), visible='legendonly')
-                        st.plotly_chart(fig,height=300)
+                            st.plotly_chart(fig,height=300)
                     # question_placeholder.write(f"**{ss.current_quiz[i].get('question')}**") 
                     # list of options
                     options = ss.current_quiz[i].get("options")
