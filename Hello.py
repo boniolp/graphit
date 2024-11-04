@@ -262,7 +262,6 @@ def run():
                     options_placeholder = st.empty()
                     results_placeholder = st.empty()
                     expander_area = st.empty()
-                    togglegraph_area = st.empty()
                     # Add '1' to current_question tracking variable cause python starts counting from 0
                     current_question = i+1
                     # display question_number
@@ -272,15 +271,29 @@ def run():
                     with question_placeholder.container():
                         fig = px.line(ss.current_quiz[i].get('ts'))
                         if correspondance_dict[method] == 'kgraph':
-                            toggle_show_graph = togglegraph_area.toggle("Show Graph")
-                            if toggle_show_graph:
-                                col_graph_quiz, col_ts_quiz = st.columns(2)
-                                with col_graph_quiz:
-                                    st.markdown('showgraph')
-                                with col_ts_quiz:
-                                    st.plotly_chart(fig,height=300)
-                            else:
+                            
+                            col_graph_quiz, col_ts_quiz = st.columns(2)
+                            with col_graph_quiz:
+                                st.markdown('showgraph')
+                                start_edge_ts = graph['graph']['list_edge_pos'][current_pos]
+                                end_edge_ts = graph['graph']['list_edge_pos'][current_pos+1]
+                                list_edge_ts = graph['graph']['list_edge'][start_edge_ts:end_edge_ts]
+                                fig_graph,node_label = create_subgraph(list_edge_ts,graph['graph'],pos,graph['kgraph_labels'],graph['feature'],all_graphoid_ex,all_graphoid_rep,lambda_val=0.5,gamma_val=0.7,list_clusters=[int(val.replace('Cluster ','')) for val in set(graph['kgraph_labels'])])
+                                fig_graph.update_layout(
+                                    height=300,
+                                    plot_bgcolor='rgba(0, 0, 0, 0)',
+                                    paper_bgcolor='rgba(0, 0, 0, 0)',
+                                    showlegend=False,
+                                    hovermode='closest',
+                                    #margin=dict(b=20,l=5,r=5,t=40),
+                                    xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+                                    yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
+            
+                                st.plotly_chart(fig_graph, use_container_width=True,height=300)
+                            with col_ts_quiz:
                                 st.plotly_chart(fig,height=300)
+                            
+                            
                         elif (correspondance_dict[method] == 'kmean') or (correspondance_dict[method] == 'kshape'):
                             for id_c,centroid in enumerate(centroids):
                                 fig.add_scatter(x=[val for val in range(len(centroid))], y=centroid, mode='lines', name="Centroid {}".format(id_c+1), visible='legendonly')
