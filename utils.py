@@ -168,7 +168,7 @@ def create_subgraph(sub_list_edge,graph,pos,labels,features,all_graphoid_ex,all_
         edge_size_total.append(graph['list_edge'].count([edge[0],edge[1]]))
     edge_size_b = [float(1+(e - min(edge_size_total)))/float(1+max(edge_size_total) - min(edge_size_total)) for e in edge_size_0]
     edge_size_0 = [min(e*20,10) for e in edge_size_b]
-    print("Edge found:",len(edge_size_0))
+    
     dict_node_0 = []
     for node in G_nx.nodes():
         if node in sub_list_node:
@@ -178,7 +178,7 @@ def create_subgraph(sub_list_edge,graph,pos,labels,features,all_graphoid_ex,all_
                 dict_node_0.append(5)
     
     
-    print("list_clusters",list_clusters)
+    
     list_edge_trace = []
     count_edge_sub = 0
     for i,edge in enumerate(G_nx.edges()):
@@ -200,7 +200,7 @@ def create_subgraph(sub_list_edge,graph,pos,labels,features,all_graphoid_ex,all_
                     mode='lines')
                 list_edge_trace.append(edge_trace)
             count_edge_sub += 1
-    print("Edge plot:",len(list_edge_trace))
+    
     node_x = []
     node_y = []
     node_text = []

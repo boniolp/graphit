@@ -10,10 +10,11 @@ import os
 
 st.header("""Can you find the correct cluster?""")
 
-st.markdown("""Here are time series randomly selected from the dataset of your choice (tab on the left). Which cluster does these time series belong to?""")
-st.markdown("""The objective is to assess the interpretability of clustering methods.""")
-st.markdown("""Which cluster does the time series belong to?""")
-st.markdown("""You can choose one cluster method to help you. For each, you will be able to visualize their representation of each cluster. For $k$-Means and $k$-Graph, you can superpose the centroids, for $k$-Graph, you can use the graph.""")
+st.markdown("""Here are time series randomly selected from the dataset of your choice. Which cluster does these time series belong to?""")
+
+
+st.markdown("""Please note that we assess here the ability of the methods to let the user anderstand why the time seires belong to a given cluster, we do not evaluate the cludtering accuracy. If one time series is assigned to the correct cluster (even though it does not belongs to the correct class), the answer is marked as correct.""")
+
 
 col_dts,col_method = st.columns(2)
 
@@ -42,10 +43,11 @@ for i in range(5):
     quiz_set = {
         "question_number":i,
         "ts": X[rand_ts],
-        "options": ["Cluster {}".format(j) for j in list(set(y))],
+        "options": ["Cluster {}".format(j) for j in list(set(y_temp))],
         "correct_answer": "Cluster {}".format(y_temp[rand_ts]),
         "id_ts": rand_ts,
     }
+    print("Cluster {}".format(y_temp[rand_ts]))
     list_question.append(quiz_set)
 
 # Activate Session States
@@ -114,7 +116,7 @@ with st.container():
                     
                     col_graph_quiz, col_ts_quiz = st.columns(2)
                     with col_graph_quiz:
-                        st.markdown('showgraph')
+                        st.markdown('Subgraph of the time series')
                         start_edge_ts = graph['graph']['list_edge_pos'][ss.current_quiz[i].get('id_ts')]
                         end_edge_ts = graph['graph']['list_edge_pos'][ss.current_quiz[i].get('id_ts')+1]
                         list_edge_ts = graph['graph']['list_edge'][start_edge_ts:end_edge_ts]
@@ -122,6 +124,28 @@ with st.container():
                         #st.markdown(list_edge_ts[0][0])
                         #st.markdown(list_edge_ts[0][1])
                         fig_graph_quiz = create_subgraph(list_edge_ts,graph['graph'],pos,graph['kgraph_labels'],graph['feature'],all_graphoid_ex,all_graphoid_rep,lambda_val=0.5,gamma_val=0.7,list_clusters=[i for i in set(graph['kgraph_labels'])])
+                        
+                        min_pos_x = min([pos[key_node][0] for key_node in pos.keys()])
+                        max_pos_y = max([pos[key_node][1] for key_node in pos.keys()])
+                        min_pos_y = min([pos[key_node][1] for key_node in pos.keys()])
+
+                        
+                        for pos_text_incr,lab_c in enumerate(set(y_temp)):
+                            fig_graph_quiz.add_annotation(
+                                x=min_pos_x,
+                                y=max_pos_y - (max_pos_y - min_pos_y)*(pos_text_incr/(len(set(y_temp))-1)),
+                                text="Cluster {}".format(lab_c),
+                                showarrow=False,
+                                #xanchor="right",
+                                xshift=-min_pos_x,
+                                bgcolor=(cols[lab_c][:-1]+",1)").replace('rgb','rgba'),
+                                #font=dict(
+                                #    family="sans serif",
+                                #    size=18,
+                                #    color=(cols[lab_c][:-1]+",1)").replace('rgb','rgba'),
+                                #)
+                            )
+
                         fig_graph_quiz.update_layout(
                             height=300,
                             plot_bgcolor='rgba(0, 0, 0, 0)',
@@ -131,7 +155,7 @@ with st.container():
                             #margin=dict(b=20,l=5,r=5,t=40),
                             xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
                             yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
-    
+                        
                         st.plotly_chart(fig_graph_quiz, use_container_width=True,height=300,key="question_graph_{}".format(current_question))
                     with col_ts_quiz:
                         st.plotly_chart(fig,height=300,key="question_ts_{}".format(current_question),use_container_width=True)
@@ -145,7 +169,7 @@ with st.container():
             # list of options
             options = ss.current_quiz[i].get("options")
             # track the user selection
-            options_placeholder.radio("Answer:", options, index=1, key=f"Q{current_question}",horizontal=True)
+            options_placeholder.radio("Your answer:", options, index=1, key=f"Q{current_question}",horizontal=True)
             #nl(1)
             # Grade Answers and Return Corrections
             if ss.stop:
@@ -167,4 +191,5 @@ with st.container():
 # calculate score
 if ss.stop:  
     ss['grade'] = ss.user_answers.count(True)           
-    scorecard_placeholder.write(f"### **Your Final Score : {ss['grade']} / {len(ss.current_quiz)}**")        
+    scorecard_placeholder.progress(ss['grade']/len(ss.current_quiz), text="Your Final Score : {} / {}".format(ss['grade'],len(ss.current_quiz)))
+    #scorecard_placeholder.write(f"### **Your Final Score : {ss['grade']} / {len(ss.current_quiz)}**")        

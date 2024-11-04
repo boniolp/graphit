@@ -36,7 +36,7 @@ with col_side:
 with col_graph:
     fig_graph,node_label = create_graph(graph['graph'],pos,graph['kgraph_labels'],graph['feature'],all_graphoid_ex,all_graphoid_rep,lambda_val=lambda_val,gamma_val=gamma_val,list_clusters=[int(val.replace('Cluster ','')) for val in options])
     fig_graph.update_layout(
-        height=800,
+        height=400,
         plot_bgcolor='rgba(0, 0, 0, 0)',
         paper_bgcolor='rgba(0, 0, 0, 0)',
         showlegend=False,
@@ -45,11 +45,19 @@ with col_graph:
         xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
         yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
     
-    st.plotly_chart(fig_graph, use_container_width=True,height=800)
+    st.markdown("""### $k$-Graph for {}""".format(dataset))
+    st.plotly_chart(fig_graph, use_container_width=True,height=400)
     if selected_node is not None:
         fig_pred_node = show_ts_node(X,y,graph['kgraph_labels'],intervals)
-        st.markdown("""Node {} in the dataset""".format(selected_node))
-        st.plotly_chart(fig_pred_node, use_container_width=True,height=800,key="interactive-graph")
+        fig_pred_node.update_layout(
+            height=300,
+            plot_bgcolor='rgba(0, 0, 0, 0)',
+            paper_bgcolor='rgba(0, 0, 0, 0)',
+            showlegend=False,
+            hovermode='closest',)
+        st.divider()
+        st.markdown("""### Node {} in the dataset""".format(selected_node))
+        st.plotly_chart(fig_pred_node, use_container_width=True,height=100,key="interactive-graph")
     #st.markdown("You can click on a node to see its content")
     #with st.container(border=True):
     #selected_node = plotly_events(fig_graph,click_event=True, override_height=800, override_width='100%')

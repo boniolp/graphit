@@ -30,7 +30,10 @@ st.set_page_config(
     )
 
 
+image = Image.open('figures/graphit_logo.png')
+st.image(image,width=300)
 st.markdown("## Welcome to Graphit")
+
 
 st.markdown("""
  Time series clustering poses a significant challenge with diverse applications across domains. 
