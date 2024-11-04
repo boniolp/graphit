@@ -280,7 +280,7 @@ def run():
                                 start_edge_ts = graph['graph']['list_edge_pos'][ss.current_quiz[i].get('id_ts')]
                                 end_edge_ts = graph['graph']['list_edge_pos'][ss.current_quiz[i].get('id_ts')+1]
                                 list_edge_ts = graph['graph']['list_edge'][start_edge_ts:end_edge_ts]
-                                os.write(1,list_edge_ts)
+                                st.markdown(list_edge_ts)
                                 fig_graph_quiz,node_label = create_subgraph(list_edge_ts,graph['graph'],pos,graph['kgraph_labels'],graph['feature'],all_graphoid_ex,all_graphoid_rep,lambda_val=0.5,gamma_val=0.7,list_clusters=[i in set(graph['kgraph_labels'])])
                                 fig_graph_quiz.update_layout(
                                     height=300,
