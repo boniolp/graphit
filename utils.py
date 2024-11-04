@@ -159,12 +159,12 @@ def create_subgraph(sub_list_edge,graph,pos,labels,features,all_graphoid_ex,all_
     sub_list_node = [edge[0] for edge in sub_list_edge]
     edge_size_0 = []
     edge_size_total = []
-    edge_size_0_idx = []
+    
     
     for i,edge in enumerate(G_nx.edges()):
         if [edge[0],edge[1]] in sub_list_edge:
             edge_size_0.append(graph['list_edge'].count([edge[0],edge[1]]))
-            edge_size_0_idx.append(i)
+            
         edge_size_total.append(graph['list_edge'].count([edge[0],edge[1]]))
     edge_size_b = [float(1+(e - min(edge_size_total)))/float(1+max(edge_size_total) - min(edge_size_total)) for e in edge_size_0]
     edge_size_0 = [min(e*20,10) for e in edge_size_b]
@@ -179,6 +179,7 @@ def create_subgraph(sub_list_edge,graph,pos,labels,features,all_graphoid_ex,all_
     
 
     list_edge_trace = []
+    count_edge_sub = 0
     for i,edge in enumerate(G_nx.edges()):
         if [edge[0],edge[1]] in sub_list_edge:
             pos_in_feature = features_name.index("['{}', '{}']".format(edge[0],edge[1]))
@@ -193,10 +194,11 @@ def create_subgraph(sub_list_edge,graph,pos,labels,features,all_graphoid_ex,all_
                     color_edge = 'rgba(211, 211, 211,0.5)'
                 edge_trace = go.Scattergl(
                     x=[pos[edge[0]][0],pos[edge[1]][0]], y=[pos[edge[0]][1],pos[edge[1]][1]],
-                    line=dict(width=edge_size_0[edge_size_0_idx[i]], color=color_edge),
+                    line=dict(width=edge_size_0[count_edge_sub], color=color_edge),
                     hoverinfo='none',
                     mode='lines')
                 list_edge_trace.append(edge_trace)
+            count_edge_sub += 1
 
     node_x = []
     node_y = []
