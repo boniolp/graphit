@@ -173,7 +173,7 @@ def create_subgraph(sub_list_edge,graph,pos,labels,features,all_graphoid_ex,all_
                 dict_node_0.append(max(5,graph['dict_node'][node]*0.01))
             else:
                 dict_node_0.append(5)
-   print("number of edge subgrapah",len(edge_size_0))
+    print("number of edge subgrapah",len(edge_size_0))
     
 
     list_edge_trace = []
