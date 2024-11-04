@@ -177,7 +177,7 @@ def create_subgraph(sub_list_edge,graph,pos,labels,features,all_graphoid_ex,all_
     
 
     list_edge_trace = []
-    for i,edge in sub_list_edge:
+    for i,edge in enumerate(sub_list_edge):
         if True:#[edge[0],edge[1]] in sub_list_edge:
             pos_in_feature = features_name.index("['{}', '{}']".format(edge[0],edge[1]))
             cluster_max = np.argmax(all_graphoid_ex[:,pos_in_feature])
