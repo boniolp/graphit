@@ -173,7 +173,7 @@ def run():
             if selected_node is not None:
                 fig_pred_node = show_ts_node(X,y,graph['kgraph_labels'],intervals)
                 st.markdown("""Node {} in the dataset""".format(selected_node))
-                st.plotly_chart(fig_pred_node, use_container_width=True,height=800,,key="interactive-graph")
+                st.plotly_chart(fig_pred_node, use_container_width=True,height=800,key="interactive-graph")
             #st.markdown("You can click on a node to see its content")
             #with st.container(border=True):
             #selected_node = plotly_events(fig_graph,click_event=True, override_height=800, override_width='100%')
