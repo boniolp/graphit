@@ -279,7 +279,7 @@ def run():
                                 start_edge_ts = graph['graph']['list_edge_pos'][ss.current_quiz[i].get('id_ts')]
                                 end_edge_ts = graph['graph']['list_edge_pos'][ss.current_quiz[i].get('id_ts')+1]
                                 list_edge_ts = graph['graph']['list_edge'][start_edge_ts:end_edge_ts]
-                                fig_graph,node_label = create_subgraph(list_edge_ts,graph['graph'],pos,graph['kgraph_labels'],graph['feature'],all_graphoid_ex,all_graphoid_rep,lambda_val=0.5,gamma_val=0.7,list_clusters=['Cluster {}'.format(i) for i in set(graph['kgraph_labels'])])
+                                fig_graph,node_label = create_subgraph(list_edge_ts,graph['graph'],pos,graph['kgraph_labels'],graph['feature'],all_graphoid_ex,all_graphoid_rep,lambda_val=0.5,gamma_val=0.7,list_clusters=['{}'.format(i) for i in set(graph['kgraph_labels'])])
                                 fig_graph.update_layout(
                                     height=300,
                                     plot_bgcolor='rgba(0, 0, 0, 0)',
@@ -303,7 +303,7 @@ def run():
                     # list of options
                     options = ss.current_quiz[i].get("options")
                     # track the user selection
-                    options_placeholder.radio("", options, index=1, key=f"Q{current_question}")
+                    options_placeholder.radio("", options, index=1, key=f"Q{current_question}",horizontal=True)
                     #nl(1)
                     # Grade Answers and Return Corrections
                     if ss.stop:
