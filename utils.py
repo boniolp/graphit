@@ -151,6 +151,82 @@ def create_graph(graph,pos,labels,features,all_graphoid_ex,all_graphoid_rep,lamb
     fig = go.Figure(data=list_edge_trace + [node_trace])
     return fig,node_text
 
+@st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
+def create_subgraph(sub_list_edge,graph,pos,labels,features,all_graphoid_ex,all_graphoid_rep,lambda_val=0.5,gamma_val=0.5,list_clusters=[0,1,2,3,4]):
+    G_nx = nx.DiGraph(graph['list_edge'])
+
+    features_name = list(features.columns)
+    sub_list_node = [edge[0] for edge in sub_list_edge]
+    edge_size_0 = [] 
+    for edge in G_nx.edges():
+        if edge in sub_list_edge:
+            edge_size_0.append(graph['list_edge'].count([edge[0],edge[1]]))
+    edge_size_b = [float(1+(e - min(edge_size_0)))/float(1+max(edge_size_0) - min(edge_size_0)) for e in edge_size_0]
+    edge_size_0 = [min(e*20,10) for e in edge_size_b]
+    dict_node_0 = []
+    for node in G_nx.nodes():
+        if node in sub_list_node:
+            if node != "NULL_NODE":
+            dict_node_0.append(max(5,graph['dict_node'][node]*0.01))
+            else:
+            dict_node_0.append(5)
+   
+    
+
+    list_edge_trace = []
+    for i,edge in enumerate(G_nx.edges()):
+        if edge in sub_list_edge:
+            pos_in_feature = features_name.index("['{}', '{}']".format(edge[0],edge[1]))
+            cluster_max = np.argmax(all_graphoid_ex[:,pos_in_feature])
+            cluster_max_val = max(all_graphoid_ex[:,pos_in_feature])
+            cluster_max_rep = np.argmax(all_graphoid_rep[:,pos_in_feature])
+            cluster_max_val_rep = max(all_graphoid_rep[:,pos_in_feature])
+            if cluster_max in list_clusters:
+            if (cluster_max_val > gamma_val) and (cluster_max_val_rep > lambda_val):
+                color_edge = (cols[cluster_max][:-1]+",1)").replace('rgb','rgba')
+            else:
+                color_edge = 'rgba(211, 211, 211,0.5)'
+            edge_trace = go.Scattergl(
+                x=[pos[edge[0]][0],pos[edge[1]][0]], y=[pos[edge[0]][1],pos[edge[1]][1]],
+                line=dict(width=edge_size_0[i], color=color_edge),
+                hoverinfo='none',
+                mode='lines')
+            list_edge_trace.append(edge_trace)
+
+    node_x = []
+    node_y = []
+    node_text = []
+    color_node = []
+    for i,node in enumerate(G_nx.nodes()):
+        if node in sub_list_node:
+            pos_in_feature = features_name.index(node)
+            cluster_max = np.argmax(all_graphoid_ex[:,pos_in_feature])
+            cluster_max_val = max(all_graphoid_ex[:,pos_in_feature])
+            cluster_max_rep = np.argmax(all_graphoid_rep[:,pos_in_feature])
+            cluster_max_val_rep = max(all_graphoid_rep[:,pos_in_feature])
+            if cluster_max in list_clusters:
+            if (cluster_max_val > gamma_val) and (cluster_max_val_rep > lambda_val):
+                color_node.append((cols[cluster_max][:-1]+",1)").replace('rgb','rgba'))
+                dict_node_0[i] = dict_node_0[i]*1.2
+            else:
+                color_node.append('rgba(211, 211, 211,0.2)')
+            x, y = pos[node]
+            node_x.append(x)
+            node_y.append(y)
+            node_text.append(node)
+    node_trace = go.Scatter(
+        x=node_x, y=node_y,
+        mode='markers',
+        hoverinfo='text',
+        text=node_text,
+        marker=dict(
+            color=color_node,
+            line_color=color_node,
+            size=dict_node_0,
+            line_width=1))
+    fig = go.Figure(data=list_edge_trace + [node_trace])
+    return fig,node_text
+
 
 @st.cache_data(ttl=3600, max_entries=1, show_spinner=True)
 def show_length_plot(graph):
