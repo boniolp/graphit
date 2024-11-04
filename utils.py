@@ -157,11 +157,14 @@ def create_subgraph(sub_list_edge,graph,pos,labels,features,all_graphoid_ex,all_
 
     features_name = list(features.columns)
     sub_list_node = [edge[0] for edge in sub_list_edge]
-    edge_size_0 = [] 
+    edge_size_0 = []
+    edge_size_total = []
+    print("number of edge total",len(G_nx.edges()))
     for edge in G_nx.edges():
         if edge in sub_list_edge:
             edge_size_0.append(graph['list_edge'].count([edge[0],edge[1]]))
-    edge_size_b = [float(1+(e - min(edge_size_0)))/float(1+max(edge_size_0) - min(edge_size_0)) for e in edge_size_0]
+        edge_size_total.append(graph['list_edge'].count([edge[0],edge[1]]))
+    edge_size_b = [float(1+(e - min(edge_size_total)))/float(1+max(edge_size_total) - min(edge_size_total)) for e in edge_size_0]
     edge_size_0 = [min(e*20,10) for e in edge_size_b]
     dict_node_0 = []
     for node in G_nx.nodes():
@@ -170,7 +173,7 @@ def create_subgraph(sub_list_edge,graph,pos,labels,features,all_graphoid_ex,all_
                 dict_node_0.append(max(5,graph['dict_node'][node]*0.01))
             else:
                 dict_node_0.append(5)
-   
+   print("number of edge subgrapah",len(edge_size_0))
     
 
     list_edge_trace = []
