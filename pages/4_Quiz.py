@@ -1,15 +1,31 @@
-dataset = st.selectbox('Pick a dataset', List_datasets)
-
-graph,pos,X,y,length,y_pred_kshape,y_pred_kmean,all_graphoid_ex,all_graphoid_rep = read_dataset(dataset)
+import streamlit as st
+from streamlit.logger import get_logger
+from utils import *
+from streamlit_plotly_events import plotly_events
+from PIL import Image
+from sklearn.metrics import adjusted_rand_score
+import random
+import time
+import os
 
 st.header("""Can you find the correct cluster?""")
+
 st.markdown("""Here are time series randomly selected from the dataset of your choice (tab on the left). Which cluster does these time series belong to?""")
 st.markdown("""The objective is to assess the interpretability of clustering methods.""")
 st.markdown("""Which cluster does the time series belong to?""")
-
 st.markdown("""You can choose one cluster method to help you. For each, you will be able to visualize their representation of each cluster. For $k$-Means and $k$-Graph, you can superpose the centroids, for $k$-Graph, you can use the graph.""")
-method = st.selectbox('Clustering method', ['k-Means','k-Shapes','k-Graph'])
+
+col_dts,col_method = st.columns(2)
+
+with col_dts:
+    dataset = st.selectbox('Pick a dataset', List_datasets)
+with col_method:
+    method = st.selectbox('Clustering method', ['k-Means','k-Shapes','k-Graph'])
+
+
+graph,pos,X,y,length,y_pred_kshape,y_pred_kmean,all_graphoid_ex,all_graphoid_rep = read_dataset(dataset)
 correspondance_dict = {'k-Means':'kmean','k-Shapes':'kshape','k-Graph':'kgraph'}
+
 if (correspondance_dict[method] == 'kmean') or (correspondance_dict[method] == 'kshape'):
     with open('data/graphs/{}_{}_centroid.pickle'.format(dataset,correspondance_dict[method]), 'rb') as handle:
         centroids = pickle.load(handle)
@@ -90,7 +106,7 @@ with st.container():
             current_question = i+1
             # display question_number
             #with st.expander(f"*Question {current_question}*"):
-            number_placeholder.write(f"*Question {current_question}*")
+            number_placeholder.markdown("""### Question {}""".format(current_question))
             # display question based on question_number
             with question_placeholder.container():
                 fig = px.line(ss.current_quiz[i].get('ts'))
@@ -105,7 +121,7 @@ with st.container():
                         #st.markdown(list_edge_ts[0])
                         #st.markdown(list_edge_ts[0][0])
                         #st.markdown(list_edge_ts[0][1])
-                        fig_graph_quiz = create_subgraph(list_edge_ts,graph['graph'],pos,graph['kgraph_labels'],graph['feature'],all_graphoid_ex,all_graphoid_rep,lambda_val=0.5,gamma_val=0.7,list_clusters=[i in set(graph['kgraph_labels'])])
+                        fig_graph_quiz = create_subgraph(list_edge_ts,graph['graph'],pos,graph['kgraph_labels'],graph['feature'],all_graphoid_ex,all_graphoid_rep,lambda_val=0.5,gamma_val=0.7,list_clusters=[i for i in set(graph['kgraph_labels'])])
                         fig_graph_quiz.update_layout(
                             height=300,
                             plot_bgcolor='rgba(0, 0, 0, 0)',
@@ -118,13 +134,13 @@ with st.container():
     
                         st.plotly_chart(fig_graph_quiz, use_container_width=True,height=300,key="question_graph_{}".format(current_question))
                     with col_ts_quiz:
-                        st.plotly_chart(fig,height=300,key="question_ts_{}".format(current_question))
+                        st.plotly_chart(fig,height=300,key="question_ts_{}".format(current_question),use_container_width=True)
                     
                     
                 elif (correspondance_dict[method] == 'kmean') or (correspondance_dict[method] == 'kshape'):
                     for id_c,centroid in enumerate(centroids):
                         fig.add_scatter(x=[val for val in range(len(centroid))], y=centroid, mode='lines', name="Centroid {}".format(id_c+1), visible='legendonly')
-                    st.plotly_chart(fig,height=300)
+                    st.plotly_chart(fig,height=300,use_container_width=True)
             # question_placeholder.write(f"**{ss.current_quiz[i].get('question')}**") 
             # list of options
             options = ss.current_quiz[i].get("options")
