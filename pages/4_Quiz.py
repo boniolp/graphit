@@ -8,6 +8,48 @@ import random
 import time
 import os
 
+# Activate Session States
+ss = st.session_state
+
+def nl(num_of_lines):
+    for i in range(num_of_lines):
+        st.write(" ")
+
+def btn_click():
+    ss.counter += 1
+    if ss.counter > 2: 
+        ss.counter = 0
+        ss.clear()
+    else:
+        update_session_state()
+        with st.spinner("*this may take a while*"):
+            time.sleep(2)
+
+
+def intitialize_session():
+    # Initializing Session States
+    if 'counter' not in ss:
+        ss['counter'] = 0
+    if 'start' not in ss:
+        ss['start'] = False
+    if 'stop' not in ss:
+        ss['stop'] = False
+    if 'refresh' not in ss:
+        ss['refresh'] = False
+    if "button_label" not in ss:
+        ss['button_label'] = ['START', 'SUBMIT', 'RELOAD']
+    if 'current_quiz' not in ss:
+        ss['current_quiz'] = []
+    if 'user_answers' not in ss:
+        ss['user_answers'] = []
+    if 'grade' not in ss:
+        ss['grade'] = 0
+    
+
+def intitialize_session_change():
+    ss.clear()
+    intitialize_session()
+
 st.header("""Can you find the correct cluster?""")
 
 st.markdown("""Here are time series randomly selected from the dataset of your choice. Which cluster does these time series belong to?""")
@@ -19,9 +61,9 @@ st.markdown("""Please note that we assess here the ability of the methods to let
 col_dts,col_method = st.columns(2)
 
 with col_dts:
-    dataset = st.selectbox('Pick a dataset', List_datasets)
+    dataset = st.selectbox('Pick a dataset', List_datasets, on_change=intitialize_session_change)
 with col_method:
-    method = st.selectbox('Clustering method', ['k-Means','k-Shapes','k-Graph'])
+    method = st.selectbox('Clustering method', ['k-Means','k-Shapes','k-Graph'], on_change=intitialize_session_change)
 
 
 graph,pos,X,y,length,y_pred_kshape,y_pred_kmean,all_graphoid_ex,all_graphoid_rep = read_dataset(dataset)
@@ -31,6 +73,8 @@ if (correspondance_dict[method] == 'kmean') or (correspondance_dict[method] == '
     with open('data/graphs/{}_{}_centroid.pickle'.format(dataset,correspondance_dict[method]), 'rb') as handle:
         centroids = pickle.load(handle)
 scorecard_placeholder = st.empty()
+
+
 list_question = []
 for i in range(5):
     rand_ts = random.randint(0, len(X)-1)
@@ -50,40 +94,6 @@ for i in range(5):
     print("Cluster {}".format(y_temp[rand_ts]))
     list_question.append(quiz_set)
 
-# Activate Session States
-ss = st.session_state
-# Initializing Session States
-if 'counter' not in ss:
-    ss['counter'] = 0
-if 'start' not in ss:
-    ss['start'] = False
-if 'stop' not in ss:
-    ss['stop'] = False
-if 'refresh' not in ss:
-    ss['refresh'] = False
-if "button_label" not in ss:
-    ss['button_label'] = ['START', 'SUBMIT', 'RELOAD']
-if 'current_quiz' not in ss:
-    ss['current_quiz'] = []
-if 'user_answers' not in ss:
-    ss['user_answers'] = []
-if 'grade' not in ss:
-    ss['grade'] = 0
-
-def nl(num_of_lines):
-    for i in range(num_of_lines):
-        st.write(" ")
-
-def btn_click():
-    ss.counter += 1
-    if ss.counter > 2: 
-        ss.counter = 0
-        ss.clear()
-    else:
-        update_session_state()
-        with st.spinner("*this may take a while*"):
-            time.sleep(2)
-
 def update_session_state():
     if ss.counter == 1:
         ss['start'] = True
@@ -93,7 +103,7 @@ def update_session_state():
         ss['start'] = True 
         # Set stop to True
         ss['stop'] = True
-
+intitialize_session()
 st.button(label=ss.button_label[ss.counter], 
     key='button_press', on_click= btn_click)
 with st.container():
@@ -162,8 +172,9 @@ with st.container():
                     
                     
                 elif (correspondance_dict[method] == 'kmean') or (correspondance_dict[method] == 'kshape'):
+                    
                     for id_c,centroid in enumerate(centroids):
-                        fig.add_scatter(x=[val for val in range(len(centroid))], y=centroid, mode='lines', name="Centroid {}".format(id_c+1), visible='legendonly')
+                        fig.add_scatter(x=[val for val in range(len(centroid))], y=centroid, mode='lines', name="Centroid {}".format(id_c), visible='legendonly',line_color=cols[id_c])
                     st.plotly_chart(fig,height=300,use_container_width=True)
             # question_placeholder.write(f"**{ss.current_quiz[i].get('question')}**") 
             # list of options
