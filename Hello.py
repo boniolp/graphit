@@ -25,14 +25,14 @@ import os
 LOGGER = get_logger(__name__)
 
 st.set_page_config(
-        page_title="Graphit",
+        page_title="GrapHint",
         page_icon="👋",
     )
 
 
 image = Image.open('figures/graphit_logo.png')
 st.image(image,width=300)
-st.markdown("## Welcome to Graphit")
+st.markdown("## Welcome to GrapHint")
 
 
 st.markdown("""
